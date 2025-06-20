@@ -1,88 +1,70 @@
 const express = require('express');
 const router = express.Router();
+const { protect } = require('../middleware/auth');
 const Product = require('../models/Product');
 
-// Get products with search and pagination
+// Get all products (public route)
 router.get('/', async (req, res) => {
   try {
-    const { 
-      page = 1, 
-      limit = 10, 
-      search = '', 
-      category,
-      minPrice,
-      maxPrice 
-    } = req.query;
-
-    // Build query
-    const query = {};
-    
-    // Search by name or description
-    if (search) {
-      query.$or = [
-        { name: { $regex: search, $options: 'i' } },
-        { description: { $regex: search, $options: 'i' } }
-      ];
-    }
-
-    // Filter by category
-    if (category) {
-      query.category = category;
-    }
-
-    // Price range
-    if (minPrice || maxPrice) {
-      query.price = {};
-      if (minPrice) query.price.$gte = Number(minPrice);
-      if (maxPrice) query.price.$lte = Number(maxPrice);
-    }
-
-    // Execute query with pagination
-    const sortField = req.query.sort || 'createdAt';
-    const sortOrder = req.query.order === 'asc' ? 1 : -1;
-    
-    const products = await Product.find(query)
-      .sort({ [sortField]: sortOrder })
-      .limit(limit * 1)
-      .skip((page - 1) * limit)
-      .exec();
-
-    // Get total documents
-    const count = await Product.countDocuments(query);
-
-    res.json({
-      products,
-      totalPages: Math.ceil(count / limit),
-      currentPage: page,
-      totalProducts: count
+    const products = await Product.find().select('-__v');
+    res.status(200).json({
+      status: 'success',
+      count: products.length,
+      data: products
     });
-
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Products fetch error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch products'
+    });
   }
 });
 
-// Create new product
+// Protected routes
+router.use(protect);
+
+// Create new product (protected)
 router.post('/', async (req, res) => {
   try {
-    const product = new Product(req.body);
-    const savedProduct = await product.save();
-    res.status(201).json(savedProduct);
+    const product = await Product.create({
+      ...req.body,
+      createdBy: req.user._id
+    });
+
+    res.status(201).json({
+      status: 'success',
+      data: product
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error('Product creation error:', error);
+    res.status(400).json({
+      status: 'error',
+      message: error.message || 'Failed to create product'
+    });
   }
 });
 
-// Get product by ID
+// Get single product (protected)
 router.get('/:id', async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).select('-__v');
     if (!product) {
-      return res.status(404).json({ message: 'Product not found' });
+      return res.status(404).json({
+        status: 'error',
+        message: 'Product not found'
+      });
     }
-    res.json(product);
+    res.status(200).json({
+      status: 'success',
+      data: product
+    });
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Product fetch error:', error);
+    res.status(500).json({
+      status: 'error',
+      message: 'Failed to fetch product'
+    });
   }
 });
 
