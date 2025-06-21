@@ -12,6 +12,8 @@ import Register from './pages/Register';
 import Admin from './pages/Admin';
 import ProtectedRoute from './components/auth/ProtectedRoute';
 import ProductDetail from './pages/ProductDetail';
+import Checkout from './pages/Checkout';
+import OrderSuccess from './pages/OrderSuccess';
 import './styles/globals.css';
 import { Toaster } from 'react-hot-toast';
 
@@ -60,6 +62,22 @@ function App() {
                       element={
                         <ProtectedRoute adminOnly>
                           <Admin />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/checkout"
+                      element={
+                        <ProtectedRoute>
+                          <Checkout />
+                        </ProtectedRoute>
+                      }
+                    />
+                    <Route
+                      path="/order-success"
+                      element={
+                        <ProtectedRoute>
+                          <OrderSuccess />
                         </ProtectedRoute>
                       }
                     />
