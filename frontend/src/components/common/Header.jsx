@@ -6,7 +6,7 @@ import { useCart } from '../../context/CartContext';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth() || {};
-  const { getCartCount } = useCart();
+  const { getCartCount = () => 0 } = useCart() || {};
   const cartCount = getCartCount();
   const navigate = useNavigate();
 
@@ -38,6 +38,7 @@ const Header = () => {
             <Link 
               to="/cart" 
               className="relative p-2 hover:text-primary transition-colors"
+              aria-label={`Shopping Cart with ${cartCount} items`}
             >
               <svg 
                 xmlns="http://www.w3.org/2000/svg" 
@@ -63,7 +64,10 @@ const Header = () => {
             {/* User Menu */}
             {user ? (
               <div className="relative group">
-                <button className="flex items-center space-x-2 p-2 rounded-lg hover:bg-slate-800 transition-colors duration-200">
+                <button 
+                  className="flex items-center space-x-2 p-2 rounded-lg hover:bg-slate-800 transition-colors duration-200"
+                  aria-label="User menu"
+                >
                   <div className="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
                     <span className="text-white text-sm font-semibold">
                       {user.name?.charAt(0).toUpperCase()}
@@ -106,6 +110,7 @@ const Header = () => {
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className="md:hidden p-2 rounded-lg hover:bg-slate-800 transition-colors duration-200"
+              aria-label="Toggle mobile menu"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 {isMenuOpen ? (
@@ -123,10 +128,10 @@ const Header = () => {
       {isMenuOpen && (
         <div className="md:hidden mt-4 pb-4 border-t border-slate-700">
           <div className="flex flex-col space-y-2 pt-4">
-            <Link to="/" className="nav-link-mobile">Home</Link>
-            <Link to="/products" className="nav-link-mobile">Products</Link>
+            <Link to="/" className="nav-link-mobile" onClick={() => setIsMenuOpen(false)}>Home</Link>
+            <Link to="/products" className="nav-link-mobile" onClick={() => setIsMenuOpen(false)}>Products</Link>
             {user?.isAdmin && (
-              <Link to="/admin" className="nav-link-mobile">Admin</Link>
+              <Link to="/admin" className="nav-link-mobile" onClick={() => setIsMenuOpen(false)}>Admin</Link>
             )}
           </div>
         </div>

@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
+import toast from 'react-hot-toast';
 
 const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
@@ -44,14 +45,40 @@ const Cart = () => {
                 <p className="text-sm text-gray-400">${item.price.toFixed(2)}</p>
                 <div className="flex items-center gap-2 mt-2">
                   <button
-                    onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                    onClick={() => {
+                      const newQuantity = item.quantity - 1;
+                      updateQuantity(item.id, newQuantity);
+                      if (newQuantity > 0) {
+                        toast.success(`Quantity updated to ${newQuantity}`, {
+                          duration: 1500,
+                          position: 'top-right',
+                          style: {
+                            background: '#1f2937',
+                            color: '#fff',
+                            border: '1px solid #374151',
+                          },
+                        });
+                      }
+                    }}
                     className="px-3 py-1 bg-surface rounded-lg hover:bg-surface/70 transition-colors"
                   >
                     -
                   </button>
                   <span className="w-8 text-center">{item.quantity}</span>
                   <button
-                    onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                    onClick={() => {
+                      const newQuantity = item.quantity + 1;
+                      updateQuantity(item.id, newQuantity);
+                      toast.success(`Quantity updated to ${newQuantity}`, {
+                        duration: 1500,
+                        position: 'top-right',
+                        style: {
+                          background: '#1f2937',
+                          color: '#fff',
+                          border: '1px solid #374151',
+                        },
+                      });
+                    }}
                     className="px-3 py-1 bg-surface rounded-lg hover:bg-surface/70 transition-colors"
                   >
                     +
@@ -61,7 +88,18 @@ const Cart = () => {
               <div className="text-right">
                 <p className="font-semibold">${(item.price * item.quantity).toFixed(2)}</p>
                 <button
-                  onClick={() => removeFromCart(item.id)}
+                  onClick={() => {
+                    removeFromCart(item.id);
+                    toast.success(`${item.name} removed from cart`, {
+                      duration: 2000,
+                      position: 'top-right',
+                      style: {
+                        background: '#1f2937',
+                        color: '#fff',
+                        border: '1px solid #374151',
+                      },
+                    });
+                  }}
                   className="text-sm text-red-500 hover:text-red-400 mt-2"
                 >
                   Remove

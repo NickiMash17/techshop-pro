@@ -1,6 +1,6 @@
 import React, { Suspense } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import CartProvider from './context/CartContext';
+import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
 import { ErrorBoundary } from 'react-error-boundary';
 import Header from './components/common/Header';

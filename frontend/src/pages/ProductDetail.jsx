@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
+import toast from 'react-hot-toast';
 
 const MOCK_PRODUCTS = {
   '1': {
@@ -88,6 +89,18 @@ const ProductDetail = () => {
     
     setIsAdding(true);
     addToCart(product, quantity);
+    
+    // Show success toast notification
+    toast.success(`${product.name} added to cart!`, {
+      duration: 3000,
+      position: 'top-right',
+      style: {
+        background: '#1f2937',
+        color: '#fff',
+        border: '1px solid #374151',
+      },
+    });
+    
     setTimeout(() => setIsAdding(false), 1000);
   };
 
