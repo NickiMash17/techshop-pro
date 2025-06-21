@@ -57,20 +57,7 @@ if (process.env.NODE_ENV !== 'production') {
 // Configure rate limiter
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per windowMs
-  message: {
-    status: 'error',
-    message: 'Too many requests from this IP, please try again later'
-  },
-  standardHeaders: true,
-  legacyHeaders: false,
-  onLimitReached: (req, res) => {
-    rateLimitHits.inc();
-    logger.warn({
-      message: 'Rate limit reached',
-      ip: req.ip
-    });
-  }
+  limit: 100, // Limit each IP to 100 requests per windowMs
 });
 
 // Middleware

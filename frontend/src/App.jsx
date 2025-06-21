@@ -37,55 +37,53 @@ function App() {
     <ErrorBoundary FallbackComponent={ErrorFallback}>
       <AuthProvider>
         <CartProvider>
-          <Router>
-            <div className="min-h-screen bg-gradient-to-br from-background to-surface">
-              <Toaster position="top-right" />
-              <Header />
-              <Suspense fallback={<Loading />}>
-                <main className="container mx-auto px-4 py-8">
-                  <Routes>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
-                    <Route path="/products" element={<Products />} />
-                    <Route path="/products/:id" element={<ProductDetail />} />
-                    <Route
-                      path="/cart"
-                      element={
-                        <ProtectedRoute>
-                          <Cart />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/admin"
-                      element={
-                        <ProtectedRoute adminOnly>
-                          <Admin />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/checkout"
-                      element={
-                        <ProtectedRoute>
-                          <Checkout />
-                        </ProtectedRoute>
-                      }
-                    />
-                    <Route
-                      path="/order-success"
-                      element={
-                        <ProtectedRoute>
-                          <OrderSuccess />
-                        </ProtectedRoute>
-                      }
-                    />
-                  </Routes>
-                </main>
-              </Suspense>
-            </div>
-          </Router>
+          <div className="min-h-screen bg-gradient-to-br from-background to-surface">
+            <Toaster position="top-right" />
+            <Header />
+            <Suspense fallback={<Loading />}>
+              <main className="container mx-auto px-4 py-8" role="main">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/products/:id" element={<ProductDetail />} />
+                  <Route
+                    path="/cart"
+                    element={
+                      <ProtectedRoute>
+                        <Cart />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute adminOnly>
+                        <Admin />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/checkout"
+                    element={
+                      <ProtectedRoute>
+                        <Checkout />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/order-success"
+                    element={
+                      <ProtectedRoute>
+                        <OrderSuccess />
+                      </ProtectedRoute>
+                    }
+                  />
+                </Routes>
+              </main>
+            </Suspense>
+          </div>
         </CartProvider>
       </AuthProvider>
     </ErrorBoundary>

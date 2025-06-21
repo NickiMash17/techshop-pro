@@ -16,9 +16,9 @@ const Header = () => {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10">
+    <header role="banner" className="sticky top-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10">
       <div className="container mx-auto px-4">
-        <nav className="flex items-center justify-between h-16">
+        <nav role="navigation" className="flex items-center justify-between h-16">
           {/* Logo */}
           <Link to="/" className="text-2xl font-bold text-primary hover:text-primary/90">
             TechShop Pro
