@@ -1,177 +1,449 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import ProductCard from '../components/products/ProductCard';
-
-const FEATURED_PRODUCTS = [
-  {
-    id: 1,
-    name: "MacBook Pro M3",
-    price: 1999.99,
-    image: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500",
-    category: "Laptops",
-    rating: 4.9
-  },
-  {
-    id: 2,
-    name: "iPhone 15 Pro",
-    price: 999.99,
-    image: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=500",
-    category: "Smartphones",
-    rating: 4.8
-  },
-  {
-    id: 3,
-    name: "AirPods Pro",
-    price: 249.99,
-    image: "https://images.unsplash.com/photo-1572569511254-d8f925fe2cbb?w=500",
-    category: "Audio",
-    rating: 4.7
-  }
-];
+import CountdownTimer from '../components/common/CountdownTimer';
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [email, setEmail] = useState('');
+  const [subscribeStatus, setSubscribeStatus] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        setIsLoading(true);
-        // Simulate API delay
-        await new Promise(resolve => setTimeout(resolve, 500));
-        setFeaturedProducts(FEATURED_PRODUCTS);
-        setIsLoading(false);
-      } catch (err) {
-        setError(`Failed to load products: ${err.message}`);
-        setIsLoading(false);
+    // Simulate API call with mock data
+    const mockProducts = [
+      {
+        id: '1',
+        name: 'Premium Wireless Headphones',
+        description: 'High-quality sound with noise cancellation',
+        price: 199.99,
+        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500'
+      },
+      {
+        id: '2',
+        name: 'Smart Watch Pro',
+        description: 'Track your fitness and stay connected',
+        price: 299.99,
+        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500'
+      },
+      {
+        id: '3',
+        name: 'Wireless Gaming Mouse',
+        description: 'Precision control for professional gaming',
+        price: 79.99,
+        image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=500'
+      },
+      {
+        id: '4',
+        name: 'Ultra HD Webcam',
+        description: 'Crystal clear video calls and streaming',
+        price: 129.99,
+        image: 'https://images.unsplash.com/photo-1587302912306-cf1ed9c33146?w=500'
       }
-    };
+    ];
 
-    fetchProducts();
+    // Simulate loading delay
+    setTimeout(() => {
+      setFeaturedProducts(mockProducts);
+      setLoading(false);
+    }, 500);
   }, []);
 
-  if (error) {
-    return (
-      <div className="text-center py-20">
-        <p className="text-red-500">{error}</p>
-        <button 
-          onClick={() => window.location.reload()}
-          className="mt-4 px-4 py-2 bg-purple-500 rounded-lg"
-        >
-          Retry
-        </button>
-      </div>
-    );
-  }
+  const categories = [
+    {
+      id: 1,
+      name: 'Laptops',
+      icon: '💻',
+      count: 24
+    },
+    {
+      id: 2,
+      name: 'Smartphones',
+      icon: '📱',
+      count: 18
+    },
+    {
+      id: 3,
+      name: 'Audio',
+      icon: '🎧',
+      count: 12
+    },
+    {
+      id: 4,
+      name: 'Accessories',
+      icon: '⌚',
+      count: 30
+    }
+  ];
+
+  const specialOffers = [
+    {
+      id: 'offer1',
+      title: 'Summer Sale',
+      discount: '20% OFF',
+      description: 'On all premium headphones',
+      bgColor: 'from-blue-500/20 to-purple-500/20',
+      image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=300'
+    },
+    {
+      id: 'offer2',
+      title: 'New Arrival',
+      discount: '10% OFF',
+      description: 'Latest gaming accessories',
+      bgColor: 'from-green-500/20 to-emerald-500/20',
+      image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=300'
+    }
+  ];
+
+  const trendingDeals = [
+    {
+      id: 'trend1',
+      name: 'Gaming Laptop Pro',
+      price: 1299.99,
+      originalPrice: 1499.99,
+      image: 'https://images.unsplash.com/photo-1605134513573-384dcf99a44c?w=500',
+      endTime: new Date().getTime() + 24 * 60 * 60 * 1000 // 24 hours from now
+    },
+    {
+      id: 'trend2',
+      name: 'Noise-Canceling Earbuds',
+      price: 149.99,
+      originalPrice: 199.99,
+      image: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=500',
+      endTime: new Date().getTime() + 12 * 60 * 60 * 1000 // 12 hours from now
+    }
+  ];
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/products?search=${encodeURIComponent(searchQuery)}`);
+    }
+  };
+
+  const handleNewsletterSubmit = async (e) => {
+    e.preventDefault();
+    setSubscribeStatus('loading');
+    
+    // Simulate API call
+    setTimeout(() => {
+      setSubscribeStatus('success');
+      setEmail('');
+      // Reset status after 3 seconds
+      setTimeout(() => setSubscribeStatus(''), 3000);
+    }, 1000);
+  };
+
+  const fadeInUp = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 }
+  };
 
   return (
-    <div className="pt-20">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-purple-900/20 to-cyan-900/20">
-          {/* ✅ Escaped SVG background */}
-          <div className="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg%20width%3D%2260%22%20height%3D%2260%22%20viewBox%3D%220%200%2060%2060%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cg%20fill%3D%22none%22%20fill-rule%3D%22evenodd%22%3E%3Cg%20fill%3D%22%239C92AC%22%20fill-opacity%3D%220.05%22%3E%3Ccircle%20cx%3D%2230%22%20cy%3D%2230%22%20r%3D%222%22%2F%3E%3C%2Fg%3E%3C%2Fg%3E%3C%2Fsvg%3E')] opacity-40" />
-        </div>
-
-        {/* Floating Elements (make sure you have animation classes defined!) */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 left-10 w-16 h-16 bg-gradient-to-r from-purple-500/20 to-cyan-500/20 rounded-full blur-sm animate-ping"></div>
-          <div className="absolute top-40 right-20 w-12 h-12 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-full blur-sm animate-ping delay-200"></div>
-          <div className="absolute bottom-40 left-20 w-20 h-20 bg-gradient-to-r from-purple-500/10 to-cyan-500/10 rounded-full blur-sm animate-ping delay-500"></div>
-        </div>
-
-        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
-          <h1 className="text-6xl md:text-8xl font-bold mb-6 bg-gradient-to-r from-white via-purple-200 to-cyan-200 bg-clip-text text-transparent animate-pulse">
-            TechShop Pro
+    <div className="space-y-16 py-8">
+      {/* Hero Section - Add motion */}
+      <motion.div
+        initial="hidden"
+        animate="visible"
+        variants={fadeInUp}
+        transition={{ duration: 0.5 }}
+        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-xl"
+      >
+        <div className="relative z-10 px-6 py-16 md:py-24 text-center">
+          <h1 className="text-4xl md:text-6xl font-bold">
+            <span className="bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
+              Next-Gen Tech
+            </span>
+            <br />
+            <span className="text-white">at Your Fingertips</span>
           </h1>
-          <p className="text-xl md:text-2xl text-slate-300 mb-8 max-w-2xl mx-auto">
-            Discover the latest in cutting-edge technology. Premium devices, unbeatable prices, lightning-fast delivery.
+          <p className="mt-6 text-xl text-gray-400 max-w-2xl mx-auto">
+            Discover premium tech products with exclusive deals and lightning-fast delivery.
           </p>
-
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-4">
             <Link
               to="/products"
-              className="group px-8 py-4 bg-gradient-to-r from-purple-600 to-cyan-600 rounded-full text-lg font-semibold hover:from-purple-700 hover:to-cyan-700 transition-all duration-300 transform hover:scale-105 hover:shadow-2xl"
+              className="px-8 py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-medium hover:opacity-90 transition-all duration-200 transform hover:scale-105"
             >
-              <span className="flex items-center">
-                Shop Now
-                <svg className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
-              </span>
+              Explore Products
             </Link>
-
             <Link
-              to="/products"
-              className="px-8 py-4 border-2 border-slate-600 rounded-full text-lg font-semibold hover:border-purple-500 hover:text-purple-400 transition-all duration-300 transform hover:scale-105"
+              to="/register"
+              className="px-8 py-3 bg-white/10 hover:bg-white/20 rounded-lg font-medium transition-colors"
             >
-              Browse Catalog
+              Create Account
             </Link>
-          </div>
-
-          <div className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-400">10k+</div>
-              <div className="text-slate-400">Happy Customers</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-cyan-400">500+</div>
-              <div className="text-slate-400">Products</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-purple-400">24/7</div>
-              <div className="text-slate-400">Support</div>
-            </div>
-            <div className="text-center">
-              <div className="text-3xl font-bold text-cyan-400">99%</div>
-              <div className="text-slate-400">Satisfaction</div>
-            </div>
           </div>
         </div>
+        {/* Decorative elements */}
+        <div className="absolute top-0 left-0 w-full h-full">
+          <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-secondary/20 rounded-full blur-3xl" />
+        </div>
+      </motion.div>
 
-        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-          <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+      {/* Search Bar - Add this after the hero section */}
+      <div className="max-w-2xl mx-auto px-4">
+        <form onSubmit={handleSearch} className="relative">
+          <input
+            type="text"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            placeholder="Search for products..."
+            className="w-full px-4 py-3 pl-12 bg-surface/50 backdrop-blur-sm rounded-xl focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          <svg
+            className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
           </svg>
+        </form>
+      </div>
+
+      {/* Special Offers Section - Add this before featured products */}
+      <div className="space-y-8">
+        <h2 className="text-2xl font-bold text-white">Special Offers</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {specialOffers.map((offer) => (
+            <Link
+              key={offer.id}
+              to="/products"
+              className="group relative overflow-hidden rounded-xl bg-gradient-to-br backdrop-blur-xl hover:scale-[1.02] transition-all duration-300"
+            >
+              <div className={`absolute inset-0 bg-gradient-to-br ${offer.bgColor} opacity-60`} />
+              <div className="relative z-10 p-6 md:p-8 flex justify-between items-center">
+                <div className="space-y-2">
+                  <span className="text-sm font-medium text-primary">{offer.title}</span>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white">{offer.discount}</h3>
+                  <p className="text-sm text-gray-300">{offer.description}</p>
+                  <button className="mt-4 px-4 py-2 bg-white/10 rounded-lg text-sm font-medium hover:bg-white/20 transition-colors">
+                    Shop Now
+                  </button>
+                </div>
+                <img
+                  src={offer.image}
+                  alt={offer.title}
+                  className="w-24 h-24 md:w-32 md:h-32 object-cover rounded-lg transform group-hover:scale-110 transition-transform duration-300"
+                />
+              </div>
+            </Link>
+          ))}
         </div>
-      </section>
+      </div>
+
+      {/* Trending Deals Section */}
+      <div className="space-y-8">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white">Trending Deals</h2>
+          <Link 
+            to="/products?sort=trending" 
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            View All →
+          </Link>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {trendingDeals.map((deal) => (
+            <div
+              key={deal.id}
+              className="group bg-surface/50 backdrop-blur-sm rounded-xl overflow-hidden"
+            >
+              <div className="aspect-video relative overflow-hidden">
+                <img
+                  src={deal.image}
+                  alt={deal.name}
+                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute top-4 right-4">
+                  <CountdownTimer endTime={deal.endTime} />
+                </div>
+              </div>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold text-white">{deal.name}</h3>
+                <div className="mt-2 flex items-baseline space-x-3">
+                  <span className="text-2xl font-bold text-primary">
+                    ${deal.price}
+                  </span>
+                  <span className="text-lg text-gray-400 line-through">
+                    ${deal.originalPrice}
+                  </span>
+                  <span className="text-sm text-green-500">
+                    {Math.round((1 - deal.price / deal.originalPrice) * 100)}% OFF
+                  </span>
+                </div>
+                <button className="mt-4 w-full py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-medium hover:opacity-90 transition-opacity">
+                  Add to Cart
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
 
       {/* Featured Products */}
-      <section className="py-20 px-4">
-        <div className="container mx-auto">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">
-              Featured Products
-            </h2>
-            <p className="text-xl text-slate-400 max-w-2xl mx-auto">
-              Handpicked selection of the most innovative and popular tech products
-            </p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {isLoading ? (
-              Array(3).fill(null).map((_, i) => (
-                <div key={i} className="animate-pulse">
-                  <div className="bg-slate-800 rounded-2xl h-80"></div>
-                </div>
-              ))
-            ) : (
-              featuredProducts.map((product, index) => (
-                <div
-                  key={product.id}
-                  className="transition-opacity duration-500"
-                  style={{ animationDelay: `${index * 0.2}s` }}
-                >
-                  <ProductCard product={product} />
-                </div>
-              ))
-            )}
-          </div>
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInUp}
+        transition={{ duration: 0.5 }}
+        className="space-y-8"
+      >
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white">Featured Products</h2>
+          <Link 
+            to="/products" 
+            className="text-primary hover:text-primary/80 transition-colors"
+          >
+            View All →
+          </Link>
         </div>
-      </section>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {loading ? (
+            Array(4).fill(null).map((_, index) => (
+              <div 
+                key={index} 
+                className="bg-surface/50 rounded-xl h-[300px] animate-pulse"
+              >
+                <div className="h-48 bg-slate-700/50 rounded-t-xl" />
+                <div className="p-4 space-y-3">
+                  <div className="h-4 bg-slate-700/50 rounded w-3/4" />
+                  <div className="h-4 bg-slate-700/50 rounded w-1/2" />
+                </div>
+              </div>
+            ))
+          ) : (
+            featuredProducts.map(product => (
+              <ProductCard key={product.id} product={product} />
+            ))
+          )}
+        </div>
+      </motion.div>
 
-      {/* You can continue with the Features section (no changes needed unless animation classes are missing) */}
+      {/* Categories Section */}
+      <div className="space-y-8">
+        <h2 className="text-2xl font-bold text-white">Browse Categories</h2>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {categories.map((category) => (
+            <Link
+              key={category.id}
+              to={`/products?category=${category.name.toLowerCase()}`}
+              className="group bg-surface/50 backdrop-blur-sm rounded-xl p-6 text-center hover:bg-surface/70 transition-all duration-300 hover:scale-105"
+            >
+              <span className="text-4xl mb-4 block">{category.icon}</span>
+              <h3 className="text-lg font-semibold text-white">{category.name}</h3>
+              <p className="text-sm text-gray-400">{category.count} Products</p>
+            </Link>
+          ))}
+        </div>
+      </div>
+
+      {/* Newsletter Section */}
+      <motion.div
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true }}
+        variants={fadeInUp}
+        transition={{ duration: 0.5 }}
+        className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-primary/10 to-secondary/10 backdrop-blur-xl p-8 md:p-12"
+      >
+        <div className="relative z-10 max-w-2xl">
+          <h2 className="text-2xl md:text-3xl font-bold text-white mb-4">
+            Stay Updated with Latest Tech
+          </h2>
+          <p className="text-gray-400 mb-6">
+            Subscribe to our newsletter and get exclusive deals, new product alerts, and tech news.
+          </p>
+          <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Enter your email"
+              required
+              className="flex-1 px-4 py-3 bg-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+            />
+            <button
+              type="submit"
+              disabled={subscribeStatus === 'loading'}
+              className={`px-6 py-3 bg-gradient-to-r from-primary to-secondary rounded-lg font-medium 
+                hover:opacity-90 transition-all duration-200 whitespace-nowrap
+                ${subscribeStatus === 'loading' ? 'opacity-70 cursor-not-allowed' : ''}`}
+            >
+              {subscribeStatus === 'loading' ? (
+                <span className="flex items-center gap-2">
+                  <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Subscribing...
+                </span>
+              ) : subscribeStatus === 'success' ? (
+                <span className="flex items-center gap-2">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                  </svg>
+                  Subscribed!
+                </span>
+              ) : (
+                'Subscribe'
+              )}
+            </button>
+          </form>
+          {subscribeStatus === 'success' && (
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="mt-4 text-green-500 text-sm"
+            >
+              Thank you for subscribing! Check your email for confirmation.
+            </motion.p>
+          )}
+        </div>
+        <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-primary/20 rounded-full blur-3xl" />
+      </motion.div>
+
+      {/* Features Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="group bg-surface/50 backdrop-blur-sm rounded-xl p-6 space-y-4 hover:bg-surface/70 transition-colors">
+          <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+            <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-semibold">Fast Delivery</h3>
+          <p className="text-gray-400">Get your products delivered at your doorstep within 24 hours.</p>
+        </div>
+        <div className="group bg-surface/50 backdrop-blur-sm rounded-xl p-6 space-y-4 hover:bg-surface/70 transition-colors">
+          <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+            <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h18M3 12h18M3 21h18" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-semibold">Best Prices</h3>
+          <p className="text-gray-400">We offer the most competitive prices on the market.</p>
+        </div>
+        <div className="group bg-surface/50 backdrop-blur-sm rounded-xl p-6 space-y-4 hover:bg-surface/70 transition-colors">
+          <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center group-hover:scale-110 transition-transform">
+            <svg className="w-6 h-6 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v8m4-4H8" />
+            </svg>
+          </div>
+          <h3 className="text-xl font-semibold">Wide Selection</h3>
+          <p className="text-gray-400">Choose from a vast array of products across all categories.</p>
+        </div>
+      </div>
     </div>
   );
 };

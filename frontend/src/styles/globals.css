@@ -2,6 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Base Styles */
 @layer base {
   :root {
     color-scheme: dark;
@@ -12,7 +13,18 @@
   }
 }
 
-/* Custom animations */
+/* Component Styles */
+@layer components {
+  .nav-link {
+    @apply text-white hover:text-primary transition-colors duration-200;
+  }
+
+  .nav-link-mobile {
+    @apply block px-4 py-2 text-sm hover:bg-slate-700 transition-colors duration-200;
+  }
+}
+
+/* Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -26,10 +38,10 @@
 
 @keyframes float {
   0%, 100% {
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
   }
   50% {
-    transform: translateY(-20px);
+    transform: translateY(-8px) scale(1.01);
   }
 }
 
@@ -42,56 +54,138 @@
   }
 }
 
-.nav-link {
-  @apply text-white hover:text-primary transition-colors duration-200;
+@keyframes cardFloat {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+    box-shadow: 0 0 0 rgba(139, 92, 246, 0);
+  }
+  50% {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+  }
 }
 
-.nav-link-mobile {
-  @apply block px-4 py-2 text-sm hover:bg-slate-700 transition-colors duration-200;
-}
-/* Animation utilities */
-.animate-fade-in-up {
-  animation: fadeInUp 0.5s ease forwards;
-}
-
-.animate-fade-in-up-delayed {
-  animation: fadeInUp 0.5s ease forwards;
-  animation-delay: 0.3s;
-}
-
-.animate-fade-in-up-delayed-2 {
-  opacity: 0;
-  animation: fadeInUp 0.5s ease forwards;
-  animation-delay: 0.6s;
+@keyframes shine {
+  0% {
+    left: -75%;
+    opacity: 0;
+  }
+  50% {
+    opacity: 0.5;
+  }
+  100% {
+    left: 150%;
+    opacity: 0;
+  }
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-float-delayed {
-  animation: float 3s ease-in-out infinite;
-  animation-delay: 1s;
-}
-
-.animate-float-slow {
-  animation: float 4s ease-in-out infinite;
-  animation-delay: 2s;
-}
-
-.animate-gradient-x {
-  background-size: 200% 200%;
-  animation: gradient-x 15s ease infinite;
-}
-
+/* Utility Classes */
 @layer utilities {
+  /* Fade Animations */
+  .animate-fade-in-up {
+    animation: fadeInUp 0.5s ease forwards;
+  }
+
   .animate-fade-in-up-delayed {
     animation: fadeInUp 0.5s ease forwards;
     animation-delay: 0.3s;
+    opacity: 0;
+  }
+
+  .animate-fade-in-up-delayed-2 {
+    animation: fadeInUp 0.5s ease forwards;
+    animation-delay: 0.6s;
+    opacity: 0;
+  }
+
+  /* Float Animations */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
   }
 
   .animate-float-delayed {
     animation: float 3s ease-in-out infinite;
     animation-delay: 1s;
+  }
+
+  .animate-float-slow {
+    animation: float 4s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+
+  /* Gradient Animation */
+  .animate-gradient-x {
+    background-size: 200% 200%;
+    animation: gradient-x 15s ease infinite;
+  }
+
+  /* Text Utilities */
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  /* Card Utilities */
+  .card-container {
+    @apply h-[450px] sm:h-[480px] w-full;
+  }
+
+  .card-wrapper {
+    @apply relative h-full bg-surface/50 backdrop-blur-sm 
+           border border-slate-700/50 rounded-2xl overflow-hidden
+           hover:border-primary/50 transition-all duration-500
+           hover:shadow-[0_0_30px_-5px] hover:shadow-primary/30
+           before:content-[''] before:absolute before:inset-0
+           before:opacity-0 group-hover:before:opacity-100
+           hover:transform hover:scale-[1.02]
+           group-hover:animate-[float_3s_ease-in-out_infinite];
+  }
+
+  .card-wrapper::before {
+    @apply absolute top-0 left-[-75%] w-[50%] h-full
+           bg-gradient-to-r from-transparent via-white/20 to-transparent
+           transform -skew-x-[20deg]
+           group-hover:animate-[shine_2s_ease-in-out_infinite];
+  }
+
+  .card-image-wrapper {
+    @apply relative h-[240px] sm:h-[260px] overflow-hidden
+           after:absolute after:inset-0
+           after:bg-gradient-to-t after:from-surface/80 after:to-transparent
+           after:opacity-0 after:transition-opacity after:duration-500
+           group-hover:after:opacity-100;
+  }
+
+  .card-image {
+    @apply w-full h-full object-cover object-center
+           transition-transform duration-700 ease-out
+           group-hover:scale-110 group-hover:rotate-1;
+  }
+
+  .card-content {
+    @apply p-4 sm:p-6 flex flex-col flex-grow
+           bg-gradient-to-t from-surface/90 to-surface/40
+           backdrop-blur-sm;
+  }
+
+  .card-title {
+    @apply text-base sm:text-lg font-semibold line-clamp-2 min-h-[48px] sm:min-h-[56px]
+           text-white group-hover:text-primary
+           transition-colors duration-300;
+  }
+
+  .card-description {
+    @apply text-sm text-gray-400 line-clamp-2 min-h-[40px] mb-4
+           group-hover:text-gray-300 transition-colors duration-300;
+  }
+
+  .card-button {
+    @apply px-4 py-2 bg-primary rounded-full text-sm font-medium
+           transition-all duration-300 transform
+           hover:bg-primary/90 hover:scale-105
+           hover:shadow-lg hover:shadow-primary/20
+           active:scale-95;
   }
 }

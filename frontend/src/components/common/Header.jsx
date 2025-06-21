@@ -6,7 +6,8 @@ import { useCart } from '../../context/CartContext';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { user, logout } = useAuth() || {};
-  const { cartTotal = 0 } = useCart() || {};
+  const { getCartCount } = useCart();
+  const cartCount = getCartCount();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -15,7 +16,7 @@ const Header = () => {
   };
 
   return (
-    <header className="bg-surface/50 backdrop-blur-sm border-b border-white/10">
+    <header className="sticky top-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10">
       <div className="container mx-auto px-4">
         <nav className="flex items-center justify-between h-16">
           {/* Logo */}
@@ -34,13 +35,27 @@ const Header = () => {
             </div>
 
             {/* Cart Icon */}
-            <Link to="/cart" className="relative p-2 rounded-lg hover:bg-slate-800 transition-colors duration-200">
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m0 0h10M9.5 18a1.5 1.5 0 103 0 1.5 1.5 0 00-3 0z" />
+            <Link 
+              to="/cart" 
+              className="relative p-2 hover:text-primary transition-colors"
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                className="h-6 w-6" 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" 
+                />
               </svg>
-              {cartTotal > 0 && (
-                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center animate-pulse">
-                  {cartTotal}
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 bg-primary text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                  {cartCount}
                 </span>
               )}
             </Link>
