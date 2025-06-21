@@ -3,6 +3,7 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const rateLimit = require('express-rate-limit');
 const winston = require('winston');
+const mongoose = require('mongoose');
 const connectDB = require('./config/database');
 const cluster = require('cluster');
 const os = require('os');
@@ -131,6 +132,11 @@ app.use((err, req, res, next) => {
 // Routes
 app.use('/api/products', require('./routes/products'));
 app.use('/api/auth', require('./routes/auth'));
+app.use('/api/orders', require('./routes/orders'));
+app.use('/api/admin', require('./routes/admin'));
+
+// User profile routes
+app.use('/api/users', require('./routes/users'));
 
 // Add metrics endpoint
 app.get('/api/metrics', async (req, res) => {
@@ -154,16 +160,13 @@ app.get('/api/health', (req, res) => {
     cpu: {
       load: os.loadavg(),
       cores: os.cpus().length
-    },
-    network: {
-      connections: server.connections
     }
   });
 });
 
 const PORT = process.env.PORT || 3001;
 
-const startServer = async () => {
+const startServer = async (port = PORT) => {
   try {
     // Use clustering in production
     if (process.env.NODE_ENV === 'production' && cluster.isMaster) {
@@ -182,9 +185,9 @@ const startServer = async () => {
     } else {
       await connectDB();
       
-      const server = app.listen(PORT, '0.0.0.0', () => {
-        console.log(`🚀 Server running on port ${PORT} (PID: ${process.pid})`);
-        console.log(`📡 API endpoints available at http://localhost:${PORT}/api`);
+      const server = app.listen(port, '0.0.0.0', () => {
+        console.log(`🚀 Server running on port ${port} (PID: ${process.pid})`);
+        console.log(`📡 API endpoints available at http://localhost:${port}/api`);
       });
 
       // Graceful shutdown handling
@@ -205,10 +208,12 @@ const startServer = async () => {
 
       server.on('error', (error) => {
         if (error.code === 'EADDRINUSE') {
-          console.error(`⚠️  Port ${PORT} is already in use`);
-          const newPort = PORT + 1;
+          console.error(`⚠️  Port ${port} is already in use`);
+          const newPort = port + 1;
           console.log(`🔄 Trying port ${newPort}...`);
-          server.listen(newPort, '0.0.0.0');
+          
+          // Try the next port
+          startServer(newPort);
         } else {
           console.error('Server error:', error);
           process.exit(1);

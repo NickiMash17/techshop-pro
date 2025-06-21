@@ -1,10 +1,97 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
+import { useCart } from '../../context/CartContext';
 
-const ProductCard = ({ product }) => {
+const ProductCard = ({ product, index = 0 }) => {
+  const { addToCart, isInCart, getItemQuantity } = useCart();
+  const isInUserCart = isInCart(product.id);
+  const cartQuantity = getItemQuantity(product.id);
+
+  const handleAddToCart = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    addToCart(product, 1);
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 50, scale: 0.9 },
+    visible: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1,
+      transition: {
+        duration: 0.6,
+        delay: index * 0.1,
+        ease: "easeOut"
+      }
+    },
+    hover: {
+      y: -10,
+      scale: 1.02,
+      transition: {
+        duration: 0.3,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const imageVariants = {
+    hover: {
+      scale: 1.1,
+      rotate: 2,
+      transition: {
+        duration: 0.6,
+        ease: "easeOut"
+      }
+    }
+  };
+
+  const buttonVariants = {
+    hover: {
+      scale: 1.05,
+      transition: {
+        duration: 0.2,
+        ease: "easeOut"
+      }
+    },
+    tap: {
+      scale: 0.95,
+      transition: {
+        duration: 0.1
+      }
+    }
+  };
+
+  const badgeVariants = {
+    hidden: { scale: 0, rotate: -180 },
+    visible: { 
+      scale: 1, 
+      rotate: 0,
+      transition: { 
+        delay: 0.3 + index * 0.1,
+        type: "spring",
+        damping: 15,
+        stiffness: 200
+      }
+    },
+    hover: {
+      scale: 1.1,
+      rotate: 5,
+      transition: { duration: 0.2 }
+    }
+  };
+
   return (
-    <div className="card-container">
+    <motion.div 
+      className="card-container"
+      variants={cardVariants}
+      initial="hidden"
+      animate="visible"
+      whileHover="hover"
+      layout
+    >
       <Link 
         to={`/products/${product.id}`} 
         className="block h-full group"
@@ -12,49 +99,171 @@ const ProductCard = ({ product }) => {
         <div className="card-wrapper">
           {/* Image Container */}
           <div className="card-image-wrapper">
-            <img
+            <motion.img
               src={product.image}
               alt={product.name}
               className="card-image"
+              variants={imageVariants}
+              whileHover="hover"
             />
             
             {/* Category Badge */}
             {product.category && (
-              <div className="absolute top-4 left-4 px-3 py-1 bg-primary/80 
-                           backdrop-blur-sm rounded-full text-xs font-medium z-10
-                           transform transition-all duration-300 
-                           group-hover:scale-110 group-hover:bg-primary">
+              <motion.div 
+                className="absolute top-4 left-4 badge-primary z-10"
+                variants={badgeVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover="hover"
+              >
                 {product.category}
-              </div>
+              </motion.div>
             )}
+
+            {/* Stock Badge */}
+            {product.stock !== undefined && (
+              <motion.div 
+                className={`absolute top-4 right-4 px-3 py-1 rounded-full text-xs font-medium z-10 backdrop-blur-sm ${
+                  product.stock > 0 
+                    ? 'badge-success' 
+                    : 'badge-error'
+                }`}
+                variants={badgeVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover="hover"
+              >
+                {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+              </motion.div>
+            )}
+
+            {/* Discount Badge */}
+            {product.originalPrice && product.originalPrice > product.price && (
+              <motion.div 
+                className="absolute bottom-4 left-4 badge-warning z-10"
+                variants={badgeVariants}
+                initial="hidden"
+                animate="visible"
+                whileHover="hover"
+              >
+                {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
+              </motion.div>
+            )}
+
+            {/* Quick View Overlay */}
+            <motion.div
+              className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+              initial={{ opacity: 0 }}
+              whileHover={{ opacity: 1 }}
+            >
+              <motion.div
+                className="bg-white/20 backdrop-blur-sm rounded-full p-3 text-white"
+                initial={{ scale: 0 }}
+                whileHover={{ scale: 1.1 }}
+                transition={{ delay: 0.1 }}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                </svg>
+              </motion.div>
+            </motion.div>
           </div>
 
           {/* Content Container */}
           <div className="card-content">
-            <h3 className="card-title">{product.name}</h3>
-            <p className="card-description">{product.description}</p>
+            <motion.h3 
+              className="card-title"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 + index * 0.1 }}
+            >
+              {product.name}
+            </motion.h3>
+            
+            <motion.p 
+              className="card-description"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.7 + index * 0.1 }}
+            >
+              {product.description}
+            </motion.p>
             
             {/* Price and Action */}
-            <div className="mt-auto flex items-center justify-between">
+            <motion.div 
+              className="mt-auto flex items-center justify-between"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.8 + index * 0.1 }}
+            >
               <div className="flex flex-col">
-                {product.originalPrice && (
-                  <span className="text-sm text-gray-500 line-through">
+                {product.originalPrice && product.originalPrice > product.price && (
+                  <motion.span 
+                    className="text-sm text-gray-500 line-through"
+                    initial={{ opacity: 0, x: -10 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.9 + index * 0.1 }}
+                  >
                     ${product.originalPrice}
-                  </span>
+                  </motion.span>
                 )}
-                <span className="text-xl font-bold text-white group-hover:text-primary transition-colors duration-300">
+                <motion.span 
+                  className="text-xl font-bold text-white group-hover:text-primary transition-all duration-300"
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ delay: 1 + index * 0.1 }}
+                >
                   ${product.price}
-                </span>
+                </motion.span>
               </div>
               
-              <button className="card-button">
-                Add to Cart
-              </button>
-            </div>
+              <div className="flex items-center gap-2">
+                {isInUserCart && (
+                  <motion.span 
+                    className="text-xs text-primary font-medium bg-primary/10 px-2 py-1 rounded-full"
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.9 + index * 0.1 }}
+                  >
+                    {cartQuantity} in cart
+                  </motion.span>
+                )}
+                <motion.button 
+                  onClick={handleAddToCart}
+                  disabled={product.stock === 0}
+                  className={`card-button ${
+                    product.stock === 0 
+                      ? 'opacity-50 cursor-not-allowed' 
+                      : ''
+                  }`}
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 1 + index * 0.1 }}
+                >
+                  {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+                </motion.button>
+              </div>
+            </motion.div>
           </div>
+
+          {/* Shine Effect Overlay */}
+          <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+            <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent transform -skew-x-12 -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
+          </div>
+
+          {/* Corner Accent */}
+          <motion.div
+            className="absolute top-0 right-0 w-0 h-0 border-l-[20px] border-l-transparent border-t-[20px] border-t-primary/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+            initial={{ scale: 0 }}
+            whileHover={{ scale: 1 }}
+          />
         </div>
       </Link>
-    </div>
+    </motion.div>
   );
 };
 
@@ -66,8 +275,10 @@ ProductCard.propTypes = {
     price: PropTypes.number.isRequired,
     originalPrice: PropTypes.number,
     image: PropTypes.string.isRequired,
-    category: PropTypes.string
-  }).isRequired
+    category: PropTypes.string,
+    stock: PropTypes.number
+  }).isRequired,
+  index: PropTypes.number
 };
 
 export default ProductCard;
