@@ -1,1 +1,7 @@
 {"level":"info","message":{"duration":"13.01ms","ip":"127.0.0.1","method":"GET","status":500,"url":"/api/health"},"timestamp":"2025-06-21T21:49:29.320Z"}
+{"level":"info","message":{"duration":"9.96ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/api/health"},"timestamp":"2025-06-22T21:21:53.763Z"}
+{"level":"info","message":{"duration":"16.63ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/api/health"},"timestamp":"2025-06-22T21:24:20.756Z"}
+{"level":"info","message":{"duration":"14.69ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/"},"timestamp":"2025-06-22T21:24:28.228Z"}
+{"level":"info","message":{"duration":"354.22ms","ip":"127.0.0.1","method":"POST","status":201,"url":"/register"},"timestamp":"2025-06-22T21:24:34.094Z"}
+{"level":"info","message":{"duration":"3.96ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/api/health"},"timestamp":"2025-06-22T21:26:15.665Z"}
+{"level":"info","message":{"duration":"4.83ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/"},"timestamp":"2025-06-22T21:26:15.680Z"}
