@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import { calculateSubtotal } from '../utils/cartUtils';
 import toast from 'react-hot-toast';
+import { formatCurrency } from '../utils/currency';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -339,7 +340,7 @@ const Checkout = () => {
                       <h4 className="font-medium text-sm">{item.name}</h4>
                       <p className="text-gray-400 text-sm">Qty: {item.quantity}</p>
                     </div>
-                    <span className="font-semibold">${(item.price * item.quantity).toFixed(2)}</span>
+                    <span className="font-semibold">{formatCurrency((item.price * item.quantity).toFixed(2))}</span>
                   </div>
                 ))}
               </div>
@@ -347,20 +348,20 @@ const Checkout = () => {
               <div className="border-t border-white/10 pt-4 space-y-3">
                 <div className="flex justify-between">
                   <span>Subtotal</span>
-                  <span>${subtotal.toFixed(2)}</span>
+                  <span>{formatCurrency(subtotal.toFixed(2))}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Shipping</span>
-                  <span>${shipping.toFixed(2)}</span>
+                  <span>{formatCurrency(shipping.toFixed(2))}</span>
                 </div>
                 <div className="flex justify-between">
                   <span>Tax</span>
-                  <span>${tax.toFixed(2)}</span>
+                  <span>{formatCurrency(tax.toFixed(2))}</span>
                 </div>
                 <div className="border-t border-white/10 pt-3">
                   <div className="flex justify-between font-bold text-lg">
                     <span>Total</span>
-                    <span>${total.toFixed(2)}</span>
+                    <span>{formatCurrency(total.toFixed(2))}</span>
                   </div>
                 </div>
               </div>
@@ -382,7 +383,7 @@ const Checkout = () => {
                       Processing...
                     </span>
                   ) : (
-                    `Place Order - $${total.toFixed(2)}`
+                    `Place Order - ${formatCurrency(total.toFixed(2))}`
                   )}
                 </button>
               </form>

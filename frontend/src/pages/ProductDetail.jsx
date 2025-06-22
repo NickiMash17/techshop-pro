@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
-import toast from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { useWishlist } from '../context/WishlistContext';
+import { toast } from 'react-hot-toast';
+import { formatCurrency } from '../utils/currency';
 import LazyImage from '../components/common/LazyImage';
 
 const MOCK_PRODUCTS = {
@@ -21,7 +22,9 @@ const MOCK_PRODUCTS = {
       { label: 'Connectivity', value: 'Bluetooth 5.0' },
       { label: 'Noise Cancellation', value: 'Active' }
     ],
-    stock: 10
+    stock: 10,
+    rating: 4.8,
+    reviews: 124
   },
   '2': {
     id: '2',
@@ -37,7 +40,9 @@ const MOCK_PRODUCTS = {
       { label: 'Water Resistance', value: '5ATM' },
       { label: 'Health Sensors', value: 'Heart Rate, SpO2' }
     ],
-    stock: 8
+    stock: 8,
+    rating: 4.6,
+    reviews: 89
   },
   '3': {
     id: '3',
@@ -52,7 +57,9 @@ const MOCK_PRODUCTS = {
       { label: 'Battery Life', value: '70 hours' },
       { label: 'Response Time', value: '1ms' }
     ],
-    stock: 15
+    stock: 15,
+    rating: 4.9,
+    reviews: 203
   },
   '4': {
     id: '4',
@@ -67,7 +74,9 @@ const MOCK_PRODUCTS = {
       { label: 'Frame Rate', value: '60 FPS' },
       { label: 'Field of View', value: '90°' }
     ],
-    stock: 12
+    stock: 12,
+    rating: 4.7,
+    reviews: 156
   }
 };
 
@@ -150,9 +159,9 @@ const ProductDetail = () => {
 
             {/* Price */}
             <div className="flex items-center gap-4">
-              <span className="text-3xl font-bold text-primary">${product.price}</span>
+              <span className="text-3xl font-bold text-primary">{formatCurrency(product.price)}</span>
               {product.originalPrice && (
-                <span className="text-xl text-gray-500 line-through">${product.originalPrice}</span>
+                <span className="text-xl text-gray-500 line-through">{formatCurrency(product.originalPrice)}</span>
               )}
             </div>
 

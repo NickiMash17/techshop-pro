@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import LazyImage from '../common/LazyImage';
+import { formatCurrency } from '../../utils/currency';
 
 const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
   const { addToCart, isInCart, getItemQuantity } = useCart();
@@ -195,28 +196,27 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
             )}
 
             {/* Price */}
-            <div className="flex items-center space-x-3 mb-4">
-              {product.originalPrice && product.originalPrice > product.price && (
-                <span className="text-lg text-gray-500 line-through">
-                  ${product.originalPrice}
+            <div className="flex items-center justify-between mb-4">
+              <div className="flex items-center gap-2">
+                {product.originalPrice && (
+                  <span className="text-sm text-gray-500 line-through">
+                    {formatCurrency(product.originalPrice)}
+                  </span>
+                )}
+                <span className="text-lg font-bold text-primary">
+                  {formatCurrency(product.price)}
                 </span>
-              )}
-              <span className="text-2xl font-bold text-white">
-                ${product.price}
-              </span>
-              {product.originalPrice && product.originalPrice > product.price && (
-                <span className="badge-warning text-xs">
-                  {Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)}% OFF
-                </span>
-              )}
-            </div>
-
-            {/* Stock Status */}
-            {product.stock !== undefined && (
-              <div className="text-sm text-gray-400 mb-4">
+              </div>
+              
+              {/* Stock Status */}
+              <div className={`text-xs px-2 py-1 rounded-full ${
+                product.stock > 0 
+                  ? 'bg-green-500/20 text-green-400' 
+                  : 'bg-red-500/20 text-red-400'
+              }`}>
                 {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
               </div>
-            )}
+            </div>
           </div>
 
           {/* Action */}
@@ -416,23 +416,23 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
               transition={{ delay: 0.8 + index * 0.1 }}
             >
               <div className="flex flex-col">
-                {product.originalPrice && product.originalPrice > product.price && (
+                {product.originalPrice && (
                   <motion.span 
                     className="text-sm text-gray-500 line-through"
                     initial={{ opacity: 0, x: -10 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.9 + index * 0.1 }}
                   >
-                    ${product.originalPrice}
+                    {formatCurrency(product.originalPrice)}
                   </motion.span>
                 )}
                 <motion.span 
-                  className="text-xl font-bold text-white group-hover:text-primary transition-all duration-300"
+                  className="text-xl font-bold text-primary group-hover:text-primary transition-all duration-300"
                   initial={{ opacity: 0, x: -10 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: 1 + index * 0.1 }}
                 >
-                  ${product.price}
+                  {formatCurrency(product.price)}
                 </motion.span>
               </div>
               

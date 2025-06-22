@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useWishlist } from '../context/WishlistContext';
 import { useCart } from '../context/CartContext';
 import LazyImage from '../components/common/LazyImage';
+import { formatCurrency } from '../utils/currency';
 
 const Wishlist = () => {
   const { wishlistItems, removeFromWishlist, clearWishlist, moveToCart } = useWishlist();
@@ -121,11 +122,11 @@ const Wishlist = () => {
                 <div className="flex items-center space-x-2 mb-4">
                   {item.originalPrice && item.originalPrice > item.price && (
                     <span className="text-sm text-gray-500 line-through">
-                      ${item.originalPrice}
+                      {formatCurrency(item.originalPrice)}
                     </span>
                   )}
-                  <span className="text-lg font-bold text-white">
-                    ${item.price}
+                  <span className="text-lg font-bold text-primary">
+                    {formatCurrency(item.price)}
                   </span>
                 </div>
 

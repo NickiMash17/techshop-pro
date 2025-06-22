@@ -6,6 +6,7 @@ import CountdownTimer from '../components/common/CountdownTimer';
 import HeroSection from '../components/common/HeroSection';
 import FeaturesShowcase from '../components/common/FeaturesShowcase';
 import TestimonialsSection from '../components/common/TestimonialsSection';
+import { formatCurrency } from '../utils/currency';
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -365,12 +366,14 @@ const Home = () => {
                   <div className="p-8">
                     <h3 className="text-2xl font-semibold text-white mb-4">{deal.name}</h3>
                     <div className="flex items-baseline space-x-4 mb-6">
-                      <span className="text-3xl font-bold text-primary">
-                        ${deal.price}
+                      <span className="text-2xl font-bold text-primary">
+                        {formatCurrency(deal.price)}
                       </span>
-                      <span className="text-xl text-gray-400 line-through">
-                        ${deal.originalPrice}
-                      </span>
+                      {deal.originalPrice && (
+                        <span className="text-lg text-gray-500 line-through">
+                          {formatCurrency(deal.originalPrice)}
+                        </span>
+                      )}
                       <span className="text-sm text-green-500 bg-green-500/10 px-3 py-1 rounded-full">
                         {Math.round((1 - deal.price / deal.originalPrice) * 100)}% OFF
                       </span>

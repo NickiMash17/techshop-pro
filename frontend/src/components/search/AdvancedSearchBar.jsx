@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useDebounce from '../../hooks/useDebounce';
+import { formatCurrency } from '../../utils/currency';
 
 const AdvancedSearchBar = ({
   products = [],
@@ -169,6 +170,11 @@ const AdvancedSearchBar = ({
       return;
     }
     
+    // Prevent multiple instances
+    if (isListening) {
+      return;
+    }
+    
     setIsListening(true);
     setShowVoiceSearch(true);
     
@@ -184,18 +190,38 @@ const AdvancedSearchBar = ({
       setQuery(transcript);
       if (onSearch) onSearch(transcript);
       setIsListening(false);
+      setShowVoiceSearch(false);
     };
     
-    recognition.onerror = () => {
+    recognition.onerror = (event) => {
+      console.error('Speech recognition error:', event.error);
       setIsListening(false);
+      setShowVoiceSearch(false);
+      
+      // Show user-friendly error message
+      if (event.error === 'not-allowed') {
+        alert('Please allow microphone access to use voice search');
+      } else if (event.error === 'no-speech') {
+        alert('No speech detected. Please try again.');
+      } else {
+        alert('Voice search error. Please try again.');
+      }
     };
     
     recognition.onend = () => {
       setIsListening(false);
+      setShowVoiceSearch(false);
     };
     
-    recognition.start();
-  }, [onSearch]);
+    try {
+      recognition.start();
+    } catch (error) {
+      console.error('Failed to start speech recognition:', error);
+      setIsListening(false);
+      setShowVoiceSearch(false);
+      alert('Failed to start voice search. Please try again.');
+    }
+  }, [isListening, onSearch]);
   
   // Clear search
   const clearSearch = useCallback(() => {
@@ -227,7 +253,7 @@ const AdvancedSearchBar = ({
           placeholder={placeholder}
           className="w-full px-4 py-3 pl-12 pr-20 bg-surface/50 backdrop-blur-sm rounded-xl 
                      focus:outline-none focus:ring-2 focus:ring-primary border border-white/10
-                     text-white placeholder:text-gray-400 transition-all duration-300"
+                     text-white placeholder:text-gray-400 transition-all duration-300 prevent-zoom"
         />
         
         {/* Search Icon */}
@@ -244,15 +270,19 @@ const AdvancedSearchBar = ({
         <button
           onClick={startVoiceSearch}
           disabled={isListening}
-          className={`absolute right-12 top-1/2 -translate-y-1/2 p-2 rounded-lg transition-all duration-300
+          className={`absolute right-12 top-1/2 -translate-y-1/2 p-2 rounded-lg transition-all duration-300 touch-target
                      ${isListening 
-                       ? 'bg-red-500/20 text-red-400 animate-pulse' 
+                       ? 'bg-red-500/20 text-red-400 animate-pulse shadow-lg shadow-red-500/25' 
                        : 'text-gray-400 hover:text-primary hover:bg-primary/20'
                      }`}
+          title={isListening ? 'Listening... Click to stop' : 'Voice search'}
         >
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
           </svg>
+          {isListening && (
+            <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-400 rounded-full animate-ping"></div>
+          )}
         </button>
         
         {/* Clear Button */}
@@ -335,7 +365,7 @@ const AdvancedSearchBar = ({
                     {/* Price for products */}
                     {suggestion.type === 'product' && (
                       <div className="text-sm font-medium text-primary">
-                        ${suggestion.data.price}
+                        {formatCurrency(suggestion.data.price)}
                       </div>
                     )}
                   </motion.div>

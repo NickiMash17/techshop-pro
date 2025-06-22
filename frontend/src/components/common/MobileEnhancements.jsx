@@ -78,25 +78,11 @@ const MobileEnhancements = () => {
       }
     };
 
-    // Optimize images for mobile
+    // Optimize images for mobile - DISABLED to prevent infinite loops
     const optimizeImages = () => {
-      try {
-        const images = document.querySelectorAll('img');
-        images.forEach(img => {
-          // Add loading="lazy" for better performance
-          if (!img.loading) {
-            img.loading = 'lazy';
-          }
-          
-          // Add error handling
-          img.addEventListener('error', () => {
-            img.src = '/placeholder-image.jpg';
-            img.alt = 'Image not available';
-          });
-        });
-      } catch (error) {
-        console.warn('Error in optimizeImages:', error);
-      }
+      // Temporarily disabled to prevent infinite loops
+      // This function was causing placeholder image errors
+      return;
     };
 
     // Handle orientation changes

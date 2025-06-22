@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { formatCurrency } from '../../utils/currency';
 
 const AdvancedFilters = ({
   products = [],
@@ -150,8 +151,8 @@ const AdvancedFilters = ({
               <h3 className="text-lg font-semibold text-white">Price Range</h3>
               <div className="space-y-4">
                 <div className="flex items-center justify-between text-sm text-gray-400">
-                  <span>${filters.priceRange[0]}</span>
-                  <span>${filters.priceRange[1]}</span>
+                  <span>{formatCurrency(filters.priceRange[0])}</span>
+                  <span>{formatCurrency(filters.priceRange[1])}</span>
                 </div>
                 <div className="relative">
                   <input

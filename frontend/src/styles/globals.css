@@ -43,7 +43,7 @@ html {
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden;
+  /* Remove overflow-x hidden to allow horizontal scrolling on mobile when needed */
   -webkit-overflow-scrolling: touch;
 }
 
@@ -174,6 +174,20 @@ body {
     min-height: 48px;
     display: flex;
     align-items: center;
+  }
+
+  /* Enhanced mobile menu styles */
+  .mobile-menu-item {
+    @apply flex items-center justify-between px-4 py-3 text-sm hover:bg-slate-700/50 transition-all duration-200 rounded-lg;
+    min-height: 48px;
+  }
+
+  .mobile-menu-badge {
+    @apply bg-primary text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center;
+  }
+
+  .mobile-menu-badge-red {
+    @apply bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center;
   }
 
   /* Enhanced button styles with better touch support */
@@ -981,6 +995,37 @@ body {
 
   .safe-area-right {
     padding-right: env(safe-area-inset-right);
+  }
+
+  /* Enhanced mobile scrolling */
+  .mobile-scroll-container {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    overscroll-behavior: contain;
+  }
+
+  .mobile-scroll-horizontal {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+  }
+
+  .mobile-scroll-vertical {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: y proximity;
+  }
+
+  /* Mobile scroll snap items */
+  .scroll-snap-item {
+    scroll-snap-align: start;
+  }
+
+  /* Prevent zoom on input focus for iOS */
+  .prevent-zoom {
+    font-size: 16px;
   }
 
   /* --- Enhanced Product List & Filters --- */

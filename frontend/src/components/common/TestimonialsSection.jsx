@@ -10,7 +10,7 @@ const TestimonialsSection = () => {
       id: 1,
       name: "Sarah Johnson",
       role: "Tech Enthusiast",
-      avatar: "https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150",
+      avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150",
       rating: 5,
       review: "TechShop Pro has completely transformed my tech shopping experience. The lightning-fast delivery and exceptional customer service are unmatched. I've never been disappointed with any purchase!",
       product: "Premium Wireless Headphones",

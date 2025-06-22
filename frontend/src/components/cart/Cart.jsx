@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import toast from 'react-hot-toast';
+import { formatCurrency } from '../../utils/currency';
 
 const Cart = () => {
   const { cartItems, removeFromCart, updateQuantity } = useCart();
@@ -55,7 +56,7 @@ const Cart = () => {
                 />
                 <div className="flex-1">
                   <h3 className="font-semibold text-white">{item.name}</h3>
-                  <p className="text-sm text-gray-400">${item.price.toFixed(2)}</p>
+                  <p className="text-sm text-gray-400">{formatCurrency(item.price.toFixed(2))}</p>
                   <div className="flex items-center gap-2 mt-2">
                     <button
                       onClick={() => {
@@ -99,7 +100,7 @@ const Cart = () => {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className="font-semibold text-white">${(item.price * item.quantity).toFixed(2)}</p>
+                  <p className="font-semibold text-white">{formatCurrency((item.price * item.quantity).toFixed(2))}</p>
                   <button
                     onClick={() => {
                       removeFromCart(item.id);
@@ -129,7 +130,7 @@ const Cart = () => {
               <div className="space-y-3">
                 <div className="flex justify-between text-white">
                   <span>Subtotal</span>
-                  <span>${calculateSubtotal().toFixed(2)}</span>
+                  <span>{formatCurrency(calculateSubtotal().toFixed(2))}</span>
                 </div>
                 <div className="flex justify-between text-sm text-gray-400">
                   <span>Shipping</span>
@@ -138,7 +139,7 @@ const Cart = () => {
                 <div className="border-t border-gray-700 my-4"></div>
                 <div className="flex justify-between font-bold text-white">
                   <span>Total</span>
-                  <span>${calculateSubtotal().toFixed(2)}</span>
+                  <span>{formatCurrency(calculateSubtotal().toFixed(2))}</span>
                 </div>
               </div>
               <button

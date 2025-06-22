@@ -19,17 +19,17 @@ const Header = () => {
   };
 
   return (
-    <header role="banner" className="sticky top-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10">
+    <header role="banner" className="sticky top-0 z-50 bg-surface/80 backdrop-blur-xl border-b border-white/10 safe-area-top">
       <div className="container-responsive">
         <nav role="navigation" className="flex items-center justify-between h-16 sm:h-20">
           {/* Logo */}
-          <Link to="/" className="text-xl sm:text-2xl font-bold text-primary hover:text-primary/90 transition-colors duration-200">
+          <Link to="/" className="text-lg sm:text-xl lg:text-2xl font-bold text-primary hover:text-primary/90 transition-colors duration-200 touch-target">
             TechShop Pro
           </Link>
 
-          <div className="flex items-center space-x-2 sm:space-x-4 md:space-x-8">
+          <div className="flex items-center space-x-1 sm:space-x-2 md:space-x-4 lg:space-x-8">
             {/* Desktop Navigation */}
-            <div className="hidden md:flex items-center space-x-8">
+            <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
               <Link to="/" className="nav-link">Home</Link>
               <Link to="/products" className="nav-link">Products</Link>
               {user?.isAdmin && (
@@ -95,10 +95,10 @@ const Header = () => {
             {user ? (
               <div className="relative group">
                 <button 
-                  className="flex items-center space-x-2 p-2 sm:p-3 rounded-lg hover:bg-slate-800 transition-colors duration-200 touch-target"
+                  className="flex items-center space-x-1 sm:space-x-2 p-2 sm:p-3 rounded-lg hover:bg-slate-800 transition-colors duration-200 touch-target"
                   aria-label="User menu"
                 >
-                  <div className="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
+                  <div className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8 bg-gradient-to-br from-primary to-secondary rounded-full flex items-center justify-center">
                     <span className="text-white text-xs sm:text-sm font-semibold">
                       {user.name?.charAt(0).toUpperCase()}
                     </span>
@@ -126,7 +126,7 @@ const Header = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex items-center space-x-2">
+              <div className="hidden sm:flex items-center space-x-2">
                 <Link to="/login" className="px-3 py-2 text-sm hover:text-primary transition-colors duration-200 touch-target">
                   Login
                 </Link>
@@ -156,37 +156,73 @@ const Header = () => {
 
       {/* Mobile Menu */}
       {isMenuOpen && (
-        <div className="md:hidden border-t border-slate-700 bg-surface/95 backdrop-blur-xl">
+        <div className="md:hidden border-t border-slate-700 bg-surface/95 backdrop-blur-xl safe-area-bottom">
           <div className="container-responsive py-4">
-            <div className="flex flex-col space-y-1">
+            <div className="flex flex-col space-y-2">
               <Link 
                 to="/" 
-                className="nav-link-mobile" 
+                className="mobile-menu-item" 
                 onClick={() => setIsMenuOpen(false)}
               >
-                Home
+                <span>Home</span>
+                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
               <Link 
                 to="/products" 
-                className="nav-link-mobile" 
+                className="mobile-menu-item" 
                 onClick={() => setIsMenuOpen(false)}
               >
-                Products
+                <span>Products</span>
+                <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                </svg>
               </Link>
               <Link 
                 to="/wishlist" 
-                className="nav-link-mobile" 
+                className="mobile-menu-item" 
                 onClick={() => setIsMenuOpen(false)}
               >
-                Wishlist {wishlistCount > 0 && `(${wishlistCount})`}
+                <span>Wishlist</span>
+                <div className="flex items-center space-x-2">
+                  {wishlistCount > 0 && (
+                    <span className="mobile-menu-badge-red">
+                      {wishlistCount > 99 ? '99+' : wishlistCount}
+                    </span>
+                  )}
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </Link>
+              <Link 
+                to="/cart" 
+                className="mobile-menu-item" 
+                onClick={() => setIsMenuOpen(false)}
+              >
+                <span>Cart</span>
+                <div className="flex items-center space-x-2">
+                  {cartCount > 0 && (
+                    <span className="mobile-menu-badge">
+                      {cartCount > 99 ? '99+' : cartCount}
+                    </span>
+                  )}
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
               </Link>
               {user?.isAdmin && (
                 <Link 
                   to="/admin" 
-                  className="nav-link-mobile" 
+                  className="mobile-menu-item" 
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Admin
+                  <span>Admin</span>
+                  <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </Link>
               )}
               {!user && (
@@ -194,18 +230,61 @@ const Header = () => {
                   <hr className="my-2 border-slate-700" />
                   <Link 
                     to="/login" 
-                    className="nav-link-mobile" 
+                    className="mobile-menu-item" 
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Login
+                    <span>Login</span>
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </Link>
                   <Link 
                     to="/register" 
-                    className="nav-link-mobile bg-gradient-to-r from-primary to-secondary text-white" 
+                    className="mobile-menu-item bg-gradient-to-r from-primary to-secondary text-white" 
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Sign Up
+                    <span>Sign Up</span>
+                    <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </Link>
+                </>
+              )}
+              {user && (
+                <>
+                  <hr className="my-2 border-slate-700" />
+                  <Link 
+                    to="/profile" 
+                    className="mobile-menu-item" 
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <span>Profile</span>
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                  <Link 
+                    to="/orders" 
+                    className="mobile-menu-item" 
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <span>Orders</span>
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="mobile-menu-item text-left w-full"
+                  >
+                    <span>Logout</span>
+                    <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
                 </>
               )}
             </div>

@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { formatCurrency } from '../../utils/currency';
 
 const ProductsTab = () => {
   const [products] = useState([
@@ -49,7 +51,9 @@ const ProductsTab = () => {
             {products.map((product) => (
               <tr key={product.id} className="hover:bg-surface/50">
                 <td className="p-4">{product.name}</td>
-                <td className="p-4">${product.price}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-white">
+                  {formatCurrency(product.price)}
+                </td>
                 <td className="p-4">{product.stock}</td>
                 <td className="p-4">
                   <span className={`px-2 py-1 rounded-full text-xs 

@@ -1,354 +1,17 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useSearchParams } from 'react-router-dom';
 import ProductCard from '../components/products/ProductCard';
 import VirtualProductGrid from '../components/products/VirtualProductGrid';
 import ProductComparison from '../components/products/ProductComparison';
 import PerformanceMonitor from '../components/common/PerformanceMonitor';
 import AdvancedSearchBar from '../components/search/AdvancedSearchBar';
 import AdvancedFilters from '../components/filters/AdvancedFilters';
+import { MOCK_PRODUCTS } from '../utils/productData';
 import { toast } from 'react-hot-toast';
 
-const MOCK_PRODUCTS = [
-  {
-    id: '1',
-    name: 'Premium Wireless Headphones',
-    description: 'High-quality sound with noise cancellation',
-    price: 199.99,
-    originalPrice: 249.99,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
-    category: 'Audio',
-    stock: 15,
-    rating: 4.8,
-    reviews: 124
-  },
-  {
-    id: '2',
-    name: 'Smart Watch Pro',
-    description: 'Track your fitness and stay connected',
-    price: 299.99,
-    originalPrice: 349.99,
-    image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500',
-    category: 'Wearables',
-    stock: 8,
-    rating: 4.6,
-    reviews: 89
-  },
-  {
-    id: '3',
-    name: 'Wireless Gaming Mouse',
-    description: 'Precision control for professional gaming',
-    price: 79.99,
-    image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=500',
-    category: 'Gaming',
-    stock: 25,
-    rating: 4.9,
-    reviews: 203
-  },
-  {
-    id: '4',
-    name: 'Ultra HD Webcam',
-    description: 'Crystal clear video calls and streaming',
-    price: 129.99,
-    originalPrice: 159.99,
-    image: 'https://images.unsplash.com/photo-1587302912306-cf1ed9c33146?w=500',
-    category: 'Video',
-    stock: 12,
-    rating: 4.7,
-    reviews: 156
-  },
-  {
-    id: '5',
-    name: 'Mechanical Keyboard',
-    description: 'Premium typing experience with RGB lighting',
-    price: 149.99,
-    image: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=500',
-    category: 'Accessories',
-    stock: 20,
-    rating: 4.5,
-    reviews: 98
-  },
-  {
-    id: '6',
-    name: 'Wireless Earbuds',
-    description: 'True wireless earbuds with active noise cancellation',
-    price: 89.99,
-    originalPrice: 119.99,
-    image: 'https://images.unsplash.com/photo-1577174881658-0f30ed549adc?w=500',
-    category: 'Audio',
-    stock: 30,
-    rating: 4.4,
-    reviews: 167
-  },
-  {
-    id: '7',
-    name: 'Portable SSD',
-    description: 'Ultra-fast external storage for your data',
-    price: 199.99,
-    image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500&auto=format&fit=crop&q=80',
-    category: 'Storage',
-    stock: 18,
-    rating: 4.8,
-    reviews: 134
-  },
-  {
-    id: '8',
-    name: 'Gaming Headset',
-    description: 'Immersive gaming audio with microphone',
-    price: 119.99,
-    originalPrice: 149.99,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
-    category: 'Gaming',
-    stock: 22,
-    rating: 4.6,
-    reviews: 112
-  },
-  {
-    id: '9',
-    name: '4K Monitor',
-    description: 'Ultra-high definition display for professionals',
-    price: 399.99,
-    originalPrice: 499.99,
-    image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500',
-    category: 'Displays',
-    stock: 10,
-    rating: 4.9,
-    reviews: 78
-  },
-  {
-    id: '10',
-    name: 'Wireless Charger',
-    description: 'Fast wireless charging for all devices',
-    price: 49.99,
-    image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500',
-    category: 'Accessories',
-    stock: 35,
-    rating: 4.3,
-    reviews: 89
-  },
-  // Additional products for virtual scrolling demo
-  {
-    id: '11',
-    name: 'Bluetooth Speaker',
-    description: 'Portable speaker with 360-degree sound',
-    price: 79.99,
-    image: 'https://images.unsplash.com/photo-1608043152269-423dbba4e7e1?w=500',
-    category: 'Audio',
-    stock: 28,
-    rating: 4.5,
-    reviews: 156
-  },
-  {
-    id: '12',
-    name: 'Fitness Tracker',
-    description: 'Monitor your health and activity levels',
-    price: 89.99,
-    image: 'https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=500',
-    category: 'Wearables',
-    stock: 42,
-    rating: 4.4,
-    reviews: 203
-  },
-  {
-    id: '13',
-    name: 'Gaming Controller',
-    description: 'Ergonomic controller for console gaming',
-    price: 59.99,
-    image: 'https://images.unsplash.com/photo-1592840496694-26d035b52b48?w=500',
-    category: 'Gaming',
-    stock: 31,
-    rating: 4.7,
-    reviews: 178
-  },
-  {
-    id: '14',
-    name: 'USB-C Hub',
-    description: 'Expand your connectivity options',
-    price: 39.99,
-    image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500',
-    category: 'Accessories',
-    stock: 55,
-    rating: 4.2,
-    reviews: 92
-  },
-  {
-    id: '15',
-    name: 'External Hard Drive',
-    description: 'Reliable storage for your important files',
-    price: 89.99,
-    image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500',
-    category: 'Storage',
-    stock: 24,
-    rating: 4.6,
-    reviews: 145
-  },
-  {
-    id: '16',
-    name: 'Curved Gaming Monitor',
-    description: 'Immersive gaming experience with curved display',
-    price: 299.99,
-    image: 'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500',
-    category: 'Displays',
-    stock: 16,
-    rating: 4.8,
-    reviews: 87
-  },
-  {
-    id: '17',
-    name: 'Wireless Keyboard',
-    description: 'Slim and responsive wireless keyboard',
-    price: 69.99,
-    image: 'https://images.unsplash.com/photo-1541140532154-b024d705b90a?w=500',
-    category: 'Accessories',
-    stock: 38,
-    rating: 4.3,
-    reviews: 134
-  },
-  {
-    id: '18',
-    name: 'Studio Headphones',
-    description: 'Professional-grade audio monitoring',
-    price: 249.99,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
-    category: 'Audio',
-    stock: 12,
-    rating: 4.9,
-    reviews: 67
-  },
-  {
-    id: '19',
-    name: 'Smart Ring',
-    description: 'Discrete health and activity tracking',
-    price: 199.99,
-    image: 'https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=500',
-    category: 'Wearables',
-    stock: 8,
-    rating: 4.5,
-    reviews: 43
-  },
-  {
-    id: '20',
-    name: 'Gaming Mouse Pad',
-    description: 'Large surface for precise mouse control',
-    price: 29.99,
-    image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=500',
-    category: 'Gaming',
-    stock: 67,
-    rating: 4.1,
-    reviews: 89
-  },
-  {
-    id: '21',
-    name: 'Laptop Stand',
-    description: 'Ergonomic laptop positioning',
-    price: 49.99,
-    image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500',
-    category: 'Accessories',
-    stock: 45,
-    rating: 4.4,
-    reviews: 112
-  },
-  {
-    id: '22',
-    name: 'Microphone',
-    description: 'Professional streaming and recording',
-    price: 129.99,
-    image: 'https://images.unsplash.com/photo-1587302912306-cf1ed9c33146?w=500',
-    category: 'Audio',
-    stock: 19,
-    rating: 4.7,
-    reviews: 156
-  },
-  {
-    id: '23',
-    name: 'Gaming Chair',
-    description: 'Comfortable seating for long gaming sessions',
-    price: 199.99,
-    image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500',
-    category: 'Gaming',
-    stock: 14,
-    rating: 4.6,
-    reviews: 78
-  },
-  {
-    id: '24',
-    name: 'Tablet Stand',
-    description: 'Adjustable stand for tablets and phones',
-    price: 34.99,
-    image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500',
-    category: 'Accessories',
-    stock: 52,
-    rating: 4.2,
-    reviews: 95
-  },
-  {
-    id: '25',
-    name: 'Wireless Presenter',
-    description: 'Control presentations from anywhere',
-    price: 39.99,
-    image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500',
-    category: 'Accessories',
-    stock: 29,
-    rating: 4.3,
-    reviews: 67
-  },
-  {
-    id: '26',
-    name: 'Gaming Glasses',
-    description: 'Reduce eye strain during gaming',
-    price: 79.99,
-    image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500',
-    category: 'Gaming',
-    stock: 23,
-    rating: 4.4,
-    reviews: 89
-  },
-  {
-    id: '27',
-    name: 'USB Microphone',
-    description: 'Plug-and-play audio recording',
-    price: 89.99,
-    image: 'https://images.unsplash.com/photo-1587302912306-cf1ed9c33146?w=500',
-    category: 'Audio',
-    stock: 36,
-    rating: 4.5,
-    reviews: 123
-  },
-  {
-    id: '28',
-    name: 'Smart Scale',
-    description: 'Track your weight and body composition',
-    price: 149.99,
-    image: 'https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?w=500',
-    category: 'Wearables',
-    stock: 18,
-    rating: 4.6,
-    reviews: 234
-  },
-  {
-    id: '29',
-    name: 'Gaming Desk',
-    description: 'Spacious desk for gaming setup',
-    price: 299.99,
-    image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500',
-    category: 'Gaming',
-    stock: 9,
-    rating: 4.8,
-    reviews: 45
-  },
-  {
-    id: '30',
-    name: 'Cable Organizer',
-    description: 'Keep your cables neat and organized',
-    price: 19.99,
-    image: 'https://images.unsplash.com/photo-1586953208448-b95a79798f07?w=500',
-    category: 'Accessories',
-    stock: 78,
-    rating: 4.1,
-    reviews: 156
-  }
-];
-
 const Products = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
@@ -372,6 +35,38 @@ const Products = () => {
     scrollPercentage: 0,
     isScrolledToBottom: false
   });
+
+  // Handle URL parameters on component mount and URL changes
+  useEffect(() => {
+    const category = searchParams.get('category');
+    const search = searchParams.get('search');
+    
+    if (category) {
+      setFilters(prev => ({
+        ...prev,
+        categories: [category]
+      }));
+    }
+    
+    if (search) {
+      setSearchQuery(search);
+    }
+  }, [searchParams]);
+
+  // Update URL when filters or search change
+  useEffect(() => {
+    const newSearchParams = new URLSearchParams();
+    
+    if (filters.categories.length > 0) {
+      newSearchParams.set('category', filters.categories[0]);
+    }
+    
+    if (searchQuery) {
+      newSearchParams.set('search', searchQuery);
+    }
+    
+    setSearchParams(newSearchParams, { replace: true });
+  }, [filters.categories, searchQuery, setSearchParams]);
 
   useEffect(() => {
     // Simulate API call with mock data
@@ -522,7 +217,7 @@ const Products = () => {
   }
 
   return (
-    <div className="container-responsive section-padding">
+    <div className="container-responsive section-padding mobile-scroll-container">
       <div className="space-y-8">
         {/* Header Section */}
         <motion.div
@@ -548,7 +243,7 @@ const Products = () => {
             {selectedForComparison.length > 0 && (
               <button
                 onClick={openComparison}
-                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
+                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 touch-target"
               >
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
@@ -559,7 +254,7 @@ const Products = () => {
             
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-lg transition-colors ${
+              className={`p-2 rounded-lg transition-colors touch-target ${
                 viewMode === 'grid' 
                   ? 'bg-primary text-white' 
                   : 'bg-surface/50 text-gray-400 hover:text-white'
@@ -571,7 +266,7 @@ const Products = () => {
             </button>
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2 rounded-lg transition-colors ${
+              className={`p-2 rounded-lg transition-colors touch-target ${
                 viewMode === 'list' 
                   ? 'bg-primary text-white' 
                   : 'bg-surface/50 text-gray-400 hover:text-white'
@@ -618,7 +313,7 @@ const Products = () => {
                 containerHeight={600}
                 itemsPerRow={4}
                 itemHeight={450}
-                className="min-h-[600px]"
+                className="min-h-[600px] mobile-scroll-vertical"
               />
             ) : (
               // Regular grid/list for smaller lists
@@ -629,8 +324,8 @@ const Products = () => {
                 animate="visible"
                 className={
                   viewMode === 'grid'
-                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
-                    : "space-y-4"
+                    ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mobile-scroll-vertical"
+                    : "space-y-4 mobile-scroll-vertical"
                 }
               >
                 {filteredAndSortedProducts.map((product, index) => (

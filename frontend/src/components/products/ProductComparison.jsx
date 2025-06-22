@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import toast from 'react-hot-toast';
 import LazyImage from '../common/LazyImage';
+import { formatCurrency } from '../../utils/currency';
 
 const ProductComparison = ({ isOpen, onClose, products = [] }) => {
   const { addToCart } = useCart();
@@ -195,13 +196,13 @@ const ProductComparison = ({ isOpen, onClose, products = [] }) => {
 
                         {/* Price */}
                         <div className="flex items-center space-x-2 mb-3">
-                          {product.originalPrice && product.originalPrice > product.price && (
+                          {product.originalPrice && (
                             <span className="text-sm text-gray-500 line-through">
-                              ${product.originalPrice}
+                              {formatCurrency(product.originalPrice)}
                             </span>
                           )}
-                          <span className="text-lg font-bold text-white">
-                            ${product.price}
+                          <span className="text-lg font-bold text-primary">
+                            {formatCurrency(product.price)}
                           </span>
                         </div>
 
