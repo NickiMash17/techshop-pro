@@ -61,7 +61,7 @@ A modern, responsive e-commerce platform built with React, featuring cutting-edg
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/techshop-pro.git
+   git clone https://github.com/NickiMash17/techshop-pro.git
    cd techshop-pro
    ```
 
@@ -202,7 +202,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Developed with ❤️ by Nicolette Mashaba**
 
-- **GitHub**: [@nicolette-mashaba](https://github.com/nicolette-mashaba)
+- **GitHub**: [@nicolette-mashaba](https://github.com/NickiMash17)
 - **Portfolio**: [Your Portfolio URL]
 - **LinkedIn**: [Your LinkedIn]
 
@@ -218,8 +218,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 If you have any questions or need support:
 - **Email**: your.email@example.com
-- **Issues**: [GitHub Issues](https://github.com/yourusername/techshop-pro/issues)
-- **Documentation**: [Project Wiki](https://github.com/yourusername/techshop-pro/wiki)
+- **Issues**: [GitHub Issues](https://github.com/NickiMash17/techshop-pro/issues)
+- **Documentation**: [Project Wiki](https://github.com/NickiMash17/techshop-pro/wiki)
 
 ---
 
