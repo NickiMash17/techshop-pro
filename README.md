@@ -229,32 +229,45 @@ npm run e2e          # Run end-to-end tests
 ## 📁 **Project Architecture**
 
 ```
-frontend/
-├── 📂 public/                  # Static assets
-│   ├── 🖼️ images/             # Optimized images
-│   ├── 🎨 icons/              # Icon assets
-│   └── 📄 manifest.json       # PWA manifest
-├── 📂 src/
-│   ├── 📂 components/          # Reusable UI components
-│   │   ├── 📂 ui/             # Base UI components
-│   │   ├── 📂 forms/          # Form components
-│   │   ├── 📂 layout/         # Layout components
-│   │   └── 📂 features/       # Feature-specific components
-│   ├── 📂 pages/              # Route-based page components
-│   ├── 📂 hooks/              # Custom React hooks
-│   ├── 📂 context/            # React context providers
-│   ├── 📂 services/           # API and external services
-│   ├── 📂 utils/              # Utility functions
-│   ├── 📂 styles/             # Global styles and themes
-│   ├── 📂 types/              # TypeScript type definitions
-│   └── 📂 __tests__/          # Test files
-├── 📂 docs/                   # Project documentation
-└── 📋 Configuration Files
-    ├── vite.config.ts         # Vite configuration
-    ├── tailwind.config.js     # Tailwind CSS config
-    ├── tsconfig.json          # TypeScript config
-    └── vitest.config.ts       # Testing configuration
+techshop-pro/
+├── 📂 frontend/               # React frontend application
+│   ├── 📂 public/            # Static assets
+│   ├── 📂 src/               # Source code
+│   ├── 📂 components/        # React components
+│   ├── 📂 pages/             # Page components
+│   ├── 📂 styles/            # Global styles
+│   ├── 📂 utils/             # Utility functions
+│   ├── 📄 package.json       # Frontend dependencies
+│   └── 📄 README.md          # Frontend documentation
+├── 📂 backend/               # Node.js backend API
+│   ├── 📂 routes/            # API routes
+│   ├── 📂 controllers/       # Route controllers
+│   ├── 📂 models/            # Database models
+│   ├── 📂 middleware/        # Custom middleware
+│   ├── 📂 config/            # Configuration files
+│   ├── 📄 server.js          # Main server file
+│   ├── 📄 package.json       # Backend dependencies
+│   └── 📄 README.md          # Backend documentation
+├── 📄 README.md              # Main project documentation
+└── 📄 .gitignore             # Git ignore rules
 ```
+
+## 📚 **Documentation**
+
+### 🎯 **Component Documentation**
+- **[Frontend Documentation](./frontend/README.md)** - React components, styling, and development workflow
+- **[Backend API Documentation](./backend/README.md)** - API endpoints, database models, and deployment
+
+### 🚀 **Quick Start Guides**
+- **Frontend Setup**: See [Frontend README](./frontend/README.md#installation)
+- **Backend Setup**: See [Backend README](./backend/README.md#installation)
+- **Full Stack Development**: Follow both guides for complete setup
+
+### 📖 **Additional Resources**
+- **API Reference**: Complete endpoint documentation in [Backend README](./backend/README.md#api-endpoints)
+- **Component Library**: UI components guide in [Frontend README](./frontend/README.md#component-library)
+- **Architecture Overview**: Project structure and design patterns
+- **Deployment Guides**: Platform-specific deployment instructions
 
 ---
 
