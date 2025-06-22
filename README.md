@@ -4,23 +4,61 @@
 
 ![TechShop Pro Banner](https://via.placeholder.com/800x300/8B5CF6/FFFFFF?text=TechShop+Pro)
 
-**A cutting-edge e-commerce platform for the modern digital age**
+**A cutting-edge full-stack e-commerce platform for the modern digital age**
 
 [![MIT License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![React](https://img.shields.io/badge/React-18+-61DAFB?logo=react)](https://reactjs.org/)
+[![Node.js](https://img.shields.io/badge/Node.js-18+-339933?logo=node.js)](https://nodejs.org/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-6+-47A248?logo=mongodb)](https://mongodb.com/)
 [![Vite](https://img.shields.io/badge/Vite-4+-646CFF?logo=vite)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind-3+-38B2AC?logo=tailwind-css)](https://tailwindcss.com/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-[🎥 Live Demo](#) • [📚 Documentation](#) • [🐛 Report Bug](#) • [💡 Request Feature](#)
+[🎥 Live Demo](https://techshop-pro-demo.vercel.app) • [📚 Documentation](https://github.com/NickiMash17/techshop-pro/wiki) • [🐛 Report Bug](https://github.com/NickiMash17/techshop-pro/issues) • [💡 Request Feature](https://github.com/NickiMash17/techshop-pro/discussions)
 
 </div>
 
 ---
 
+## 📋 Table of Contents
+
+- [🌟 Why TechShop Pro?](#-why-techshop-pro)
+- [✨ Features & Capabilities](#-features--capabilities)
+- [🛠️ Modern Tech Stack](#️-modern-tech-stack)
+- [🏗️ System Architecture](#️-system-architecture)
+- [🚀 Quick Start Guide](#-quick-start-guide)
+- [📱 Mobile Excellence](#-mobile-excellence)
+- [🎨 Design System](#-design-system)
+- [📁 Project Structure](#-project-structure)
+- [🔧 Configuration](#-configuration--environment)
+- [🧪 Testing Strategy](#-testing-strategy)
+- [🚀 Deployment](#-deployment--devops)
+- [🔒 Security](#-security-features)
+- [📊 Analytics & SEO](#-analytics--monitoring)
+- [🤝 Contributing](#-contributing-guidelines)
+- [📄 API Documentation](#-api-documentation)
+- [🔄 Database Schema](#-database-schema)
+- [📈 Performance](#-performance-optimizations)
+- [♿ Accessibility](#-accessibility-features)
+- [🌍 Internationalization](#-internationalization)
+- [💳 Payment Integration](#-payment-integration)
+- [📧 Email & Notifications](#-email--notifications)
+- [🔍 Search & Filtering](#-search--filtering)
+- [📊 Admin Dashboard](#-admin-dashboard)
+- [📦 Inventory Management](#-inventory-management)
+- [🛒 Shopping Cart & Checkout](#-shopping-cart--checkout)
+- [👤 User Management](#-user-management)
+- [📱 Progressive Web App](#-progressive-web-app)
+- [🔄 State Management](#-state-management)
+- [📚 Documentation](#-documentation)
+- [🙏 Acknowledgments](#-acknowledgments--credits)
+- [📞 Support](#-support--community)
+
+---
+
 ## 🌟 Why TechShop Pro?
 
-TechShop Pro isn't just another e-commerce platform—it's a **next-generation shopping experience** that combines cutting-edge technology with intuitive design. Built for performance, accessibility, and user delight.
+TechShop Pro isn't just another e-commerce platform—it's a **next-generation full-stack shopping experience** that combines cutting-edge technology with intuitive design. Built for scale, performance, and user delight.
 
 ### 🎯 **Key Highlights**
 - ⚡ **Lightning Fast**: Sub-second load times with optimized performance
@@ -29,6 +67,10 @@ TechShop Pro isn't just another e-commerce platform—it's a **next-generation s
 - ♿ **Accessible**: WCAG 2.1 AA compliant for all users
 - 🔒 **Secure**: Enterprise-grade security implementations
 - 🌐 **SEO Optimized**: Built for search engine visibility
+- 🏪 **Multi-vendor Ready**: Support for multiple sellers
+- 🌍 **Global Ready**: Multi-currency and multi-language support
+- 📊 **Analytics Driven**: Comprehensive business intelligence
+- 🔄 **Real-time Updates**: Live inventory and order tracking
 
 ---
 
@@ -40,6 +82,8 @@ TechShop Pro isn't just another e-commerce platform—it's a **next-generation s
 - **🎬 Cinematic Animations**: Framer Motion powered micro-interactions and page transitions
 - **📐 Responsive Excellence**: Pixel-perfect design across all devices and orientations
 - **🎨 Design Tokens**: Consistent theming with CSS custom properties
+- **⚡ Skeleton Loading**: Smooth loading states that improve perceived performance
+- **🎭 Theme Switching**: Seamless light/dark mode transitions with system preference detection
 
 ### 📱 **Mobile-First Architecture**
 - **👆 Touch Optimized**: 44px+ touch targets with haptic feedback simulation
@@ -48,23 +92,30 @@ TechShop Pro isn't just another e-commerce platform—it's a **next-generation s
 - **📶 PWA Ready**: Offline-first progressive web app with service workers
 - **📱 Device Adaptive**: Smart detection for notched devices, safe areas, and orientation changes
 - **♿ Motion Sensitivity**: Respects user's reduced motion preferences
+- **📲 App-like Experience**: Native-feeling interactions and animations
 
 ### 🛍️ **Advanced E-commerce Engine**
-- **🔍 Smart Search**: Real-time search with filters, sorting, and predictive suggestions
-- **🛒 Intelligent Cart**: Persistent cart with real-time inventory checking
-- **👤 User Management**: Secure authentication with social login options
-- **💳 Streamlined Checkout**: One-click checkout with multiple payment gateways
-- **📊 Admin Dashboard**: Comprehensive analytics and inventory management
-- **📧 Order Tracking**: Real-time order status with email notifications
-- **⭐ Review System**: Customer reviews and ratings with moderation
-- **🎁 Wishlist**: Save for later functionality with sharing capabilities
+- **🔍 Smart Search**: Real-time search with filters, sorting, and predictive suggestions powered by Elasticsearch
+- **🛒 Intelligent Cart**: Persistent cart with real-time inventory checking and abandoned cart recovery
+- **👤 User Management**: Secure authentication with social login options and role-based access
+- **💳 Streamlined Checkout**: One-click checkout with multiple payment gateways (Stripe, PayPal, Apple Pay)
+- **📊 Admin Dashboard**: Comprehensive analytics and inventory management with real-time insights
+- **📧 Order Tracking**: Real-time order status with email/SMS notifications
+- **⭐ Review System**: Customer reviews and ratings with moderation and photo uploads
+- **🎁 Wishlist & Favorites**: Save for later functionality with sharing capabilities
+- **🏷️ Dynamic Pricing**: Discount codes, bulk pricing, and promotional campaigns
+- **📦 Multi-vendor Support**: Marketplace functionality with seller onboarding
+- **🌍 Global Commerce**: Multi-currency, tax calculation, and international shipping
 
 ### ⚡ **Performance & Technical Excellence**
 - **🖼️ Smart Images**: Next-gen WebP/AVIF with lazy loading and blur placeholders
-- **⚡ Code Splitting**: Route-based and component-based dynamic imports
+- **⚡ Code Splitting**: Route and component-based dynamic imports
 - **🔍 SEO Powerhouse**: Open Graph, Twitter Cards, JSON-LD structured data
 - **📊 Core Web Vitals**: Optimized for Google's performance metrics
 - **🎯 Accessibility First**: Screen reader support, keyboard navigation, focus management
+- **🔄 Real-time Updates**: WebSocket connections for live data synchronization
+- **📈 Performance Monitoring**: Real user monitoring with Core Web Vitals tracking
+- **🗄️ Caching Strategy**: Multi-layer caching with Redis and CDN integration
 
 ---
 
@@ -72,23 +123,70 @@ TechShop Pro isn't just another e-commerce platform—it's a **next-generation s
 
 <div align="center">
 
+### Frontend Technologies
 | Category | Technologies |
 |----------|-------------|
-| **⚛️ Frontend** | React 18, TypeScript, Vite, React Router DOM |
-| **🎨 Styling** | Tailwind CSS 3, Framer Motion, CSS Grid/Flexbox |
-| **🔧 Build Tools** | Vite, PostCSS, Autoprefixer, ESLint, Prettier |
-| **📊 State Management** | React Context, Zustand, React Query |
-| **🧪 Testing** | Vitest, React Testing Library, Cypress |
+| **⚛️ Core** | React 18, TypeScript 5.0, Vite 4.0 |
+| **🎨 Styling** | Tailwind CSS 3.3, Framer Motion 10, Headless UI |
+| **🔄 Routing** | React Router DOM 6.8, React Query (TanStack) |
+| **📊 State** | Zustand, React Context, React Hook Form |
+| **🧪 Testing** | Vitest, React Testing Library, Cypress, Playwright |
 | **📱 PWA** | Workbox, Service Workers, Web App Manifest |
+| **🎯 Utils** | Lodash, Date-fns, React Hot Toast, React Helmet |
+
+### Backend Technologies
+| Category | Technologies |
+|----------|-------------|
+| **🖥️ Runtime** | Node.js 18, Express.js 4.18, TypeScript |
+| **🗄️ Database** | MongoDB 6.0, Mongoose ODM, Redis 7.0 |
+| **🔐 Auth** | JWT, Passport.js, bcrypt, OAuth 2.0 |
+| **💳 Payments** | Stripe API, PayPal SDK, Apple Pay, Google Pay |
+| **📧 Email** | Nodemailer, SendGrid, Email Templates |
+| **📁 Storage** | AWS S3, Cloudinary, Multer |
+| **🔍 Search** | Elasticsearch 8.0, Full-text search |
+| **📊 Analytics** | Google Analytics 4, Custom metrics |
+
+### DevOps & Infrastructure
+| Category | Technologies |
+|----------|-------------|
+| **☁️ Cloud** | AWS/Vercel, Docker, Kubernetes |
+| **🔄 CI/CD** | GitHub Actions, Docker Compose |
+| **📊 Monitoring** | Sentry, New Relic, Winston Logging |
+| **🌐 CDN** | Cloudflare, AWS CloudFront |
 
 </div>
 
-### 🏗️ **Architecture Highlights**
-- **Component-Driven Development**: Reusable, tested components
-- **Custom Hooks**: Encapsulated business logic and state management
-- **Error Boundaries**: Graceful error handling and recovery
-- **Suspense & Lazy Loading**: Optimized bundle loading
-- **TypeScript Integration**: Type-safe development experience
+---
+
+## 🏗️ **System Architecture**
+
+### 🎯 **Architecture Overview**
+```
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Client Apps   │    │   API Gateway   │    │   Microservices │
+│                 │    │                 │    │                 │
+│ • Web App       │◄──►│ • Rate Limiting │◄──►│ • User Service  │
+│ • Mobile App    │    │ • Authentication│    │ • Product Svc   │
+│ • Admin Panel   │    │ • Load Balancer │    │ • Order Service │
+└─────────────────┘    └─────────────────┘    │ • Payment Svc   │
+                                              └─────────────────┘
+                              │
+                              ▼
+┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
+│   Databases     │    │     Cache       │    │   External APIs │
+│                 │    │                 │    │                 │
+│ • MongoDB       │    │ • Redis         │    │ • Stripe        │
+│ • Elasticsearch │    │ • Session Store │    │ • SendGrid      │
+│ • File Storage  │    │ • Query Cache   │    │ • AWS Services  │
+└─────────────────┘    └─────────────────┘    └─────────────────┘
+```
+
+### 🔄 **Data Flow Architecture**
+- **Frontend**: React SPA with TypeScript and modern build tools
+- **API Layer**: RESTful APIs with GraphQL endpoints for complex queries
+- **Business Logic**: Modular services with clean architecture principles
+- **Data Layer**: MongoDB for documents, Redis for caching, Elasticsearch for search
+- **External Integration**: Payment processors, email services, cloud storage
 
 ---
 
@@ -96,38 +194,56 @@ TechShop Pro isn't just another e-commerce platform—it's a **next-generation s
 
 ### 📋 **Prerequisites**
 - Node.js 18+ (LTS recommended)
+- MongoDB 6.0+ (local or Atlas)
+- Redis 7.0+ (for caching and sessions)
 - npm 9+ or yarn 1.22+
 - Git 2.25+
 
-### ⚡ **Installation**
+### ⚡ **Full Stack Installation**
 
 ```bash
 # 1. Clone the repository
 git clone https://github.com/NickiMash17/techshop-pro.git
 cd techshop-pro
 
-# 2. Install dependencies
-cd frontend
+# 2. Install root dependencies
 npm install
 
-# 3. Set up environment variables
+# 3. Setup Backend
+cd backend
+npm install
+cp .env.example .env
+# Edit .env with your configuration (MongoDB, Redis, Stripe keys, etc.)
+
+# 4. Setup Frontend
+cd ../frontend
+npm install
 cp .env.example .env.local
-# Edit .env.local with your configuration
+# Edit .env.local with API endpoints and client keys
 
-# 4. Start development server
-npm run dev
+# 5. Seed the database (optional)
+cd ../backend
+npm run seed
 
-# 🎉 Open http://localhost:5173 in your browser
+# 6. Start development servers
+# Terminal 1: Backend
+cd backend && npm run dev
+
+# Terminal 2: Frontend
+cd frontend && npm run dev
+
+# 🎉 Frontend: http://localhost:5173
+# 🎉 Backend API: http://localhost:5000
+# 🎉 Admin Panel: http://localhost:5173/admin
 ```
 
 ### 🔧 **Available Scripts**
 
+#### Frontend Scripts
 ```bash
 # Development
 npm run dev          # Start development server with HMR
 npm run dev:host     # Start server accessible on network
-
-# Building
 npm run build        # Create production build
 npm run preview      # Preview production build locally
 
@@ -144,6 +260,28 @@ npm run test:coverage # Generate coverage reports
 npm run e2e          # Run end-to-end tests
 ```
 
+#### Backend Scripts
+```bash
+# Development
+npm run dev          # Start server with nodemon
+npm run start        # Start production server
+npm run build        # Build TypeScript to JavaScript
+
+# Database
+npm run seed         # Seed database with sample data
+npm run migrate      # Run database migrations
+npm run db:reset     # Reset database (development only)
+
+# Testing
+npm run test         # Run unit tests
+npm run test:integration # Run integration tests
+npm run test:e2e     # Run end-to-end API tests
+
+# Utilities
+npm run logs         # View application logs
+npm run health       # Check system health
+```
+
 ---
 
 ## 📱 **Mobile Excellence**
@@ -153,459 +291,355 @@ npm run e2e          # Run end-to-end tests
 - **📊 Lighthouse Score**: 95+ across all categories
 - **🎨 First Contentful Paint**: < 1.2s
 - **⚡ Time to Interactive**: < 2.8s
+- **📱 Mobile Usability**: 100% Google Mobile-Friendly score
 
-### 📱 **Device Optimization**
-- **📏 Responsive Breakpoints**: 320px - 2560px coverage
-- **🤏 Touch Targets**: Minimum 44x44px hit areas
-- **⌨️ Keyboard Navigation**: Full keyboard accessibility
-- **🔄 Orientation Support**: Seamless portrait/landscape transitions
+### 📱 **Progressive Web App Features**
+- **📲 Install Prompt**: Custom app installation experience
+- **🔄 Offline Support**: Cached pages and offline shopping cart
+- **📱 Native Features**: Push notifications, background sync
+- **🎯 App Shell**: Instant loading app shell architecture
+- **📦 Update Strategy**: Automatic updates with user notification
 
 ### 🌐 **Browser Compatibility**
 
-| Browser | Version | Support Level |
-|---------|---------|---------------|
-| Chrome | 90+ | ✅ Full Support |
-| Firefox | 88+ | ✅ Full Support |
-| Safari | 14+ | ✅ Full Support |
-| Edge | 90+ | ✅ Full Support |
-| Samsung Internet | 14+ | ✅ Full Support |
+| Browser | Version | Support Level | Features |
+|---------|---------|---------------|----------|
+| Chrome | 90+ | ✅ Full Support | All features including PWA |
+| Firefox | 88+ | ✅ Full Support | All features except some PWA |
+| Safari | 14+ | ✅ Full Support | All features including iOS PWA |
+| Edge | 90+ | ✅ Full Support | All features including PWA |
+| Samsung Internet | 14+ | ✅ Full Support | Android-specific optimizations |
+| iOS Safari | 14+ | ✅ Full Support | Touch optimizations |
 
 ---
 
 ## 🎨 **Design System**
 
-### 🌈 **Color Palette**
+### 🌈 **Extended Color Palette**
 ```css
-/* Primary Colors */
---primary-500: #8B5CF6;    /* Purple - Primary brand */
---primary-600: #7C3AED;    /* Purple Dark */
---secondary-500: #06B6D4;  /* Cyan - Secondary accent */
---secondary-600: #0891B2;  /* Cyan Dark */
+/* Primary Brand Colors */
+:root {
+  --primary-50: #F5F3FF;
+  --primary-100: #EDE9FE;
+  --primary-200: #DDD6FE;
+  --primary-300: #C4B5FD;
+  --primary-400: #A78BFA;
+  --primary-500: #8B5CF6;    /* Primary brand */
+  --primary-600: #7C3AED;
+  --primary-700: #6D28D9;
+  --primary-800: #5B21B6;
+  --primary-900: #4C1D95;
 
-/* Neutral Colors */
---neutral-900: #0F172A;    /* Background Dark */
---neutral-800: #1E293B;    /* Surface Dark */
---neutral-700: #334155;    /* Border */
---neutral-100: #F1F5F9;    /* Text Light */
+  /* Secondary Colors */
+  --secondary-50: #ECFEFF;
+  --secondary-100: #CFFAFE;
+  --secondary-200: #A5F3FC;
+  --secondary-300: #67E8F9;
+  --secondary-400: #22D3EE;
+  --secondary-500: #06B6D4;   /* Secondary accent */
+  --secondary-600: #0891B2;
+  --secondary-700: #0E7490;
+  --secondary-800: #155E75;
+  --secondary-900: #164E63;
 
-/* Semantic Colors */
---success: #10B981;        /* Success states */
---warning: #F59E0B;        /* Warning states */
---error: #EF4444;          /* Error states */
---info: #3B82F6;           /* Info states */
+  /* Semantic Colors */
+  --success-50: #ECFDF5;
+  --success-500: #10B981;
+  --success-600: #059669;
+  
+  --warning-50: #FFFBEB;
+  --warning-500: #F59E0B;
+  --warning-600: #D97706;
+  
+  --error-50: #FEF2F2;
+  --error-500: #EF4444;
+  --error-600: #DC2626;
+  
+  --info-50: #EFF6FF;
+  --info-500: #3B82F6;
+  --info-600: #2563EB;
+}
 ```
 
-### 📝 **Typography Scale**
+### 📝 **Typography System**
 ```css
 /* Font Families */
---font-sans: 'Inter', system-ui, sans-serif;
---font-mono: 'JetBrains Mono', monospace;
+--font-sans: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+--font-serif: 'Playfair Display', Georgia, serif;
+--font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+/* Font Weights */
+--font-thin: 100;
+--font-light: 300;
+--font-normal: 400;
+--font-medium: 500;
+--font-semibold: 600;
+--font-bold: 700;
+--font-extrabold: 800;
 
 /* Type Scale */
---text-xs: 0.75rem;   /* 12px */
---text-sm: 0.875rem;  /* 14px */
---text-base: 1rem;    /* 16px */
---text-lg: 1.125rem;  /* 18px */
---text-xl: 1.25rem;   /* 20px */
---text-2xl: 1.5rem;   /* 24px */
---text-3xl: 1.875rem; /* 30px */
---text-4xl: 2.25rem;  /* 36px */
+--text-xs: 0.75rem;    /* 12px */
+--text-sm: 0.875rem;   /* 14px */
+--text-base: 1rem;     /* 16px */
+--text-lg: 1.125rem;   /* 18px */
+--text-xl: 1.25rem;    /* 20px */
+--text-2xl: 1.5rem;    /* 24px */
+--text-3xl: 1.875rem;  /* 30px */
+--text-4xl: 2.25rem;   /* 36px */
+--text-5xl: 3rem;      /* 48px */
+--text-6xl: 3.75rem;   /* 60px */
+
+/* Line Heights */
+--leading-tight: 1.25;
+--leading-snug: 1.375;
+--leading-normal: 1.5;
+--leading-relaxed: 1.625;
+--leading-loose: 2;
 ```
 
-### 🎭 **Animation System**
+### 🎭 **Animation & Motion System**
 ```css
 /* Easing Functions */
 --ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
 --ease-out-quart: cubic-bezier(0.25, 1, 0.5, 1);
+--ease-spring: cubic-bezier(0.68, -0.55, 0.265, 1.55);
 
 /* Duration Scale */
---duration-fast: 150ms;
---duration-normal: 250ms;
---duration-slow: 350ms;
+--duration-75: 75ms;
+--duration-100: 100ms;
+--duration-150: 150ms;
+--duration-200: 200ms;
+--duration-300: 300ms;
+--duration-500: 500ms;
+--duration-700: 700ms;
+--duration-1000: 1000ms;
+
+/* Common Animations */
+.fade-in {
+  animation: fadeIn var(--duration-300) var(--ease-out-quart);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+```
+
+### 🎨 **Component Tokens**
+```css
+/* Buttons */
+--btn-height-sm: 2rem;
+--btn-height-md: 2.5rem;
+--btn-height-lg: 3rem;
+--btn-radius: 0.5rem;
+--btn-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+/* Cards */
+--card-radius: 0.75rem;
+--card-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+--card-padding: 1.5rem;
+
+/* Forms */
+--input-height: 2.5rem;
+--input-radius: 0.5rem;
+--input-border-width: 1px;
+--input-focus-ring: 0 0 0 3px rgb(139 92 246 / 0.1);
 ```
 
 ---
 
-## 📁 **Project Architecture**
+## 📁 **Project Structure**
 
 ```
 techshop-pro/
-├── 📂 frontend/               # React frontend application
-│   ├── 📂 public/            # Static assets
-│   ├── 📂 src/               # Source code
-│   ├── 📂 components/        # React components
-│   ├── 📂 pages/             # Page components
-│   ├── 📂 styles/            # Global styles
-│   ├── 📂 utils/             # Utility functions
-│   ├── 📄 package.json       # Frontend dependencies
-│   └── 📄 README.md          # Frontend documentation
-├── 📂 backend/               # Node.js backend API
-│   ├── 📂 routes/            # API routes
-│   ├── 📂 controllers/       # Route controllers
-│   ├── 📂 models/            # Database models
-│   ├── 📂 middleware/        # Custom middleware
-│   ├── 📂 config/            # Configuration files
-│   ├── 📄 server.js          # Main server file
-│   ├── 📄 package.json       # Backend dependencies
-│   └── 📄 README.md          # Backend documentation
-├── 📄 README.md              # Main project documentation
-└── 📄 .gitignore             # Git ignore rules
+├── 📂 frontend/                    # React frontend application
+│   ├── 📂 public/                 # Static assets
+│   │   ├── 📄 manifest.json       # PWA manifest
+│   │   ├── 🖼️ icons/              # App icons
+│   │   └── 📄 robots.txt          # SEO robots file
+│   ├── 📂 src/                    # Source code
+│   │   ├── 📂 components/         # Reusable UI components
+│   │   │   ├── 📂 ui/             # Base UI components
+│   │   │   ├── 📂 forms/          # Form components
+│   │   │   ├── 📂 layout/         # Layout components
+│   │   │   └── 📂 features/       # Feature-specific components
+│   │   ├── 📂 pages/              # Page components
+│   │   │   ├── 📂 auth/           # Authentication pages
+│   │   │   ├── 📂 products/       # Product pages
+│   │   │   ├── 📂 checkout/       # Checkout flow
+│   │   │   └── 📂 admin/          # Admin dashboard
+│   │   ├── 📂 hooks/              # Custom React hooks
+│   │   ├── 📂 services/           # API services
+│   │   ├── 📂 stores/             # State management
+│   │   ├── 📂 utils/              # Utility functions
+│   │   ├── 📂 types/              # TypeScript type definitions
+│   │   ├── 📂 styles/             # Global styles and themes
+│   │   ├── 📂 assets/             # Images, fonts, etc.
+│   │   └── 📄 main.tsx            # Application entry point
+│   ├── 📄 package.json            # Frontend dependencies
+│   ├── 📄 vite.config.ts          # Vite configuration
+│   ├── 📄 tailwind.config.js      # Tailwind CSS configuration
+│   └── 📄 tsconfig.json           # TypeScript configuration
+│
+├── 📂 backend/                     # Node.js backend API
+│   ├── 📂 src/                    # Source code
+│   │   ├── 📂 controllers/        # Route controllers
+│   │   │   ├── 📄 authController.ts
+│   │   │   ├── 📄 productController.ts
+│   │   │   ├── 📄 orderController.ts
+│   │   │   └── 📄 userController.ts
+│   │   ├── 📂 middleware/         # Custom middleware
+│   │   │   ├── 📄 auth.ts         # Authentication middleware
+│   │   │   ├── 📄 validation.ts   # Request validation
+│   │   │   └── 📄 errorHandler.ts # Error handling
+│   │   ├── 📂 models/             # Database models
+│   │   │   ├── 📄 User.ts         # User model
+│   │   │   ├── 📄 Product.ts      # Product model
+│   │   │   ├── 📄 Order.ts        # Order model
+│   │   │   └── 📄 Category.ts     # Category model
+│   │   ├── 📂 routes/             # API routes
+│   │   │   ├── 📄 auth.ts         # Authentication routes
+│   │   │   ├── 📄 products.ts     # Product routes
+│   │   │   ├── 📄 orders.ts       # Order routes
+│   │   │   └── 📄 admin.ts        # Admin routes
+│   │   ├── 📂 services/           # Business logic services
+│   │   │   ├── 📄 authService.ts  # Authentication service
+│   │   │   ├── 📄 emailService.ts # Email service
+│   │   │   ├── 📄 paymentService.ts # Payment processing
+│   │   │   └── 📄 searchService.ts # Search functionality
+│   │   ├── 📂 utils/              # Utility functions
+│   │   │   ├── 📄 database.ts     # Database connection
+│   │   │   ├── 📄 logger.ts       # Logging utility
+│   │   │   └── 📄 validation.ts   # Validation schemas
+│   │   ├── 📂 config/             # Configuration files
+│   │   │   ├── 📄 database.ts     # Database configuration
+│   │   │   ├── 📄 auth.ts         # Auth configuration
+│   │   │   └── 📄 email.ts        # Email configuration
+│   │   └── 📄 server.ts           # Main server file
+│   ├── 📂 tests/                  # Test files
+│   │   ├── 📂 integration/        # Integration tests
+│   │   ├── 📂 unit/               # Unit tests
+│   │   └── 📄 setup.ts            # Test setup
+│   ├── 📄 package.json            # Backend dependencies
+│   ├── 📄 tsconfig.json           # TypeScript configuration
+│   └── 📄 jest.config.js          # Jest testing configuration
+│
+├── 📂 shared/                      # Shared types and utilities
+│   ├── 📂 types/                  # Shared TypeScript types
+│   └── 📂 constants/              # Shared constants
+│
+├── 📂 docs/                        # Documentation
+│   ├── 📄 api.md                  # API documentation
+│   ├── 📄 deployment.md           # Deployment guide
+│   └── 📄 contributing.md         # Contributing guidelines
+│
+├── 📂 scripts/                     # Build and deployment scripts
+│   ├── 📄 build.sh                # Build script
+│   ├── 📄 deploy.sh               # Deployment script
+│   └── 📄 seed.js                 # Database seeding
+│
+├── 📄 docker-compose.yml           # Docker composition
+├── 📄 Dockerfile                  # Docker configuration
+├── 📄 .github/workflows/          # GitHub Actions CI/CD
+├── 📄 README.md                   # Main project documentation
+├── 📄 LICENSE                     # MIT License
+└── 📄 .gitignore                  # Git ignore rules
 ```
-
-## 📚 **Documentation**
-
-### 🎯 **Component Documentation**
-- **[Frontend Documentation](./frontend/README.md)** - React components, styling, and development workflow
-- **[Backend API Documentation](./backend/README.md)** - API endpoints, database models, and deployment
-
-### 🚀 **Quick Start Guides**
-- **Frontend Setup**: See [Frontend README](./frontend/README.md#installation)
-- **Backend Setup**: See [Backend README](./backend/README.md#installation)
-- **Full Stack Development**: Follow both guides for complete setup
-
-### 📖 **Additional Resources**
-- **API Reference**: Complete endpoint documentation in [Backend README](./backend/README.md#api-endpoints)
-- **Component Library**: UI components guide in [Frontend README](./frontend/README.md#component-library)
-- **Architecture Overview**: Project structure and design patterns
-- **Deployment Guides**: Platform-specific deployment instructions
 
 ---
 
 ## 🔧 **Configuration & Environment**
 
-### 🌍 **Environment Variables**
+### 🌍 **Frontend Environment Variables**
 ```bash
+# .env.local (Frontend)
 # API Configuration
-VITE_API_URL=https://api.techshop-pro.com
+VITE_API_URL=http://localhost:5000/api
 VITE_API_VERSION=v1
+VITE_WS_URL=ws://localhost:5000
 
 # App Configuration
 VITE_APP_NAME=TechShop Pro
-VITE_APP_VERSION=1.0.0
-VITE_APP_DESCRIPTION=Modern E-commerce Platform
+VITE_APP_VERSION=2.0.0
+VITE_APP_DESCRIPTION=Modern Full-Stack E-commerce Platform
+VITE_APP_URL=http://localhost:5173
 
 # Feature Flags
 VITE_ENABLE_PWA=true
 VITE_ENABLE_ANALYTICS=true
 VITE_ENABLE_MAINTENANCE_MODE=false
+VITE_ENABLE_DARK_MODE=true
+VITE_ENABLE_MULTI_LANGUAGE=true
 
-# External Services
+# External Services (Client-side keys)
 VITE_STRIPE_PUBLISHABLE_KEY=pk_test_...
 VITE_GOOGLE_ANALYTICS_ID=GA_MEASUREMENT_ID
 VITE_SENTRY_DSN=https://...
+VITE_CLOUDINARY_CLOUD_NAME=your_cloud_name
+
+# Authentication
+VITE_GOOGLE_CLIENT_ID=google_oauth_client_id
+VITE_FACEBOOK_APP_ID=facebook_app_id
+
+# Maps & Location
+VITE_GOOGLE_MAPS_API_KEY=google_maps_api_key
 ```
 
-### ⚙️ **Build Configuration**
-```javascript
-// vite.config.ts highlights
-export default defineConfig({
-  plugins: [
-    react(),
-    pwa({
-      registerType: 'autoUpdate',
-      workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}']
-      }
-    })
-  ],
-  build: {
-    target: 'es2015',
-    minify: 'terser',
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom'],
-          ui: ['framer-motion', '@headlessui/react']
-        }
-      }
-    }
-  }
-});
-```
-
----
-
-## 🧪 **Testing Strategy**
-
-### 🔬 **Testing Pyramid**
-- **Unit Tests**: Component logic and utilities (Vitest + React Testing Library)
-- **Integration Tests**: Component interactions and API calls
-- **E2E Tests**: Complete user workflows (Cypress)
-- **Visual Regression**: UI consistency across updates (Chromatic)
-
-### 📊 **Quality Gates**
-- **Code Coverage**: Minimum 80% coverage required
-- **Performance Budget**: Bundle size < 500KB gzipped
-- **Accessibility**: aXe automated testing + manual audits
-- **Security**: Dependency vulnerability scanning
-
----
-
-## 🚀 **Deployment & DevOps**
-
-### ☁️ **Recommended Platforms**
-
-#### 🔷 **Vercel (Recommended)**
+### 🌍 **Backend Environment Variables**
 ```bash
-# Automatic deployment
-vercel --prod
+# .env (Backend)
+# Server Configuration
+NODE_ENV=development
+PORT=5000
+HOST=localhost
+API_VERSION=v1
 
-# Preview deployments for PRs
-vercel
-```
+# Database
+MONGODB_URI=mongodb://localhost:27017/techshop-pro
+MONGODB_TEST_URI=mongodb://localhost:27017/techshop-pro-test
+DB_CONNECTION_TIMEOUT=30000
 
-#### 🟢 **Netlify**
-```toml
-# netlify.toml
-[build]
-  publish = "dist"
-  command = "npm run build"
+# Redis Cache
+REDIS_URL=redis://localhost:6379
+REDIS_PASSWORD=
+REDIS_DB=0
+REDIS_TTL=3600
 
-[build.environment]
-  NODE_VERSION = "18"
+# Authentication
+JWT_SECRET=your_super_secret_jwt_key_here
+JWT_EXPIRE=7d
+JWT_REFRESH_EXPIRE=30d
+BCRYPT_ROUNDS=12
 
-[[redirects]]
-  from = "/*"
-  to = "/index.html"
-  status = 200
-```
+# OAuth Configuration
+GOOGLE_CLIENT_ID=google_oauth_client_id
+GOOGLE_CLIENT_SECRET=google_oauth_client_secret
+FACEBOOK_APP_ID=facebook_app_id
+FACEBOOK_APP_SECRET=facebook_app_secret
 
-#### 🐳 **Docker**
-```dockerfile
-FROM node:18-alpine as builder
-WORKDIR /app
-COPY package*.json ./
-RUN npm ci --only=production
+# Payment Processing
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+PAYPAL_CLIENT_ID=paypal_client_id
+PAYPAL_CLIENT_SECRET=paypal_client_secret
 
-COPY . .
-RUN npm run build
+# Email Service
+EMAIL_FROM=noreply@techshop-pro.com
+SENDGRID_API_KEY=sendgrid_api_key
+SMTP_HOST=smtp.gmail.com
+SMTP_PORT=587
+SMTP_USER=your_email@gmail.com
+SMTP_PASS=your_app_password
 
-FROM nginx:alpine
-COPY --from=builder /app/dist /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/nginx.conf
-EXPOSE 80
-CMD ["nginx", "-g", "daemon off;"]
-```
+# File Storage
+AWS_ACCESS_KEY_ID=aws_access_key
+AWS_SECRET_ACCESS_KEY=aws_secret_key
+AWS_BUCKET_NAME=techshop-pro-uploads
+AWS_REGION=us-east-1
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=cloudinary_api_key
+CLOUDINARY_API_SECRET=cloudinary_api_secret
 
-### 🔄 **CI/CD Pipeline**
-```yaml
-# .github/workflows/ci.yml
-name: CI/CD Pipeline
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-          cache: 'npm'
-      - run: npm ci
-      - run: npm run test:coverage
-      - run: npm run build
-      - run: npm run e2e
-```
-
----
-
-## 📈 **Performance Optimizations**
-
-### ⚡ **Core Web Vitals Optimization**
-- **LCP (Largest Contentful Paint)**: < 2.5s
-- **FID (First Input Delay)**: < 100ms
-- **CLS (Cumulative Layout Shift)**: < 0.1
-
-### 🎯 **Optimization Techniques**
-- **Image Optimization**: WebP/AVIF formats with fallbacks
-- **Code Splitting**: Route and component-based splitting
-- **Tree Shaking**: Eliminate unused code
-- **Preloading**: Critical resources and route prefetching
-- **Caching**: Aggressive caching strategies with service workers
-
----
-
-## ♿ **Accessibility Features**
-
-### 🎯 **WCAG 2.1 AA Compliance**
-- **Keyboard Navigation**: Full keyboard accessibility
-- **Screen Reader Support**: Semantic HTML and ARIA labels
-- **Color Contrast**: 4.5:1 minimum contrast ratio
-- **Focus Management**: Visible focus indicators
-- **Motion Preferences**: Respect for reduced motion
-- **Text Scaling**: Supports up to 200% zoom
-
-### 🔧 **Accessibility Testing**
-```bash
-# Automated testing
-npm run test:a11y
-
-# Manual testing checklist
-npm run a11y:audit
-```
-
----
-
-## 🔒 **Security Features**
-
-### 🛡️ **Security Implementations**
-- **Content Security Policy**: Strict CSP headers
-- **HTTPS Enforcement**: Secure connections only
-- **Input Validation**: Client and server-side validation
-- **XSS Protection**: Sanitized user inputs
-- **CSRF Protection**: Token-based protection
-- **Dependency Scanning**: Automated vulnerability checks
-
-### 🔐 **Authentication & Authorization**
-- **JWT Tokens**: Secure session management
-- **OAuth Integration**: Social login options
-- **Role-Based Access**: Admin and user roles
-- **Password Security**: Bcrypt hashing with salt
-
----
-
-## 📊 **Analytics & Monitoring**
-
-### 📈 **Performance Monitoring**
-- **Core Web Vitals**: Real user monitoring
-- **Error Tracking**: Sentry integration
-- **User Analytics**: Privacy-focused analytics
-- **Performance Budget**: Automated performance checks
-
-### 🔍 **SEO Optimization**
-- **Meta Tags**: Dynamic meta tag generation
-- **Structured Data**: JSON-LD implementation
-- **XML Sitemap**: Automated sitemap generation
-- **Robot.txt**: Search engine guidelines
-
----
-
-## 🤝 **Contributing Guidelines**
-
-### 🎯 **How to Contribute**
-1. **🍴 Fork** the repository
-2. **🌿 Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **💡 Make** your changes with tests
-4. **✅ Ensure** all tests pass and code is formatted
-5. **📝 Commit** using conventional commits
-6. **🚀 Push** to your branch
-7. **🔄 Open** a Pull Request
-
-### 📝 **Commit Convention**
-```bash
-feat: add new product filter functionality
-fix: resolve mobile navigation issue
-docs: update installation instructions
-style: improve button hover animations
-refactor: optimize image loading performance
-test: add unit tests for cart functionality
-```
-
-### 🎨 **Code Style Guidelines**
-- **ESLint**: Airbnb configuration with custom rules
-- **Prettier**: Consistent code formatting
-- **Husky**: Pre-commit hooks for quality checks
-- **Conventional Commits**: Standardized commit messages
-
----
-
-## 📄 **License**
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for complete details.
-
-```
-MIT License - Copyright (c) 2024 Nicolette Mashaba
-Permission is hereby granted, free of charge, to any person obtaining a copy...
-```
-
----
-
-## 👩‍💻 **Meet the Developer**
-
-<div align="center">
-
-### **Nicolette Mashaba**
-*Full-Stack Developer & UI/UX Enthusiast*
-
-[![GitHub](https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white)](https://github.com/NickiMash17)
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](#)
-[![Portfolio](https://img.shields.io/badge/Portfolio-FF5722?style=for-the-badge&logo=todoist&logoColor=white)](#)
-[![Email](https://img.shields.io/badge/Email-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:nicolette@example.com)
-
-*"Building digital experiences that inspire and empower users"*
-
-</div>
-
-### 🌟 **Skills & Expertise**
-- **Frontend**: React, TypeScript, Next.js, Vue.js
-- **Styling**: Tailwind CSS, Styled Components, SCSS
-- **Backend**: Node.js, Express, PostgreSQL, MongoDB
-- **DevOps**: Docker, AWS, Vercel, GitHub Actions
-- **Design**: Figma, Adobe Creative Suite, Prototyping
-
----
-
-## 🙏 **Acknowledgments & Credits**
-
-### 🎨 **Design & Assets**
-- **[Unsplash](https://unsplash.com)** - High-quality product photography
-- **[Heroicons](https://heroicons.com)** - Beautiful SVG icons
-- **[Feather Icons](https://feathericons.com)** - Additional icon set
-- **[Dribbble](https://dribbble.com)** - Design inspiration
-
-### 🛠️ **Tools & Libraries**
-- **[React Team](https://reactjs.org)** - The amazing React library
-- **[Tailwind Labs](https://tailwindcss.com)** - Utility-first CSS framework
-- **[Framer](https://framer.com/motion)** - Production-ready motion library
-- **[Vite Team](https://vitejs.dev)** - Next generation frontend tooling
-
-### 🌟 **Special Thanks**
-- **Open Source Community** - For continuous inspiration and support
-- **React Community** - For excellent documentation and resources
-- **Design Community** - For sharing knowledge and best practices
-- **Beta Testers** - For valuable feedback and suggestions
-
----
-
-## 📞 **Support & Community**
-
-### 🆘 **Get Help**
-- **📧 Email Support**: [support@techshop-pro.com](mailto:support@techshop-pro.com)
-- **🐛 Bug Reports**: [GitHub Issues](https://github.com/NickiMash17/techshop-pro/issues)
-- **💬 Discussions**: [GitHub Discussions](https://github.com/NickiMash17/techshop-pro/discussions)
-- **📚 Documentation**: [Project Wiki](https://github.com/NickiMash17/techshop-pro/wiki)
-
-### 📱 **Community**
-- **Discord Server**: [Join our community](#)
-- **Twitter**: [@TechShopPro](#)
-- **YouTube**: [Tutorial Channel](#)
-
-### 📈 **Project Stats**
-- **⭐ Stars**: ![GitHub stars](https://img.shields.io/github/stars/NickiMash17/techshop-pro?style=social)
-- **🍴 Forks**: ![GitHub forks](https://img.shields.io/github/forks/NickiMash17/techshop-pro?style=social)
-- **👥 Contributors**: ![GitHub contributors](https://img.shields.io/github/contributors/NickiMash17/techshop-pro)
-- **📦 Version**: ![GitHub package.json version](https://img.shields.io/github/package-json/v/NickiMash17/techshop-pro)
-
----
-
-<div align="center">
-
-### 🌟 **Show Your Support**
-
-If you find this project helpful, please consider:
-- ⭐ **Starring** the repository
-- 🍴 **Forking** for your own projects
-- 🐛 **Reporting** bugs and issues
-- 💡 **Suggesting** new features
-- 📢 **Sharing** with others
-
-**Made with ❤️, ☕, and lots of late nights by Nicolette Mashaba**
-
-*TechShop Pro - Where Technology Meets Innovation* ✨
-
----
-
-![Footer Image](https://via.placeholder.com/800x100/8B5CF6/FFFFFF?text=Thank+You+for+Using+TechShop+Pro!)
-
-</div>
+# Search Engine
+ELASTICSEARCH_URL=http://localhost:9200
+ELASTICSEARCH_
