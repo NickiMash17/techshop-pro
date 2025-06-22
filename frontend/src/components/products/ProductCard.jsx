@@ -3,17 +3,31 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { useCart } from '../../context/CartContext';
+import { useWishlist } from '../../context/WishlistContext';
+import LazyImage from '../common/LazyImage';
 
 const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
   const { addToCart, isInCart, getItemQuantity } = useCart();
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist();
   const isInUserCart = isInCart(product.id);
   const cartQuantity = getItemQuantity(product.id);
+  const isInUserWishlist = isInWishlist(product.id);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
     console.log('Add to Cart clicked for:', product.name);
     addToCart(product, 1);
+  };
+
+  const handleWishlistToggle = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (isInUserWishlist) {
+      removeFromWishlist(product.id);
+    } else {
+      addToWishlist(product);
+    }
   };
 
   const cardVariants = {
@@ -136,7 +150,7 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
         <div className="flex items-center space-x-6">
           {/* Image */}
           <Link to={`/products/${product.id}`} className="relative w-32 h-32 flex-shrink-0">
-            <motion.img
+            <LazyImage
               src={product.image}
               alt={product.name}
               className="w-full h-full object-cover rounded-lg"
@@ -212,20 +226,56 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
                 {cartQuantity} in cart
               </span>
             )}
-            <motion.button 
-              onClick={handleAddToCart}
-              disabled={product.stock === 0}
-              className={`card-button ${
-                product.stock === 0 
-                  ? 'opacity-50 cursor-not-allowed' 
-                  : ''
-              }`}
-              variants={buttonVariants}
-              whileHover="hover"
-              whileTap="tap"
-            >
-              {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-            </motion.button>
+            <div className="flex items-center gap-2">
+              {isInUserCart && (
+                <motion.span 
+                  className="text-xs text-primary font-medium bg-primary/10 px-2 py-1 rounded-full"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.9 + index * 0.1 }}
+                >
+                  {cartQuantity} in cart
+                </motion.span>
+              )}
+              
+              {/* Wishlist Button */}
+              <motion.button
+                onClick={handleWishlistToggle}
+                className={`p-2 rounded-lg transition-all duration-200 ${
+                  isInUserWishlist 
+                    ? 'bg-red-500/80 text-white hover:bg-red-600' 
+                    : 'bg-surface/50 text-gray-400 hover:bg-surface/70 hover:text-white'
+                }`}
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.95 + index * 0.1 }}
+              >
+                <svg className="w-4 h-4" fill={isInUserWishlist ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                </svg>
+              </motion.button>
+              
+              <motion.button 
+                onClick={handleAddToCart}
+                disabled={product.stock === 0}
+                className={`card-button ${
+                  product.stock === 0 
+                    ? 'opacity-50 cursor-not-allowed' 
+                    : ''
+                }`}
+                variants={buttonVariants}
+                whileHover="hover"
+                whileTap="tap"
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 1 + index * 0.1 }}
+              >
+                {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+              </motion.button>
+            </div>
           </div>
         </div>
       </motion.div>
@@ -247,7 +297,7 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
           {/* Image Container */}
           <div className="card-image-wrapper">
             <Link to={`/products/${product.id}`} className="block">
-              <motion.img
+              <LazyImage
                 src={product.image}
                 alt={product.name}
                 className="card-image"
@@ -397,6 +447,27 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
                     {cartQuantity} in cart
                   </motion.span>
                 )}
+                
+                {/* Wishlist Button */}
+                <motion.button
+                  onClick={handleWishlistToggle}
+                  className={`p-2 rounded-lg transition-all duration-200 ${
+                    isInUserWishlist 
+                      ? 'bg-red-500/80 text-white hover:bg-red-600' 
+                      : 'bg-surface/50 text-gray-400 hover:bg-surface/70 hover:text-white'
+                  }`}
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  initial={{ scale: 0 }}
+                  animate={{ scale: 1 }}
+                  transition={{ delay: 0.95 + index * 0.1 }}
+                >
+                  <svg className="w-4 h-4" fill={isInUserWishlist ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </motion.button>
+                
                 <motion.button 
                   onClick={handleAddToCart}
                   disabled={product.stock === 0}

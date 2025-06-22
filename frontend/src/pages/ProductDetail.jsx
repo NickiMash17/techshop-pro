@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
 import { Link } from 'react-router-dom';
+import LazyImage from '../components/common/LazyImage';
 
 const MOCK_PRODUCTS = {
   '1': {
@@ -132,8 +133,8 @@ const ProductDetail = () => {
           {/* Product Image */}
           <div className="space-y-4">
             <div className="aspect-square bg-surface/30 rounded-2xl overflow-hidden">
-              <img 
-                src={product.images[selectedImage]} 
+              <LazyImage
+                src={product.images[selectedImage]}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />

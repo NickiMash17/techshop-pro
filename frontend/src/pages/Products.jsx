@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import ProductCard from '../components/products/ProductCard';
+import ProductComparison from '../components/products/ProductComparison';
+import { toast } from 'react-hot-toast';
 
 const MOCK_PRODUCTS = [
   {
@@ -140,6 +142,8 @@ const Products = () => {
   const [priceRange, setPriceRange] = useState([0, 500]);
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState('grid'); // 'grid' or 'list'
+  const [isComparisonOpen, setIsComparisonOpen] = useState(false);
+  const [selectedForComparison, setSelectedForComparison] = useState([]);
 
   useEffect(() => {
     // Simulate API call with mock data
@@ -183,6 +187,24 @@ const Products = () => {
     return filtered;
   }, [products, searchQuery, selectedCategory, sortBy, priceRange]);
 
+  const handleAddToComparison = (product) => {
+    if (selectedForComparison.length >= 3) {
+      toast.error('Maximum 3 products can be compared at once');
+      return;
+    }
+    if (!selectedForComparison.find(p => p.id === product.id)) {
+      setSelectedForComparison(prev => [...prev, product]);
+    }
+  };
+
+  const handleRemoveFromComparison = (productId) => {
+    setSelectedForComparison(prev => prev.filter(p => p.id !== productId));
+  };
+
+  const openComparison = () => {
+    setIsComparisonOpen(true);
+  };
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -221,6 +243,19 @@ const Products = () => {
           
           {/* View Mode Toggle */}
           <div className="flex items-center gap-2">
+            {/* Comparison Button */}
+            {selectedForComparison.length > 0 && (
+              <button
+                onClick={openComparison}
+                className="px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                Compare ({selectedForComparison.length})
+              </button>
+            )}
+            
             <button
               onClick={() => setViewMode('grid')}
               className={`p-2 rounded-lg transition-colors ${
@@ -370,6 +405,13 @@ const Products = () => {
           )}
         </AnimatePresence>
       </div>
+
+      {/* Product Comparison Modal */}
+      <ProductComparison
+        isOpen={isComparisonOpen}
+        onClose={() => setIsComparisonOpen(false)}
+        products={selectedForComparison}
+      />
     </div>
   );
 };

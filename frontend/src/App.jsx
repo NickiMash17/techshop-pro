@@ -3,6 +3,7 @@ import { Routes, Route } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { CartProvider } from './context/CartContext';
 import { AuthProvider } from './context/AuthContext';
+import { WishlistProvider } from './context/WishlistContext';
 import { ErrorBoundary } from 'react-error-boundary';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
@@ -10,6 +11,7 @@ import MobileEnhancements from './components/common/MobileEnhancements';
 import Home from './pages/Home';
 import Products from './pages/Products';
 import Cart from './components/cart/Cart';
+import Wishlist from './pages/Wishlist';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import Admin from './pages/Admin';
@@ -43,62 +45,65 @@ function App() {
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <NotificationProvider>
           <AuthProvider>
-            <CartProvider>
-              <div className="min-h-screen bg-gradient-to-br from-background to-surface flex flex-col">
-                <MobileEnhancements />
-                <Toaster 
-                  position="top-right"
-                  toastOptions={{
-                    duration: 4000,
-                    style: {
-                      background: 'rgba(30, 41, 59, 0.9)',
-                      color: '#fff',
-                      backdropFilter: 'blur(10px)',
-                      border: '1px solid rgba(255, 255, 255, 0.1)',
-                    },
-                  }}
-                />
-                <Header />
-                <Suspense fallback={<Loading />}>
-                  <main className="flex-1" role="main">
-                    <Routes>
-                      <Route path="/" element={<Home />} />
-                      <Route path="/login" element={<Login />} />
-                      <Route path="/register" element={<Register />} />
-                      <Route path="/products" element={<Products />} />
-                      <Route path="/products/:id" element={<ProductDetail />} />
-                      <Route path="/cart" element={<Cart />} />
-                      <Route
-                        path="/admin"
-                        element={
-                          <ProtectedRoute adminOnly>
-                            <Admin />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/checkout"
-                        element={
-                          <ProtectedRoute>
-                            <Checkout />
-                          </ProtectedRoute>
-                        }
-                      />
-                      <Route
-                        path="/order-success"
-                        element={
-                          <ProtectedRoute>
-                            <OrderSuccess />
-                          </ProtectedRoute>
-                        }
-                      />
-                    </Routes>
-                  </main>
-                </Suspense>
-                <Footer />
-                <ScrollToTop />
-              </div>
-            </CartProvider>
+            <WishlistProvider>
+              <CartProvider>
+                <div className="min-h-screen bg-gradient-to-br from-background to-surface flex flex-col">
+                  <MobileEnhancements />
+                  <Toaster 
+                    position="top-right"
+                    toastOptions={{
+                      duration: 4000,
+                      style: {
+                        background: 'rgba(30, 41, 59, 0.9)',
+                        color: '#fff',
+                        backdropFilter: 'blur(10px)',
+                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                      },
+                    }}
+                  />
+                  <Header />
+                  <Suspense fallback={<Loading />}>
+                    <main className="flex-1" role="main">
+                      <Routes>
+                        <Route path="/" element={<Home />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/products" element={<Products />} />
+                        <Route path="/products/:id" element={<ProductDetail />} />
+                        <Route path="/cart" element={<Cart />} />
+                        <Route path="/wishlist" element={<Wishlist />} />
+                        <Route
+                          path="/admin"
+                          element={
+                            <ProtectedRoute adminOnly>
+                              <Admin />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/checkout"
+                          element={
+                            <ProtectedRoute>
+                              <Checkout />
+                            </ProtectedRoute>
+                          }
+                        />
+                        <Route
+                          path="/order-success"
+                          element={
+                            <ProtectedRoute>
+                              <OrderSuccess />
+                            </ProtectedRoute>
+                          }
+                        />
+                      </Routes>
+                    </main>
+                  </Suspense>
+                  <Footer />
+                  <ScrollToTop />
+                </div>
+              </CartProvider>
+            </WishlistProvider>
           </AuthProvider>
         </NotificationProvider>
       </ErrorBoundary>

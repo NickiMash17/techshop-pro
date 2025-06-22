@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import toast from 'react-hot-toast';
+import LazyImage from '../common/LazyImage';
 
 const ProductComparison = ({ isOpen, onClose, products = [] }) => {
   const { addToCart } = useCart();
@@ -181,7 +182,7 @@ const ProductComparison = ({ isOpen, onClose, products = [] }) => {
 
                         {/* Product Image */}
                         <div className="w-full h-32 mb-4 rounded-lg overflow-hidden">
-                          <img
+                          <LazyImage
                             src={product.image}
                             alt={product.name}
                             className="w-full h-full object-cover"
