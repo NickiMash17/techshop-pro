@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
 
 const MOCK_PRODUCTS = {
   '1': {
@@ -115,98 +116,120 @@ const ProductDetail = () => {
   }
 
   return (
-    <motion.div 
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      className="container mx-auto px-4 py-8"
-    >
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-        {/* Image Gallery */}
-        <div className="space-y-4">
-          <div className="aspect-square bg-surface/50 rounded-2xl overflow-hidden">
-            <img
-              src={product.images[selectedImage]}
-              alt={product.name}
-              className="w-full h-full object-cover"
-            />
-          </div>
-          <div className="flex gap-4">
-            {product.images.map((image, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(index)}
-                className={`w-20 h-20 rounded-lg overflow-hidden border-2 
-                  ${selectedImage === index ? 'border-primary' : 'border-transparent'}`}
-              >
-                <img
-                  src={image}
-                  alt={`${product.name} ${index + 1}`}
-                  className="w-full h-full object-cover"
-                />
-              </button>
-            ))}
-          </div>
-        </div>
+    <div className="container-responsive section-padding">
+      <div className="space-y-8">
+        {/* Breadcrumb */}
+        <nav className="flex items-center space-x-2 text-sm text-gray-400">
+          <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+          <span>/</span>
+          <Link to="/products" className="hover:text-primary transition-colors">Products</Link>
+          <span>/</span>
+          <span className="text-white">{product.name}</span>
+        </nav>
 
-        {/* Product Info */}
-        <div className="space-y-6">
-          <div>
-            <h1 className="text-3xl font-bold">{product.name}</h1>
-            <p className="text-2xl font-bold text-primary mt-2">${product.price}</p>
-          </div>
-
-          <p className="text-gray-400">{product.description}</p>
-
-          {/* Specs */}
+        {/* Product Details */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {/* Product Image */}
           <div className="space-y-4">
-            <h3 className="text-lg font-semibold">Specifications</h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              {product.specs.map((spec, index) => (
-                <div key={index} className="bg-surface/50 p-4 rounded-xl">
-                  <span className="text-sm text-gray-400">{spec.label}</span>
-                  <p className="font-medium">{spec.value}</p>
-                </div>
-              ))}
+            <div className="aspect-square bg-surface/30 rounded-2xl overflow-hidden">
+              <img 
+                src={product.images[selectedImage]} 
+                alt={product.name}
+                className="w-full h-full object-cover"
+              />
             </div>
           </div>
 
-          {/* Quantity Selector */}
-          <div className="space-y-4">
+          {/* Product Info */}
+          <div className="space-y-6">
+            <div>
+              <h1 className="text-3xl font-bold text-white mb-2">{product.name}</h1>
+              <p className="text-gray-400 text-lg">{product.description}</p>
+            </div>
+
+            {/* Price */}
             <div className="flex items-center gap-4">
-              <div className="flex items-center bg-surface/50 rounded-lg">
-                <button
-                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="px-4 py-2 hover:bg-surface/70"
-                >
-                  -
-                </button>
-                <span className="px-4 py-2">{quantity}</span>
-                <button
-                  onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
-                  className="px-4 py-2 hover:bg-surface/70"
-                >
-                  +
-                </button>
+              <span className="text-3xl font-bold text-primary">${product.price}</span>
+              {product.originalPrice && (
+                <span className="text-xl text-gray-500 line-through">${product.originalPrice}</span>
+              )}
+            </div>
+
+            {/* Rating */}
+            <div className="flex items-center gap-2">
+              <div className="flex items-center">
+                {[...Array(5)].map((_, i) => (
+                  <svg
+                    key={i}
+                    className={`w-5 h-5 ${
+                      i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-600'
+                    }`}
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                  >
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
               </div>
-              <span className="text-sm text-gray-400">
-                {product.stock} units available
+              <span className="text-gray-400">({product.reviews} reviews)</span>
+            </div>
+
+            {/* Stock Status */}
+            <div className="flex items-center gap-2">
+              <span className={`w-3 h-3 rounded-full ${
+                product.stock > 0 ? 'bg-green-500' : 'bg-red-500'
+              }`}></span>
+              <span className="text-gray-400">
+                {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
               </span>
             </div>
 
-            <button
-              onClick={handleAddToCart}
-              disabled={isAdding}
-              className={`w-full py-3 bg-gradient-to-r from-primary to-secondary 
-                rounded-lg font-medium transition-all duration-300
-                ${isAdding ? 'opacity-70 cursor-not-allowed' : 'hover:opacity-90'}`}
-            >
-              {isAdding ? 'Adding to Cart...' : 'Add to Cart'}
-            </button>
+            {/* Add to Cart */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <div className="flex items-center border border-white/10 rounded-lg">
+                  <button
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="px-4 py-2 hover:bg-surface/50 transition-colors"
+                  >
+                    -
+                  </button>
+                  <span className="px-4 py-2 border-x border-white/10">{quantity}</span>
+                  <button
+                    onClick={() => setQuantity(quantity + 1)}
+                    className="px-4 py-2 hover:bg-surface/50 transition-colors"
+                  >
+                    +
+                  </button>
+                </div>
+                <button
+                  onClick={handleAddToCart}
+                  disabled={product.stock === 0}
+                  className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+                </button>
+              </div>
+            </div>
+
+            {/* Product Details */}
+            <div className="space-y-4">
+              <h3 className="text-lg font-semibold text-white">Product Details</h3>
+              <div className="space-y-2 text-gray-400">
+                <div className="flex justify-between">
+                  <span>Category:</span>
+                  <span className="text-white">{product.category}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span>SKU:</span>
+                  <span className="text-white">#{product.id}</span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

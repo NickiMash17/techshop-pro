@@ -35,20 +35,45 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCartItems([]);
-    toast.success('Cart cleared');
+    toast.success('Cart cleared', {
+      duration: 3000,
+      position: 'top-right',
+      style: {
+        background: '#1f2937',
+        color: '#fff',
+        border: '1px solid #374151',
+      },
+    });
   };
 
   const addToCart = (product, quantity = 1) => {
+    console.log('addToCart called with:', product.name, 'quantity:', quantity);
     setCartItems(prevItems => {
       const existingItem = prevItems.find(item => item.id === product.id);
       if (existingItem) {
         const newQuantity = existingItem.quantity + quantity;
         if (newQuantity > (product.stock || 999)) {
-          toast.error(`Only ${product.stock} items available in stock`);
+          toast.error(`Only ${product.stock} items available in stock`, {
+            duration: 3000,
+            position: 'top-right',
+            style: {
+              background: '#1f2937',
+              color: '#fff',
+              border: '1px solid #374151',
+            },
+          });
           return prevItems;
         }
         
-        toast.success(`Updated ${product.name} quantity`);
+        toast.success(`Updated ${product.name} quantity`, {
+          duration: 3000,
+          position: 'top-right',
+          style: {
+            background: '#1f2937',
+            color: '#fff',
+            border: '1px solid #374151',
+          },
+        });
         return prevItems.map(item =>
           item.id === product.id
             ? { ...item, quantity: newQuantity }
@@ -57,11 +82,27 @@ export const CartProvider = ({ children }) => {
       }
       
       if (quantity > (product.stock || 999)) {
-        toast.error(`Only ${product.stock} items available in stock`);
+        toast.error(`Only ${product.stock} items available in stock`, {
+          duration: 3000,
+          position: 'top-right',
+          style: {
+            background: '#1f2937',
+            color: '#fff',
+            border: '1px solid #374151',
+          },
+        });
         return prevItems;
       }
       
-      toast.success(`${product.name} added to cart`);
+      toast.success(`${product.name} added to cart`, {
+        duration: 3000,
+        position: 'top-right',
+        style: {
+          background: '#1f2937',
+          color: '#fff',
+          border: '1px solid #374151',
+        },
+      });
       return [...prevItems, { ...product, quantity }];
     });
   };
@@ -70,7 +111,15 @@ export const CartProvider = ({ children }) => {
     setCartItems(prevItems => {
       const item = prevItems.find(item => item.id === productId);
       if (item) {
-        toast.success(`${item.name} removed from cart`);
+        toast.success(`${item.name} removed from cart`, {
+          duration: 3000,
+          position: 'top-right',
+          style: {
+            background: '#1f2937',
+            color: '#fff',
+            border: '1px solid #374151',
+          },
+        });
       }
       return prevItems.filter(item => item.id !== productId);
     });
@@ -85,7 +134,15 @@ export const CartProvider = ({ children }) => {
     setCartItems(prevItems => {
       const item = prevItems.find(item => item.id === productId);
       if (item && newQuantity > (item.stock || 999)) {
-        toast.error(`Only ${item.stock} items available in stock`);
+        toast.error(`Only ${item.stock} items available in stock`, {
+          duration: 3000,
+          position: 'top-right',
+          style: {
+            background: '#1f2937',
+            color: '#fff',
+            border: '1px solid #374151',
+          },
+        });
         return prevItems;
       }
       
