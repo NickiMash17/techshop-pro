@@ -1,6 +1,8 @@
 const Order = require('../models/Order');
 const Product = require('../models/Product');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const User = require('../models/User');
+const nodemailer = require('nodemailer');
 
 // Create new order
 exports.createOrder = async (req, res) => {
@@ -60,6 +62,26 @@ exports.createOrder = async (req, res) => {
 
     await order.save();
 
+    // Send order confirmation email
+    const user = await User.findById(req.user.id);
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+    let itemsList = orderItems.map(item => `- ${item.quantity} x Product ID: ${item.product} ($${item.price})`).join('\n');
+    const mailOptions = {
+      to: user.email,
+      from: process.env.EMAIL_USER,
+      subject: 'Order Confirmation',
+      text: `Thank you for your order!\n\nOrder ID: ${order._id}\nTotal: $${order.totalAmount}\nItems:\n${itemsList}\n\nWe will notify you when your order ships.`
+    };
+    await transporter.sendMail(mailOptions);
+
     res.status(201).json({
       order,
       clientSecret: paymentIntent.client_secret
@@ -108,17 +130,32 @@ exports.getOrderById = async (req, res) => {
 exports.updateOrderStatus = async (req, res) => {
   try {
     const { status } = req.body;
-    
     const order = await Order.findByIdAndUpdate(
       req.params.id,
       { status },
       { new: true }
-    ).populate('items.product');
-
+    ).populate('items.product user');
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
     }
-
+    // Send status update email
+    const user = order.user;
+    const transporter = nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      secure: false,
+      auth: {
+        user: process.env.EMAIL_USER,
+        pass: process.env.EMAIL_PASS
+      }
+    });
+    const mailOptions = {
+      to: user.email,
+      from: process.env.EMAIL_USER,
+      subject: `Order Status Update: ${status}`,
+      text: `Hello ${user.name},\n\nYour order (ID: ${order._id}) status has been updated to: ${status}.\n\nThank you for shopping with us!`
+    };
+    await transporter.sendMail(mailOptions);
     res.json(order);
   } catch (error) {
     res.status(400).json({ error: error.message });

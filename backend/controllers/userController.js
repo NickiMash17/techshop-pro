@@ -109,4 +109,42 @@ exports.deleteUser = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
+};
+
+// Add product to wishlist
+exports.addToWishlist = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user.wishlist.includes(req.params.productId)) {
+      user.wishlist.push(req.params.productId);
+      await user.save();
+    }
+    res.json({ message: 'Product added to wishlist' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Remove product from wishlist
+exports.removeFromWishlist = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    user.wishlist = user.wishlist.filter(
+      pid => pid.toString() !== req.params.productId
+    );
+    await user.save();
+    res.json({ message: 'Product removed from wishlist' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// Get user's wishlist
+exports.getWishlist = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).populate('wishlist');
+    res.json(user.wishlist);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
 }; 

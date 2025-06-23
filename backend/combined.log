@@ -26,3 +26,13 @@
 {"level":"info","message":{"duration":"4881.31ms","ip":"127.0.0.1","method":"POST","status":200,"url":"/forgot-password"},"timestamp":"2025-06-23T11:31:13.008Z"}
 {"level":"info","message":{"duration":"403.69ms","ip":"127.0.0.1","method":"POST","status":200,"url":"/reset-password"},"timestamp":"2025-06-23T11:35:59.904Z"}
 {"level":"info","message":{"duration":"336.60ms","ip":"127.0.0.1","method":"POST","status":200,"url":"/login"},"timestamp":"2025-06-23T12:35:12.874Z"}
+{"level":"info","message":{"duration":"4816.36ms","ip":"127.0.0.1","method":"POST","status":201,"url":"/"},"timestamp":"2025-06-23T12:55:03.129Z"}
+{"level":"info","message":{"duration":"54.77ms","ip":"127.0.0.1","method":"PUT","status":200,"url":"/68592684cfd3ae0be47a9667"},"timestamp":"2025-06-23T13:27:09.985Z"}
+{"level":"info","message":{"duration":"2.93ms","ip":"127.0.0.1","method":"GET","status":500,"url":"/featured"},"timestamp":"2025-06-23T13:27:15.826Z"}
+{"level":"info","message":{"duration":"15.78ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/featured"},"timestamp":"2025-06-23T13:35:44.756Z"}
+{"level":"info","message":{"duration":"8.00ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/search?search=Samsung&featured=true&minPrice=1000&maxPrice=2000"},"timestamp":"2025-06-23T13:35:49.901Z"}
+{"level":"info","message":{"duration":"3908.18ms","ip":"127.0.0.1","method":"PUT","status":200,"url":"/68594ea3dae692a29c55e1f7/status"},"timestamp":"2025-06-23T13:39:18.846Z"}
+{"level":"info","message":{"duration":"64.37ms","ip":"127.0.0.1","method":"POST","status":201,"url":"/68592684cfd3ae0be47a9667/reviews"},"timestamp":"2025-06-23T13:47:38.482Z"}
+{"level":"info","message":{"duration":"17.32ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/68592684cfd3ae0be47a9667/reviews"},"timestamp":"2025-06-23T13:47:49.191Z"}
+{"level":"info","message":{"duration":"48.66ms","ip":"127.0.0.1","method":"POST","status":200,"url":"/wishlist/68592684cfd3ae0be47a9667"},"timestamp":"2025-06-23T13:49:45.479Z"}
+{"level":"info","message":{"duration":"23.33ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/wishlist"},"timestamp":"2025-06-23T13:49:57.959Z"}

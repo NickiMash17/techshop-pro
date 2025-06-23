@@ -8,13 +8,19 @@ const {
   createProduct,
   updateProduct,
   deleteProduct,
-  getProductsByCategory
+  getProductsByCategory,
+  getFeaturedProducts,
+  advancedSearch,
+  addReview,
+  getReviews
 } = require('../controllers/productController');
 
 // Public routes
-router.get('/', getAllProducts);
+router.get('/featured', getFeaturedProducts);
+router.get('/search', advancedSearch);
 router.get('/category/:category', getProductsByCategory);
 router.get('/:id', getProductById);
+router.get('/:id/reviews', getReviews);
 
 // Protected routes (require authentication)
 router.use(protect);
@@ -23,5 +29,6 @@ router.use(protect);
 router.post('/', admin, createProduct);
 router.put('/:id', admin, updateProduct);
 router.delete('/:id', admin, deleteProduct);
+router.post('/:id/reviews', addReview);
 
 module.exports = router;
