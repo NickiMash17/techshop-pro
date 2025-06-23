@@ -7,6 +7,7 @@ import HeroSection from '../components/common/HeroSection';
 import FeaturesShowcase from '../components/common/FeaturesShowcase';
 import TestimonialsSection from '../components/common/TestimonialsSection';
 import { formatCurrency } from '../utils/currency';
+import { productsAPI } from '../utils/api';
 
 const Home = () => {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -17,62 +18,39 @@ const Home = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Simulate API call with mock data
-    const mockProducts = [
-      {
-        id: '1',
-        name: 'Premium Wireless Headphones',
-        description: 'High-quality sound with noise cancellation',
-        price: 199.99,
-        originalPrice: 249.99,
-        image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
-        category: 'Audio',
-        stock: 15,
-        rating: 4.8,
-        reviews: 124
-      },
-      {
-        id: '2',
-        name: 'Smart Watch Pro',
-        description: 'Track your fitness and stay connected',
-        price: 299.99,
-        originalPrice: 349.99,
-        image: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500',
-        category: 'Wearables',
-        stock: 8,
-        rating: 4.6,
-        reviews: 89
-      },
-      {
-        id: '3',
-        name: 'Wireless Gaming Mouse',
-        description: 'Precision control for professional gaming',
-        price: 79.99,
-        image: 'https://images.unsplash.com/photo-1527814050087-3793815479db?w=500',
-        category: 'Gaming',
-        stock: 25,
-        rating: 4.9,
-        reviews: 203
-      },
-      {
-        id: '4',
-        name: 'Ultra HD Webcam',
-        description: 'Crystal clear video calls and streaming',
-        price: 129.99,
-        originalPrice: 159.99,
-        image: 'https://images.unsplash.com/photo-1587302912306-cf1ed9c33146?w=500',
-        category: 'Video',
-        stock: 12,
-        rating: 4.7,
-        reviews: 156
+    // Fetch real featured products from backend API
+    const fetchFeaturedProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await productsAPI.getAll({ limit: 4 }); // Get first 4 products as featured
+        console.log('API Response:', response);
+        
+        // Ensure we have an array of products
+        const products = Array.isArray(response.data) ? response.data : 
+                        Array.isArray(response.data.products) ? response.data.products :
+                        Array.isArray(response.data.data) ? response.data.data : [];
+        
+        console.log('Processed products:', products);
+        
+        // Log the first product to see its structure
+        if (products.length > 0) {
+          console.log('First product structure:', products[0]);
+          console.log('Available keys:', Object.keys(products[0]));
+          console.log('Image field:', products[0].image);
+          console.log('Images field:', products[0].images);
+          console.log('All product fields:', JSON.stringify(products[0], null, 2));
+        }
+        
+        setFeaturedProducts(products);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching featured products:', error);
+        setFeaturedProducts([]); // Set empty array on error
+        setLoading(false);
       }
-    ];
+    };
 
-    // Simulate loading delay
-    setTimeout(() => {
-      setFeaturedProducts(mockProducts);
-      setLoading(false);
-    }, 500);
+    fetchFeaturedProducts();
   }, []);
 
   const categories = [
@@ -439,9 +417,9 @@ const Home = () => {
                 </motion.div>
               ))
             ) : (
-              featuredProducts.map((product, index) => (
+              Array.isArray(featuredProducts) && featuredProducts.map((product, index) => (
                 <motion.div
-                  key={product.id}
+                  key={product.id || product._id || index}
                   initial={{ opacity: 0, y: 50 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}

@@ -27,7 +27,8 @@ export const WishlistProvider = ({ children }) => {
 
   const addToWishlist = (product) => {
     setWishlistItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === product.id);
+      const productId = product.id || product._id;
+      const existingItem = prevItems.find(item => (item.id || item._id) === productId);
       if (existingItem) {
         toast.success(`${product.name} is already in your wishlist`, {
           duration: 3000,
@@ -56,7 +57,7 @@ export const WishlistProvider = ({ children }) => {
 
   const removeFromWishlist = (productId) => {
     setWishlistItems(prevItems => {
-      const item = prevItems.find(item => item.id === productId);
+      const item = prevItems.find(item => (item.id || item._id) === productId);
       if (item) {
         toast.success(`${item.name} removed from wishlist`, {
           duration: 3000,
@@ -68,7 +69,7 @@ export const WishlistProvider = ({ children }) => {
           },
         });
       }
-      return prevItems.filter(item => item.id !== productId);
+      return prevItems.filter(item => (item.id || item._id) !== productId);
     });
   };
 
@@ -86,7 +87,7 @@ export const WishlistProvider = ({ children }) => {
   };
 
   const isInWishlist = (productId) => {
-    return wishlistItems.some(item => item.id === productId);
+    return wishlistItems.some(item => (item.id || item._id) === productId);
   };
 
   const getWishlistCount = () => {
@@ -98,7 +99,7 @@ export const WishlistProvider = ({ children }) => {
   };
 
   const moveToCart = (productId, addToCart) => {
-    const item = wishlistItems.find(item => item.id === productId);
+    const item = wishlistItems.find(item => (item.id || item._id) === productId);
     if (item) {
       addToCart(item, 1);
       removeFromWishlist(productId);

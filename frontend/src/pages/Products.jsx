@@ -7,7 +7,7 @@ import ProductComparison from '../components/products/ProductComparison';
 import PerformanceMonitor from '../components/common/PerformanceMonitor';
 import AdvancedSearchBar from '../components/search/AdvancedSearchBar';
 import AdvancedFilters from '../components/filters/AdvancedFilters';
-import { MOCK_PRODUCTS } from '../utils/productData';
+import { productsAPI } from '../utils/api';
 import { toast } from 'react-hot-toast';
 
 const Products = () => {
@@ -16,7 +16,7 @@ const Products = () => {
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [filters, setFilters] = useState({
-    priceRange: [0, 500],
+    priceRange: [0, 3000],
     categories: [],
     brands: [],
     ratings: [],
@@ -69,15 +69,39 @@ const Products = () => {
   }, [filters.categories, searchQuery, setSearchParams]);
 
   useEffect(() => {
-    // Simulate API call with mock data
-    setTimeout(() => {
-      setProducts(MOCK_PRODUCTS);
-      setLoading(false);
-    }, 500);
+    // Fetch real products from backend API
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await productsAPI.getAll();
+        console.log('Products API Response:', response);
+        
+        // Ensure we have an array of products
+        const products = Array.isArray(response.data) ? response.data : 
+                        Array.isArray(response.data.products) ? response.data.products :
+                        Array.isArray(response.data.data) ? response.data.data : [];
+        
+        console.log('Processed products:', products);
+        setProducts(products);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        toast.error('Failed to load products. Please try again.');
+        setProducts([]); // Set empty array on error
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
   }, []);
 
   // Filter and sort products with advanced filtering
   const filteredAndSortedProducts = useMemo(() => {
+    // Ensure products is an array
+    if (!Array.isArray(products)) {
+      return [];
+    }
+    
     let filtered = products.filter(product => {
       // Search filter
       const matchesSearch = !searchQuery || 
@@ -330,7 +354,7 @@ const Products = () => {
               >
                 {filteredAndSortedProducts.map((product, index) => (
                   <ProductCard 
-                    key={product.id} 
+                    key={product.id || product._id || index} 
                     product={product} 
                     index={index}
                     viewMode={viewMode}

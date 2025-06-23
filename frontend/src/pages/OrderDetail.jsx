@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
+import { formatCurrency } from '../utils/currency';
 
 const statusStyles = {
   'Pending': 'bg-yellow-500/20 text-yellow-500',
@@ -69,7 +70,7 @@ export default function OrderDetail() {
           <h3 className="font-semibold mb-2">Payment Info</h3>
           <div className="text-sm text-gray-300">
             <div>Method: {order.paymentMethod}</div>
-            <div>Total: <span className="font-bold">R{order.totalPrice?.toFixed(2) || order.total?.toFixed(2) || '0.00'}</span></div>
+            <div>Total: <span className="font-bold">{formatCurrency(order.totalAmount || 0, false)}</span></div>
             <div>Status: {order.isPaid ? 'Paid' : 'Unpaid'}</div>
           </div>
         </div>
@@ -93,8 +94,8 @@ export default function OrderDetail() {
                   <span>{item.name}</span>
                 </td>
                 <td className="p-2">{item.quantity || item.qty}</td>
-                <td className="p-2">R{item.price?.toFixed(2)}</td>
-                <td className="p-2">R{((item.price || 0) * (item.quantity || item.qty || 1)).toFixed(2)}</td>
+                <td className="p-2">{formatCurrency(item.price || 0, true)}</td>
+                <td className="p-2">{formatCurrency((item.price || 0) * (item.quantity || item.qty || 1), true)}</td>
               </tr>
             ))}
           </tbody>

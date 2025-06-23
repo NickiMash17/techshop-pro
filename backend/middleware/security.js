@@ -28,8 +28,8 @@ const rateLimits = {
   }),
   auth: rateLimit({
     windowMs: 60 * 60 * 1000,
-    max: 5,
-    message: { status: 'error', message: 'Too many login attempts' }
+    max: 20,
+    message: { status: 'error', message: 'Too many login attempts. Please try again later.' }
   }),
   products: rateLimit({
     windowMs: 15 * 60 * 1000,

@@ -49,7 +49,10 @@ export const CartProvider = ({ children }) => {
   const addToCart = (product, quantity = 1) => {
     console.log('addToCart called with:', product.name, 'quantity:', quantity);
     setCartItems(prevItems => {
-      const existingItem = prevItems.find(item => item.id === product.id);
+      // Handle both id and _id fields
+      const productId = product.id || product._id;
+      const existingItem = prevItems.find(item => (item.id || item._id) === productId);
+      
       if (existingItem) {
         const newQuantity = existingItem.quantity + quantity;
         if (newQuantity > (product.stock || 999)) {
@@ -75,7 +78,7 @@ export const CartProvider = ({ children }) => {
           },
         });
         return prevItems.map(item =>
-          item.id === product.id
+          (item.id || item._id) === productId
             ? { ...item, quantity: newQuantity }
             : item
         );
@@ -109,7 +112,7 @@ export const CartProvider = ({ children }) => {
 
   const removeFromCart = (productId) => {
     setCartItems(prevItems => {
-      const item = prevItems.find(item => item.id === productId);
+      const item = prevItems.find(item => (item.id || item._id) === productId);
       if (item) {
         toast.success(`${item.name} removed from cart`, {
           duration: 3000,
@@ -121,7 +124,7 @@ export const CartProvider = ({ children }) => {
           },
         });
       }
-      return prevItems.filter(item => item.id !== productId);
+      return prevItems.filter(item => (item.id || item._id) !== productId);
     });
   };
 
@@ -132,7 +135,7 @@ export const CartProvider = ({ children }) => {
     }
     
     setCartItems(prevItems => {
-      const item = prevItems.find(item => item.id === productId);
+      const item = prevItems.find(item => (item.id || item._id) === productId);
       if (item && newQuantity > (item.stock || 999)) {
         toast.error(`Only ${item.stock} items available in stock`, {
           duration: 3000,
@@ -147,7 +150,7 @@ export const CartProvider = ({ children }) => {
       }
       
       return prevItems.map(item =>
-        item.id === productId
+        (item.id || item._id) === productId
           ? { ...item, quantity: newQuantity }
           : item
       );
@@ -167,11 +170,11 @@ export const CartProvider = ({ children }) => {
   };
 
   const isInCart = (productId) => {
-    return cartItems.some(item => item.id === productId);
+    return cartItems.some(item => (item.id || item._id) === productId);
   };
 
   const getItemQuantity = (productId) => {
-    const item = cartItems.find(item => item.id === productId);
+    const item = cartItems.find(item => (item.id || item._id) === productId);
     return item ? item.quantity : 0;
   };
 

@@ -18,9 +18,10 @@ exports.createOrder = async (req, res) => {
     const orderItems = [];
 
     for (const item of items) {
-      const product = await Product.findById(item.product);
+      const productId = item.productId || item.product;
+      const product = await Product.findById(productId);
       if (!product) {
-        return res.status(404).json({ message: `Product ${item.product} not found` });
+        return res.status(404).json({ message: `Product ${productId} not found` });
       }
       
       if (product.stock < item.quantity) {
@@ -31,21 +32,25 @@ exports.createOrder = async (req, res) => {
 
       totalAmount += product.price * item.quantity;
       orderItems.push({
-        product: item.product,
+        product: productId,
         quantity: item.quantity,
         price: product.price
       });
 
       // Update stock
-      await Product.findByIdAndUpdate(item.product, {
+      await Product.findByIdAndUpdate(productId, {
         $inc: { stock: -item.quantity }
       });
     }
 
+    // Convert USD total to ZAR (approximate rate)
+    const USD_TO_ZAR_RATE = 18.5;
+    const totalAmountZAR = totalAmount * USD_TO_ZAR_RATE;
+
     // Create Stripe payment intent
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(totalAmount * 100), // Convert to cents
-      currency: 'usd',
+      amount: Math.round(totalAmountZAR * 100), // Convert ZAR to cents
+      currency: 'zar', // Changed from 'usd' to 'zar' for South African Rand
       metadata: {
         userId: req.user.id
       }
@@ -54,7 +59,7 @@ exports.createOrder = async (req, res) => {
     const order = new Order({
       user: req.user.id,
       items: orderItems,
-      totalAmount,
+      totalAmount: totalAmountZAR, // Store total in ZAR
       paymentMethod,
       shippingAddress,
       stripePaymentIntentId: paymentIntent.id
@@ -98,7 +103,7 @@ exports.getUserOrders = async (req, res) => {
       .populate('items.product')
       .sort({ createdAt: -1 });
     
-    res.json(orders);
+    res.json({ orders });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }

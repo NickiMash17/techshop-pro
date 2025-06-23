@@ -9,7 +9,7 @@ const AdvancedFilters = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [filters, setFilters] = useState({
-    priceRange: [0, 500],
+    priceRange: [0, 3000],
     categories: [],
     brands: [],
     ratings: [],

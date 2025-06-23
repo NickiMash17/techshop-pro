@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Updated Product Images</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .image-test { margin: 20px 0; padding: 10px; border: 1px solid #ccc; }
+        img { max-width: 200px; height: auto; margin: 10px; }
+        .success { color: green; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Testing Updated Product Images</h1>
+    
+    <div class="image-test">
+        <h3>iPhone 15 Pro Max</h3>
+        <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=800&h=800&fit=crop&crop=center&q=80" 
+             alt="iPhone 15 Pro Max" 
+             onload="this.parentElement.innerHTML += '<p class=&quot;success&quot;>✅ Image loaded successfully!</p>'"
+             onerror="this.parentElement.innerHTML += '<p class=&quot;error&quot;>❌ Image failed to load</p>'">
+    </div>
+    
+    <div class="image-test">
+        <h3>Apple Watch Series 9</h3>
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&h=800&fit=crop&crop=center&q=80" 
+             alt="Apple Watch Series 9"
+             onload="this.parentElement.innerHTML += '<p class=&quot;success&quot;>✅ Image loaded successfully!</p>'"
+             onerror="this.parentElement.innerHTML += '<p class=&quot;error&quot;>❌ Image failed to load</p>'">
+    </div>
+    
+    <div class="image-test">
+        <h3>Samsung Galaxy S24 Ultra</h3>
+        <img src="https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=800&h=800&fit=crop&crop=center&q=80" 
+             alt="Samsung Galaxy S24 Ultra"
+             onload="this.parentElement.innerHTML += '<p class=&quot;success&quot;>✅ Image loaded successfully!</p>'"
+             onerror="this.parentElement.innerHTML += '<p class=&quot;error&quot;>❌ Image failed to load</p>'">
+    </div>
+    
+    <div class="image-test">
+        <h3>MacBook Pro 16" M2</h3>
+        <img src="https://images.unsplash.com/photo-1517336714731-48f1c0c0c0c0?w=800&h=800&fit=crop&crop=center&q=80" 
+             alt="MacBook Pro 16 M2"
+             onload="this.parentElement.innerHTML += '<p class=&quot;success&quot;>✅ Image loaded successfully!</p>'"
+             onerror="this.parentElement.innerHTML += '<p class=&quot;error&quot;>❌ Image failed to load</p>'">
+    </div>
+    
+    <h2>🎯 Next Steps:</h2>
+    <ol>
+        <li>If you see ✅ success messages above, the images are working</li>
+        <li>Go back to your app at <a href="http://localhost:5174">http://localhost:5174</a></li>
+        <li>Hard refresh with <strong>Ctrl+Shift+R</strong></li>
+        <li>You should now see the updated images!</li>
+    </ol>
+    
+    <h2>🔧 If images still don't show:</h2>
+    <ul>
+        <li>Clear browser cache completely</li>
+        <li>Try incognito/private browsing mode</li>
+        <li>Check browser developer tools for errors</li>
+        <li>Make sure your backend server is running on port 3001</li>
+    </ul>
+</body>
+</html> 

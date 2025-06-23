@@ -1,9 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import { Routes, Route, Link } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
-import { CartProvider } from './context/CartContext';
-import { AuthProvider } from './context/AuthContext';
-import { WishlistProvider } from './context/WishlistContext';
 import { ErrorBoundary } from 'react-error-boundary';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
@@ -26,6 +23,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import ResetPassword from './pages/ResetPassword';
 import Orders from './pages/Orders';
 import OrderDetail from './pages/OrderDetail';
+import { initializePerformance } from './utils/performance';
 import './styles/globals.css';
 import { Toaster } from 'react-hot-toast';
 
@@ -73,6 +71,11 @@ const Loading = () => (
 );
 
 function App() {
+  // Initialize performance optimizations
+  useEffect(() => {
+    initializePerformance();
+  }, []);
+
   // Global error handling
   useEffect(() => {
     const handleUnhandledRejection = (event) => {
@@ -105,85 +108,79 @@ function App() {
         }}
       >
         <NotificationProvider>
-          <AuthProvider>
-            <WishlistProvider>
-              <CartProvider>
-                <div className="min-h-screen bg-gradient-to-br from-background to-surface flex flex-col">
-                  {/* Temporarily disabled to fix infinite loop errors */}
-                  {/* <MobileEnhancements /> */}
-                  <Toaster 
-                    position="top-right"
-                    toastOptions={{
-                      duration: 4000,
-                      style: {
-                        background: 'rgba(30, 41, 59, 0.9)',
-                        color: '#fff',
-                        backdropFilter: 'blur(10px)',
-                        border: '1px solid rgba(255, 255, 255, 0.1)',
-                      },
-                    }}
+          <div className="min-h-screen bg-gradient-to-br from-background to-surface flex flex-col">
+            {/* Temporarily disabled to fix infinite loop errors */}
+            {/* <MobileEnhancements /> */}
+            <Toaster 
+              position="top-right"
+              toastOptions={{
+                duration: 4000,
+                style: {
+                  background: 'rgba(30, 41, 59, 0.9)',
+                  color: '#fff',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                },
+              }}
+            />
+            <Header />
+            <Suspense fallback={<Loading />}>
+              <main className="flex-1" role="main">
+                <Routes>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
+                  <Route path="/products" element={<Products />} />
+                  <Route path="/products/:id" element={<ProductDetail />} />
+                  <Route path="/cart" element={<Cart />} />
+                  <Route path="/wishlist" element={<Wishlist />} />
+                  <Route
+                    path="/admin"
+                    element={
+                      <ProtectedRoute adminOnly>
+                        <Admin />
+                      </ProtectedRoute>
+                    }
                   />
-                  <Header />
-                  <Suspense fallback={<Loading />}>
-                    <main className="flex-1" role="main">
-                      <Routes>
-                        <Route path="/" element={<Home />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/products" element={<Products />} />
-                        <Route path="/products/:id" element={<ProductDetail />} />
-                        <Route path="/cart" element={<Cart />} />
-                        <Route path="/wishlist" element={<Wishlist />} />
-                        <Route
-                          path="/admin"
-                          element={
-                            <ProtectedRoute adminOnly>
-                              <Admin />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="/checkout"
-                          element={
-                            <ProtectedRoute>
-                              <Checkout />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route
-                          path="/order-success"
-                          element={
-                            <ProtectedRoute>
-                              <OrderSuccess />
-                            </ProtectedRoute>
-                          }
-                        />
-                        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-                        <Route path="/forgot-password" element={<ForgotPassword />} />
-                        <Route path="/reset-password" element={<ResetPassword />} />
-                        <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
-                        <Route path="/orders/:id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
-                        {/* Catch-all route for other pages */}
-                        <Route path="*" element={
-                          <div className="container-responsive section-padding">
-                            <div className="text-center py-20">
-                              <h1 className="text-4xl font-bold text-white mb-4">404 - Page Not Found</h1>
-                              <p className="text-gray-400 mb-8">The page you're looking for doesn't exist.</p>
-                              <Link to="/" className="btn-primary">
-                                Go Back Home
-                              </Link>
-                            </div>
-                          </div>
-                        } />
-                      </Routes>
-                    </main>
-                  </Suspense>
-                  <Footer />
-                  <ScrollToTop />
-                </div>
-              </CartProvider>
-            </WishlistProvider>
-          </AuthProvider>
+                  <Route
+                    path="/checkout"
+                    element={
+                      <ProtectedRoute>
+                        <Checkout />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route
+                    path="/order-success"
+                    element={
+                      <ProtectedRoute>
+                        <OrderSuccess />
+                      </ProtectedRoute>
+                    }
+                  />
+                  <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                  <Route path="/forgot-password" element={<ForgotPassword />} />
+                  <Route path="/reset-password" element={<ResetPassword />} />
+                  <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                  <Route path="/orders/:id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
+                  {/* Catch-all route for other pages */}
+                  <Route path="*" element={
+                    <div className="container-responsive section-padding">
+                      <div className="text-center py-20">
+                        <h1 className="text-4xl font-bold text-white mb-4">404 - Page Not Found</h1>
+                        <p className="text-gray-400 mb-8">The page you're looking for doesn't exist.</p>
+                        <Link to="/" className="btn-primary">
+                          Go Back Home
+                        </Link>
+                      </div>
+                    </div>
+                  } />
+                </Routes>
+              </main>
+            </Suspense>
+            <Footer />
+            <ScrollToTop />
+          </div>
         </NotificationProvider>
       </ErrorBoundary>
     </HelmetProvider>

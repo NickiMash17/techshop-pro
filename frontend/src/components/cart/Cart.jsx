@@ -48,9 +48,9 @@ const Cart = () => {
           {/* Cart Items */}
           <div className="lg:col-span-2 space-y-4">
             {cartItems.map(item => (
-              <div key={item.id} className="flex items-center gap-4 bg-surface/50 p-4 rounded-xl">
+              <div key={item.id || item._id} className="flex items-center gap-4 bg-surface/50 p-4 rounded-xl">
                 <img 
-                  src={item.images?.[0] || item.image} 
+                  src={item.image || item.imageUrl || item.images?.[0]} 
                   alt={item.name} 
                   className="w-24 h-24 object-cover rounded-lg"
                 />
@@ -61,7 +61,7 @@ const Cart = () => {
                     <button
                       onClick={() => {
                         const newQuantity = item.quantity - 1;
-                        updateQuantity(item.id, newQuantity);
+                        updateQuantity(item.id || item._id, newQuantity);
                         if (newQuantity > 0) {
                           toast.success(`Quantity updated to ${newQuantity}`, {
                             duration: 1500,
@@ -82,7 +82,7 @@ const Cart = () => {
                     <button
                       onClick={() => {
                         const newQuantity = item.quantity + 1;
-                        updateQuantity(item.id, newQuantity);
+                        updateQuantity(item.id || item._id, newQuantity);
                         toast.success(`Quantity updated to ${newQuantity}`, {
                           duration: 1500,
                           position: 'top-right',
@@ -103,7 +103,7 @@ const Cart = () => {
                   <p className="font-semibold text-white">{formatCurrency((item.price * item.quantity).toFixed(2))}</p>
                   <button
                     onClick={() => {
-                      removeFromCart(item.id);
+                      removeFromCart(item.id || item._id);
                       toast.success(`${item.name} removed from cart`, {
                         duration: 2000,
                         position: 'top-right',

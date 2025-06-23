@@ -1,19 +1,24 @@
 // Currency utility for South African Rand (ZAR)
-export const formatCurrency = (amount) => {
+export const formatCurrency = (amount, fromUSD = true) => {
+  // Convert USD to ZAR if the amount is in USD
+  const zarAmount = fromUSD ? amount * USD_TO_ZAR_RATE : amount;
+  
   return new Intl.NumberFormat('en-ZA', {
     style: 'currency',
     currency: 'ZAR',
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(amount);
+  }).format(zarAmount);
 };
 
 // Format currency without symbol (just the number)
-export const formatCurrencyNumber = (amount) => {
+export const formatCurrencyNumber = (amount, fromUSD = true) => {
+  const zarAmount = fromUSD ? amount * USD_TO_ZAR_RATE : amount;
+  
   return new Intl.NumberFormat('en-ZA', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
-  }).format(amount);
+  }).format(zarAmount);
 };
 
 // Get currency symbol

@@ -169,12 +169,11 @@ app.get('/api/health', (req, res) => {
 
 const PORT = process.env.PORT || 3001;
 
-const startServer = async (port = PORT) => {
+const startServer = async (port = PORT, retryCount = 0) => {
   try {
-    // Use clustering in production
-    if (process.env.NODE_ENV === 'production' && cluster.isMaster) {
+    if (cluster.isMaster && process.env.NODE_ENV === 'production') {
       const numCPUs = os.cpus().length;
-      console.log(`🔄 Master process running. Spawning ${numCPUs} workers...`);
+      console.log(`🚀 Starting production server with ${numCPUs} workers...`);
       
       for (let i = 0; i < numCPUs; i++) {
         cluster.fork();
@@ -198,8 +197,11 @@ const startServer = async (port = PORT) => {
         console.log(`\n${signal} received. Starting graceful shutdown...`);
         server.close(() => {
           console.log('🛑 HTTP server closed');
-          mongoose.connection.close(false, () => {
+          mongoose.connection.close().then(() => {
             console.log('📋 MongoDB connection closed');
+            process.exit(0);
+          }).catch(err => {
+            console.log('📋 MongoDB connection closed with error:', err.message);
             process.exit(0);
           });
         });
@@ -210,13 +212,16 @@ const startServer = async (port = PORT) => {
       process.on('SIGINT', () => shutdown('SIGINT'));
 
       server.on('error', (error) => {
-        if (error.code === 'EADDRINUSE') {
+        if (error.code === 'EADDRINUSE' && retryCount < 10) {
           console.error(`⚠️  Port ${port} is already in use`);
-          const newPort = port + 1;
+          const newPort = Math.min(port + 1, 65535); // Ensure port doesn't exceed max
           console.log(`🔄 Trying port ${newPort}...`);
           
-          // Try the next port
-          startServer(newPort);
+          // Try the next port with retry count
+          startServer(newPort, retryCount + 1);
+        } else if (retryCount >= 10) {
+          console.error('❌ Maximum port retry attempts reached. Please check available ports.');
+          process.exit(1);
         } else {
           console.error('Server error:', error);
           process.exit(1);

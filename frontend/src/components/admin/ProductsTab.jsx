@@ -1,31 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { formatCurrency } from '../../utils/currency';
+import { productsAPI } from '../../utils/api';
+import { toast } from 'react-hot-toast';
 
 const ProductsTab = () => {
-  const [products] = useState([
-    {
-      id: '1',
-      name: 'Premium Wireless Headphones',
-      price: 199.99,
-      stock: 10,
-      status: 'In Stock'
-    },
-    {
-      id: '2',
-      name: 'Smart Watch Pro',
-      price: 299.99,
-      stock: 8,
-      status: 'Low Stock'
-    },
-    {
-      id: '3',
-      name: 'Wireless Gaming Mouse',
-      price: 79.99,
-      stock: 15,
-      status: 'In Stock'
-    }
-  ]);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Fetch real products from backend API
+    const fetchProducts = async () => {
+      try {
+        setLoading(true);
+        const response = await productsAPI.getAll();
+        setProducts(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+        toast.error('Failed to load products');
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center py-8">
+        <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-primary"></div>
+      </div>
+    );
+  }
 
   return (
     <div>

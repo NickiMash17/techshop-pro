@@ -6,79 +6,7 @@ import { useWishlist } from '../context/WishlistContext';
 import { toast } from 'react-hot-toast';
 import { formatCurrency } from '../utils/currency';
 import LazyImage from '../components/common/LazyImage';
-
-const MOCK_PRODUCTS = {
-  '1': {
-    id: '1',
-    name: 'Premium Wireless Headphones',
-    description: 'High-quality sound with noise cancellation',
-    price: 199.99,
-    images: [
-      'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500',
-      'https://images.unsplash.com/photo-1577174881658-0f30ed549adc?w=500'
-    ],
-    specs: [
-      { label: 'Battery Life', value: '30 hours' },
-      { label: 'Connectivity', value: 'Bluetooth 5.0' },
-      { label: 'Noise Cancellation', value: 'Active' }
-    ],
-    stock: 10,
-    rating: 4.8,
-    reviews: 124
-  },
-  '2': {
-    id: '2',
-    name: 'Smart Watch Pro',
-    description: 'Track your fitness and stay connected',
-    price: 299.99,
-    images: [
-      'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500',
-      'https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=500'
-    ],
-    specs: [
-      { label: 'Battery Life', value: '48 hours' },
-      { label: 'Water Resistance', value: '5ATM' },
-      { label: 'Health Sensors', value: 'Heart Rate, SpO2' }
-    ],
-    stock: 8,
-    rating: 4.6,
-    reviews: 89
-  },
-  '3': {
-    id: '3',
-    name: 'Wireless Gaming Mouse',
-    description: 'Precision control for professional gaming',
-    price: 79.99,
-    images: [
-      'https://images.unsplash.com/photo-1527814050087-3793815479db?w=500'
-    ],
-    specs: [
-      { label: 'DPI', value: '16000' },
-      { label: 'Battery Life', value: '70 hours' },
-      { label: 'Response Time', value: '1ms' }
-    ],
-    stock: 15,
-    rating: 4.9,
-    reviews: 203
-  },
-  '4': {
-    id: '4',
-    name: 'Ultra HD Webcam',
-    description: 'Crystal clear video calls and streaming',
-    price: 129.99,
-    images: [
-      'https://images.unsplash.com/photo-1587302912306-cf1ed9c33146?w=500'
-    ],
-    specs: [
-      { label: 'Resolution', value: '4K Ultra HD' },
-      { label: 'Frame Rate', value: '60 FPS' },
-      { label: 'Field of View', value: '90°' }
-    ],
-    stock: 12,
-    rating: 4.7,
-    reviews: 156
-  }
-};
+import { productsAPI } from '../utils/api';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -87,12 +15,40 @@ const ProductDetail = () => {
   const [selectedImage, setSelectedImage] = useState(0);
   const [isAdding, setIsAdding] = useState(false);
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setProduct(MOCK_PRODUCTS[id] || null);
-    }, 500);
+    // Fetch real product from backend API
+    const fetchProduct = async () => {
+      try {
+        setLoading(true);
+        const response = await productsAPI.getById(id);
+        console.log('Product Detail API Response:', response);
+        console.log('Product structure:', response.data);
+        
+        // Handle different image field names
+        const productData = response.data;
+        if (productData) {
+          productData.productImage = productData.image || productData.imageUrl || productData.images?.[0] || productData.img || 
+                                    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500';
+          
+          // Handle different rating field names
+          productData.productRating = productData.rating || productData.averageRating || 0;
+          
+          // Handle different reviews field names
+          productData.productReviews = Array.isArray(productData.reviews) ? productData.reviews.length : (productData.reviews || 0);
+        }
+        
+        setProduct(productData);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching product:', error);
+        toast.error('Failed to load product. Please try again.');
+        setLoading(false);
+      }
+    };
+
+    fetchProduct();
   }, [id]);
 
   const handleAddToCart = () => {
@@ -115,7 +71,7 @@ const ProductDetail = () => {
     setTimeout(() => setIsAdding(false), 1000);
   };
 
-  if (!product) {
+  if (loading || !product) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-center min-h-[400px]">
@@ -143,7 +99,7 @@ const ProductDetail = () => {
           <div className="space-y-4">
             <div className="aspect-square bg-surface/30 rounded-2xl overflow-hidden">
               <LazyImage
-                src={product.images[selectedImage]}
+                src={product.productImage}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
@@ -172,7 +128,7 @@ const ProductDetail = () => {
                   <svg
                     key={i}
                     className={`w-5 h-5 ${
-                      i < Math.floor(product.rating) ? 'text-yellow-400' : 'text-gray-600'
+                      i < Math.floor(product.productRating) ? 'text-yellow-400' : 'text-gray-600'
                     }`}
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -181,7 +137,7 @@ const ProductDetail = () => {
                   </svg>
                 ))}
               </div>
-              <span className="text-gray-400">({product.reviews} reviews)</span>
+              <span className="text-gray-400">({product.productReviews} reviews)</span>
             </div>
 
             {/* Stock Status */}

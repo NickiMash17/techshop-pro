@@ -16,6 +16,7 @@ const {
 } = require('../controllers/productController');
 
 // Public routes
+router.get('/', getAllProducts);
 router.get('/featured', getFeaturedProducts);
 router.get('/search', advancedSearch);
 router.get('/category/:category', getProductsByCategory);

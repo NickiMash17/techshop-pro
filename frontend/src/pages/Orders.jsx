@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 import api from '../utils/api';
 import { Link } from 'react-router-dom';
+import { formatCurrency } from '../utils/currency';
 
 const statusStyles = {
-  'Pending': 'bg-yellow-500/20 text-yellow-500',
-  'Processing': 'bg-blue-500/20 text-blue-500',
-  'Completed': 'bg-green-500/20 text-green-500',
-  'Cancelled': 'bg-red-500/20 text-red-500',
+  'pending': 'bg-yellow-500/20 text-yellow-500',
+  'processing': 'bg-blue-500/20 text-blue-500',
+  'shipped': 'bg-green-500/20 text-green-500',
+  'delivered': 'bg-green-500/20 text-green-500',
+  'cancelled': 'bg-red-500/20 text-red-500',
 };
 
 function OrderStatus({ status }) {
   return (
     <span className={`px-2 py-1 rounded-full text-xs ${statusStyles[status] || 'bg-gray-500/20 text-gray-400'}`}>
-      {status}
+      {status?.charAt(0).toUpperCase() + status?.slice(1)}
     </span>
   );
 }
@@ -35,9 +37,24 @@ export default function Orders() {
       .finally(() => setLoading(false));
   }, []);
 
+  const getItemsDisplay = (order) => {
+    if (!order.items || order.items.length === 0) return 'No items';
+    
+    // If items are populated with product details
+    if (order.items[0].product && typeof order.items[0].product === 'object') {
+      const itemNames = order.items.map(item => 
+        `${item.quantity}x ${item.product.name || 'Unknown Product'}`
+      );
+      return itemNames.join(', ');
+    }
+    
+    // If items are just IDs, show count
+    return `${order.items.length} item${order.items.length !== 1 ? 's' : ''}`;
+  };
+
   return (
     <div className="flex justify-center items-start min-h-[80vh] bg-background px-2 py-8">
-      <div className="max-w-3xl w-full bg-surface/80 rounded-2xl shadow-xl border border-white/10 p-6 sm:p-10">
+      <div className="max-w-4xl w-full bg-surface/80 rounded-2xl shadow-xl border border-white/10 p-6 sm:p-10">
         <h2 className="text-2xl font-extrabold text-gradient mb-6">My Orders</h2>
         {loading ? (
           <div className="flex items-center justify-center h-32">
@@ -65,8 +82,8 @@ export default function Orders() {
                   <tr key={order._id} className="hover:bg-surface/50 cursor-pointer transition" onClick={() => window.location.href = `/orders/${order._id}`}>
                     <td className="p-4 font-medium">{order._id}</td>
                     <td className="p-4">{new Date(order.createdAt).toLocaleDateString()}</td>
-                    <td className="p-4">{order.items?.length || order.orderItems?.length || 0}</td>
-                    <td className="p-4">${order.totalPrice?.toFixed(2) || order.total?.toFixed(2) || '0.00'}</td>
+                    <td className="p-4 text-sm">{getItemsDisplay(order)}</td>
+                    <td className="p-4">{formatCurrency(order.totalAmount || 0, false)}</td>
                     <td className="p-4"><OrderStatus status={order.status} /></td>
                   </tr>
                 ))}

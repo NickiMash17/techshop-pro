@@ -36,7 +36,18 @@ export const AuthProvider = ({ children }) => {
       toast.success('Login successful!');
       return userData;
     } catch (error) {
-      const message = error.response?.data?.message || error.message || 'Failed to login';
+      let message = 'Failed to login';
+      
+      if (error.response?.data?.message) {
+        message = error.response.data.message;
+      } else if (error.response?.status === 429) {
+        message = 'Too many login attempts. Please wait a moment and try again.';
+      } else if (error.response?.status === 401) {
+        message = 'Invalid email or password';
+      } else if (error.message) {
+        message = error.message;
+      }
+      
       toast.error(message);
       throw new Error(message);
     } finally {
@@ -55,7 +66,18 @@ export const AuthProvider = ({ children }) => {
       toast.success('Registration successful!');
       return userWithoutToken;
     } catch (error) {
-      const message = error.response?.data?.message || error.message || 'Failed to register';
+      let message = 'Failed to register';
+      
+      if (error.response?.data?.message) {
+        message = error.response.data.message;
+      } else if (error.response?.status === 429) {
+        message = 'Too many registration attempts. Please wait a moment and try again.';
+      } else if (error.response?.status === 400) {
+        message = error.response.data.message || 'Invalid registration data';
+      } else if (error.message) {
+        message = error.message;
+      }
+      
       toast.error(message);
       throw new Error(message);
     } finally {

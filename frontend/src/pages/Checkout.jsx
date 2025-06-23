@@ -5,6 +5,7 @@ import { useCart } from '../context/CartContext';
 import { calculateSubtotal } from '../utils/cartUtils';
 import toast from 'react-hot-toast';
 import { formatCurrency } from '../utils/currency';
+import { ordersAPI } from '../utils/api';
 
 const Checkout = () => {
   const navigate = useNavigate();
@@ -48,27 +49,46 @@ const Checkout = () => {
     e.preventDefault();
     setIsProcessing(true);
 
-    // Simulate payment processing
-    await new Promise(resolve => setTimeout(resolve, 2000));
+    try {
+      const subtotal = calculateSubtotal(cartItems);
+      const shipping = 9.99;
+      const tax = subtotal * 0.08; // 8% tax
+      const total = subtotal + shipping + tax;
 
-    const subtotal = calculateSubtotal(cartItems);
-    const shipping = 9.99;
-    const tax = subtotal * 0.08; // 8% tax
-    const total = subtotal + shipping + tax;
+      // Prepare order data for backend
+      const orderData = {
+        items: cartItems.map(item => ({
+          productId: item.id || item._id,
+          quantity: item.quantity,
+          price: item.price
+        })),
+        shippingAddress: {
+          street: formData.address,
+          city: formData.city,
+          state: formData.province,
+          zipCode: formData.postalCode,
+          country: formData.country
+        },
+        paymentMethod: paymentMethod
+      };
 
-    console.log('Processing order:', {
-      items: cartItems,
-      subtotal,
-      shipping,
-      tax,
-      total,
-      customer: formData,
-      payment: paymentMethod
-    });
+      console.log('Sending order data:', orderData);
 
-    clearCart();
-    toast.success('Order placed successfully!');
-    navigate('/order-success');
+      // Create order in backend
+      const response = await ordersAPI.create(orderData);
+      
+      console.log('Order created:', response.data);
+
+      clearCart();
+      toast.success('Order placed successfully!');
+      navigate('/order-success');
+    } catch (error) {
+      console.error('Order creation failed:', error);
+      const errorMessage = error.response?.data?.message || error.response?.data?.error || 'Failed to create order. Please try again.';
+      toast.error(errorMessage);
+    } finally {
+      setIsProcessing(false);
+    }
   };
 
   const subtotal = calculateSubtotal(cartItems);
@@ -351,9 +371,9 @@ const Checkout = () => {
               
               <div className="space-y-4 mb-6">
                 {cartItems.map(item => (
-                  <div key={item.id} className="flex items-center gap-3">
+                  <div key={item.id || item._id} className="flex items-center gap-3">
                     <img 
-                      src={item.images?.[0] || item.image} 
+                      src={item.image || item.imageUrl || item.images?.[0]} 
                       alt={item.name} 
                       className="w-12 h-12 object-cover rounded-lg"
                     />
