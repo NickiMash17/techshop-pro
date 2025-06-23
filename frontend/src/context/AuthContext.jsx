@@ -1,26 +1,9 @@
 import React, { createContext, useState, useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import toast from 'react-hot-toast';
+import { authAPI } from '../utils/api';
 
 export const AuthContext = createContext();
-
-// Mock user data for demo purposes
-const MOCK_USERS = [
-  {
-    id: '1',
-    name: 'John Doe',
-    email: 'john@example.com',
-    password: 'password123',
-    isAdmin: false
-  },
-  {
-    id: '2',
-    name: 'Admin User',
-    email: 'admin@example.com',
-    password: 'admin123',
-    isAdmin: true
-  }
-];
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
@@ -30,7 +13,6 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const savedUser = localStorage.getItem('user');
-    
     if (token && savedUser) {
       try {
         setUser(JSON.parse(savedUser));
@@ -46,32 +28,17 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setIsLoading(true);
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Find user in mock data
-      const user = MOCK_USERS.find(u => u.email === email && u.password === password);
-      
-      if (!user) {
-        throw new Error('Invalid email or password');
-      }
-      
-      // Create user object without password
-      const { password: _, ...userData } = user;
-      
-      // Generate mock token
-      const token = `mock-token-${Date.now()}`;
-      
+      const res = await authAPI.login({ email, password });
+      const { token, ...userData } = res.data;
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
-      
       toast.success('Login successful!');
       return userData;
     } catch (error) {
-      const message = error.message || 'Failed to login';
+      const message = error.response?.data?.message || error.message || 'Failed to login';
       toast.error(message);
-      throw error;
+      throw new Error(message);
     } finally {
       setIsLoading(false);
     }
@@ -80,43 +47,17 @@ export const AuthProvider = ({ children }) => {
   const register = async (userData) => {
     setIsLoading(true);
     try {
-      // Simulate API delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Check if user already exists
-      const existingUser = MOCK_USERS.find(u => u.email === userData.email);
-      if (existingUser) {
-        throw new Error('User with this email already exists');
-      }
-      
-      // Create new user
-      const newUser = {
-        id: Date.now().toString(),
-        name: userData.name,
-        email: userData.email,
-        password: userData.password,
-        isAdmin: false
-      };
-      
-      // Add to mock users (in real app, this would be saved to database)
-      MOCK_USERS.push(newUser);
-      
-      // Create user object without password
-      const { password: _, ...userWithoutPassword } = newUser;
-      
-      // Generate mock token
-      const token = `mock-token-${Date.now()}`;
-      
+      const res = await authAPI.register(userData);
+      const { token, ...userWithoutToken } = res.data;
       localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(userWithoutPassword));
-      setUser(userWithoutPassword);
-      
+      localStorage.setItem('user', JSON.stringify(userWithoutToken));
+      setUser(userWithoutToken);
       toast.success('Registration successful!');
-      return userWithoutPassword;
+      return userWithoutToken;
     } catch (error) {
-      const message = error.message || 'Failed to register';
+      const message = error.response?.data?.message || error.message || 'Failed to register';
       toast.error(message);
-      throw error;
+      throw new Error(message);
     } finally {
       setIsLoading(false);
     }

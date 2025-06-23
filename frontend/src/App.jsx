@@ -21,6 +21,11 @@ import Checkout from './pages/Checkout';
 import OrderSuccess from './pages/OrderSuccess';
 import NotificationProvider from './components/common/NotificationSystem';
 import ScrollToTop from './components/common/ScrollToTop';
+import Profile from './pages/Profile';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
+import Orders from './pages/Orders';
+import OrderDetail from './pages/OrderDetail';
 import './styles/globals.css';
 import { Toaster } from 'react-hot-toast';
 
@@ -153,6 +158,11 @@ function App() {
                             </ProtectedRoute>
                           }
                         />
+                        <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
+                        <Route path="/forgot-password" element={<ForgotPassword />} />
+                        <Route path="/reset-password" element={<ResetPassword />} />
+                        <Route path="/orders" element={<ProtectedRoute><Orders /></ProtectedRoute>} />
+                        <Route path="/orders/:id" element={<ProtectedRoute><OrderDetail /></ProtectedRoute>} />
                         {/* Catch-all route for other pages */}
                         <Route path="*" element={
                           <div className="container-responsive section-padding">

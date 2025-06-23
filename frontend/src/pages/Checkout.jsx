@@ -16,9 +16,9 @@ const Checkout = () => {
     phone: '',
     address: '',
     city: '',
-    state: '',
-    zipCode: '',
-    country: 'United States'
+    province: '',
+    postalCode: '',
+    country: 'South Africa'
   });
   const [paymentMethod, setPaymentMethod] = useState('card');
   const [cardData, setCardData] = useState({
@@ -150,6 +150,7 @@ const Checkout = () => {
                     name="phone"
                     value={formData.phone}
                     onChange={handleInputChange}
+                    placeholder="+27..."
                     className="w-full px-4 py-3 bg-surface/30 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                     required
                   />
@@ -162,10 +163,30 @@ const Checkout = () => {
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-surface/30 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                   >
-                    <option value="United States">United States</option>
-                    <option value="Canada">Canada</option>
-                    <option value="United Kingdom">United Kingdom</option>
-                    <option value="Australia">Australia</option>
+                    <option value="South Africa">South Africa</option>
+                    <option value="Nigeria">Nigeria</option>
+                    <option value="Egypt">Egypt</option>
+                    <option value="Kenya">Kenya</option>
+                    <option value="Ghana">Ghana</option>
+                    <option value="Morocco">Morocco</option>
+                    <option value="Ethiopia">Ethiopia</option>
+                    <option value="Tanzania">Tanzania</option>
+                    <option value="Uganda">Uganda</option>
+                    <option value="Algeria">Algeria</option>
+                    <option value="Angola">Angola</option>
+                    <option value="Botswana">Botswana</option>
+                    <option value="Cameroon">Cameroon</option>
+                    <option value="Ivory Coast">Ivory Coast</option>
+                    <option value="Democratic Republic of the Congo">Democratic Republic of the Congo</option>
+                    <option value="Republic of the Congo">Republic of the Congo</option>
+                    <option value="Mozambique">Mozambique</option>
+                    <option value="Namibia">Namibia</option>
+                    <option value="Rwanda">Rwanda</option>
+                    <option value="Senegal">Senegal</option>
+                    <option value="Tunisia">Tunisia</option>
+                    <option value="Zambia">Zambia</option>
+                    <option value="Zimbabwe">Zimbabwe</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
                 <div className="md:col-span-2">
@@ -191,22 +212,22 @@ const Checkout = () => {
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">State</label>
+                  <label className="block text-sm font-medium mb-2">Province</label>
                   <input
                     type="text"
-                    name="state"
-                    value={formData.state}
+                    name="province"
+                    value={formData.province}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-surface/30 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                     required
                   />
                 </div>
                 <div>
-                  <label className="block text-sm font-medium mb-2">ZIP Code</label>
+                  <label className="block text-sm font-medium mb-2">Postal Code</label>
                   <input
                     type="text"
-                    name="zipCode"
-                    value={formData.zipCode}
+                    name="postalCode"
+                    value={formData.postalCode}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 bg-surface/30 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
                     required

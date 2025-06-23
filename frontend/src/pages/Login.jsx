@@ -80,6 +80,11 @@ const Login = () => {
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
               />
+              <p className="mt-2 text-sm text-right">
+                <Link to="/forgot-password" className="text-primary hover:underline">
+                  Forgot password?
+                </Link>
+              </p>
             </div>
           </div>
 

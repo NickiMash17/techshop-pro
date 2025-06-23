@@ -36,6 +36,9 @@ const rateLimitHits = new promClient.Counter({
 dotenv.config();
 const app = express();
 
+// Serve uploaded avatars statically
+app.use('/uploads', express.static(require('path').join(__dirname, 'uploads')));
+
 // Configure Winston logger
 const logger = winston.createLogger({
   level: 'info',

@@ -10,6 +10,7 @@ const {
   getAllOrders,
   confirmPayment
 } = require('../controllers/orderController');
+const Order = require('../models/Order');
 
 // All order routes require authentication
 router.use(protect);
@@ -23,5 +24,15 @@ router.post('/confirm-payment', confirmPayment);
 // Admin routes
 router.get('/', admin, getAllOrders);
 router.put('/:id/status', admin, updateOrderStatus);
+
+// DEBUG: List all orders (remove after debugging!)
+router.get('/debug/all', async (req, res) => {
+  try {
+    const orders = await Order.find();
+    res.json(orders);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 module.exports = router;

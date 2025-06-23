@@ -1,4 +1,6 @@
 const User = require('../models/User');
+const path = require('path');
+const fs = require('fs');
 
 // Get user profile
 exports.getProfile = async (req, res) => {
@@ -144,6 +146,29 @@ exports.getWishlist = async (req, res) => {
   try {
     const user = await User.findById(req.user.id).populate('wishlist');
     res.json(user.wishlist);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+// Upload avatar
+exports.uploadAvatar = async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+    // Remove old avatar if exists and is not default
+    const user = await User.findById(req.user.id);
+    if (user.avatar && user.avatar.startsWith('/uploads/avatars/')) {
+      const oldPath = path.join(__dirname, '..', user.avatar);
+      if (fs.existsSync(oldPath)) {
+        fs.unlinkSync(oldPath);
+      }
+    }
+    // Save new avatar path
+    user.avatar = `/uploads/avatars/${req.file.filename}`;
+    await user.save();
+    res.json({ avatar: user.avatar });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
