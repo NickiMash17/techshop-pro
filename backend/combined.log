@@ -599,3 +599,14 @@
 {"level":"info","message":{"duration":"116.61ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/my-orders"},"timestamp":"2025-06-24T21:20:20.270Z"}
 {"level":"info","message":{"duration":"22.71ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/"},"timestamp":"2025-06-24T21:20:28.547Z"}
 {"level":"info","message":{"duration":"34.22ms","ip":"127.0.0.1","method":"GET","status":304,"url":"/"},"timestamp":"2025-06-24T21:20:53.781Z"}
+{"level":"info","message":{"duration":"439.25ms","ip":"127.0.0.1","method":"POST","status":401,"url":"/login"},"timestamp":"2025-06-24T21:32:02.321Z"}
+{"level":"info","message":{"duration":"422.33ms","ip":"127.0.0.1","method":"POST","status":200,"url":"/login"},"timestamp":"2025-06-24T21:32:32.338Z"}
+{"level":"info","message":{"duration":"21.92ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/?limit=4"},"timestamp":"2025-06-24T21:32:32.466Z"}
+{"level":"info","message":{"duration":"15.77ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/"},"timestamp":"2025-06-24T21:32:38.772Z"}
+{"level":"info","message":{"duration":"8.08ms","ip":"127.0.0.1","method":"GET","status":304,"url":"/?limit=4"},"timestamp":"2025-06-24T21:32:50.036Z"}
+{"level":"info","message":{"duration":"403.74ms","ip":"127.0.0.1","method":"GET","status":304,"url":"/"},"timestamp":"2025-06-24T21:34:37.321Z"}
+{"level":"info","message":{"duration":"14.96ms","ip":"127.0.0.1","method":"GET","status":304,"url":"/"},"timestamp":"2025-06-24T21:34:45.321Z"}
+{"level":"info","message":{"duration":"22.22ms","ip":"127.0.0.1","method":"GET","status":304,"url":"/?limit=4"},"timestamp":"2025-06-24T21:34:59.361Z"}
+{"level":"info","message":{"duration":"445.12ms","ip":"127.0.0.1","method":"GET","status":200,"url":"/profile"},"timestamp":"2025-06-24T21:35:04.120Z"}
+{"level":"info","message":{"duration":"51.67ms","ip":"127.0.0.1","method":"POST","status":500,"url":"/api/users/profile/avatar"},"timestamp":"2025-06-24T21:35:22.567Z"}
+{"level":"info","message":{"duration":"11.80ms","ip":"127.0.0.1","method":"GET","status":304,"url":"/profile"},"timestamp":"2025-06-24T21:35:44.852Z"}
