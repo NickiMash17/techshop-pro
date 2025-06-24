@@ -1,7 +1,7 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { protect } = require('../middleware/auth');
-const { admin } = require('../middleware/admin');
+const { protect } = require("../middleware/auth");
+const { admin } = require("../middleware/admin");
 const {
   getAllProducts,
   getProductById,
@@ -12,24 +12,24 @@ const {
   getFeaturedProducts,
   advancedSearch,
   addReview,
-  getReviews
-} = require('../controllers/productController');
+  getReviews,
+} = require("../controllers/productController");
 
 // Public routes
-router.get('/', getAllProducts);
-router.get('/featured', getFeaturedProducts);
-router.get('/search', advancedSearch);
-router.get('/category/:category', getProductsByCategory);
-router.get('/:id', getProductById);
-router.get('/:id/reviews', getReviews);
+router.get("/", getAllProducts);
+router.get("/featured", getFeaturedProducts);
+router.get("/search", advancedSearch);
+router.get("/category/:category", getProductsByCategory);
+router.get("/:id", getProductById);
+router.get("/:id/reviews", getReviews);
 
 // Protected routes (require authentication)
 router.use(protect);
 
 // Admin routes (require admin privileges)
-router.post('/', admin, createProduct);
-router.put('/:id', admin, updateProduct);
-router.delete('/:id', admin, deleteProduct);
-router.post('/:id/reviews', addReview);
+router.post("/", admin, createProduct);
+router.put("/:id", admin, updateProduct);
+router.delete("/:id", admin, deleteProduct);
+router.post("/:id/reviews", addReview);
 
 module.exports = router;

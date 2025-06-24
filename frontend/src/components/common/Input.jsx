@@ -1,6 +1,6 @@
 import React, { useState, forwardRef } from 'react';
-import { motion } from 'framer-motion';
 import { ButtonIcon } from './Button';
+import { motion } from 'framer-motion';
 
 const Input = forwardRef(({
   label,

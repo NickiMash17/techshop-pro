@@ -1,11 +1,11 @@
-const User = require('../models/User');
-const path = require('path');
-const fs = require('fs');
+const User = require("../models/User");
+const path = require("path");
+const fs = require("fs");
 
 // Get user profile
 exports.getProfile = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).select('-password');
+    const user = await User.findById(req.user.id).select("-password");
     res.json(user);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -16,12 +16,12 @@ exports.getProfile = async (req, res) => {
 exports.updateProfile = async (req, res) => {
   try {
     const { name, email } = req.body;
-    
+
     const user = await User.findByIdAndUpdate(
       req.user.id,
       { name, email },
-      { new: true, runValidators: true }
-    ).select('-password');
+      { new: true, runValidators: true },
+    ).select("-password");
 
     res.json(user);
   } catch (error) {
@@ -33,16 +33,16 @@ exports.updateProfile = async (req, res) => {
 exports.getAllUsers = async (req, res) => {
   try {
     const { page = 1, limit = 10, role } = req.query;
-    
+
     let query = {};
     if (role) {
       query.role = role;
     }
 
     const skip = (page - 1) * limit;
-    
+
     const users = await User.find(query)
-      .select('-password')
+      .select("-password")
       .sort({ createdAt: -1 })
       .limit(parseInt(limit))
       .skip(skip);
@@ -54,8 +54,8 @@ exports.getAllUsers = async (req, res) => {
       pagination: {
         currentPage: parseInt(page),
         totalPages: Math.ceil(total / limit),
-        totalUsers: total
-      }
+        totalUsers: total,
+      },
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -65,10 +65,10 @@ exports.getAllUsers = async (req, res) => {
 // Get user by ID (Admin only)
 exports.getUserById = async (req, res) => {
   try {
-    const user = await User.findById(req.params.id).select('-password');
-    
+    const user = await User.findById(req.params.id).select("-password");
+
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.json(user);
@@ -81,15 +81,15 @@ exports.getUserById = async (req, res) => {
 exports.updateUserRole = async (req, res) => {
   try {
     const { role } = req.body;
-    
+
     const user = await User.findByIdAndUpdate(
       req.params.id,
       { role },
-      { new: true, runValidators: true }
-    ).select('-password');
+      { new: true, runValidators: true },
+    ).select("-password");
 
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
     res.json(user);
@@ -102,12 +102,12 @@ exports.updateUserRole = async (req, res) => {
 exports.deleteUser = async (req, res) => {
   try {
     const user = await User.findByIdAndDelete(req.params.id);
-    
+
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: "User not found" });
     }
 
-    res.json({ message: 'User deleted successfully' });
+    res.json({ message: "User deleted successfully" });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -121,7 +121,7 @@ exports.addToWishlist = async (req, res) => {
       user.wishlist.push(req.params.productId);
       await user.save();
     }
-    res.json({ message: 'Product added to wishlist' });
+    res.json({ message: "Product added to wishlist" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -132,10 +132,10 @@ exports.removeFromWishlist = async (req, res) => {
   try {
     const user = await User.findById(req.user.id);
     user.wishlist = user.wishlist.filter(
-      pid => pid.toString() !== req.params.productId
+      (pid) => pid.toString() !== req.params.productId,
     );
     await user.save();
-    res.json({ message: 'Product removed from wishlist' });
+    res.json({ message: "Product removed from wishlist" });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
@@ -144,7 +144,7 @@ exports.removeFromWishlist = async (req, res) => {
 // Get user's wishlist
 exports.getWishlist = async (req, res) => {
   try {
-    const user = await User.findById(req.user.id).populate('wishlist');
+    const user = await User.findById(req.user.id).populate("wishlist");
     res.json(user.wishlist);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -155,12 +155,12 @@ exports.getWishlist = async (req, res) => {
 exports.uploadAvatar = async (req, res) => {
   try {
     if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded' });
+      return res.status(400).json({ message: "No file uploaded" });
     }
     // Remove old avatar if exists and is not default
     const user = await User.findById(req.user.id);
-    if (user.avatar && user.avatar.startsWith('/uploads/avatars/')) {
-      const oldPath = path.join(__dirname, '..', user.avatar);
+    if (user.avatar && user.avatar.startsWith("/uploads/avatars/")) {
+      const oldPath = path.join(__dirname, "..", user.avatar);
       if (fs.existsSync(oldPath)) {
         fs.unlinkSync(oldPath);
       }
@@ -172,4 +172,4 @@ exports.uploadAvatar = async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}; 
+};

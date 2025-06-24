@@ -15,9 +15,7 @@ const root = ReactDOM.createRoot(rootElement);
 const renderApp = () => {
   try {
     root.render(
-      <React.StrictMode>
-        <AppWrapper />
-      </React.StrictMode>
+      <AppWrapper />
     );
   } catch (error) {
     console.error('Error rendering app:', error);

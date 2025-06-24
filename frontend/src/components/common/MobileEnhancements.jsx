@@ -164,9 +164,15 @@ const MobileEnhancements = () => {
             }
             
             /* Improve touch targets */
-            button, a, input, select, textarea {
+            button, a {
               min-height: 44px;
               min-width: 44px;
+              user-select: none;
+            }
+            input, select, textarea {
+              min-height: 44px;
+              min-width: 44px;
+              user-select: text;
             }
             
             /* Optimize text for mobile reading */

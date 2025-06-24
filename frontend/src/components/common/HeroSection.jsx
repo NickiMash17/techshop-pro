@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-const HeroSection = ({ onSearch }) => {
+const HeroSection = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isTyping, setIsTyping] = useState(true);
 
   const heroSlides = [
     {
@@ -53,14 +52,6 @@ const HeroSection = ({ onSearch }) => {
     }, 5000);
 
     return () => clearInterval(slideInterval);
-  }, []);
-
-  useEffect(() => {
-    const typingInterval = setInterval(() => {
-      setIsTyping(prev => !prev);
-    }, 2000);
-
-    return () => clearInterval(typingInterval);
   }, []);
 
   const containerVariants = {

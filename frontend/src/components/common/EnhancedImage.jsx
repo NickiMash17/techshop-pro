@@ -21,6 +21,18 @@ const EnhancedImage = ({
   const [isLoaded, setIsLoaded] = useState(false);
   const imgRef = useRef(null);
 
+  // Debug log for EnhancedImage props
+  console.log('DEBUG: EnhancedImage props:', { src, alt, className, fallbackSrc, loading, priority, aspectRatio, placeholder });
+  if (!src || typeof src !== 'string') {
+    return (
+      <div className={`relative overflow-hidden ${className}`} style={{ aspectRatio }}>
+        <div className="absolute inset-0 flex items-center justify-center bg-red-900/80">
+          <span className="text-white text-sm">Image source missing or invalid</span>
+        </div>
+      </div>
+    );
+  }
+
   // Handle image loading states
   useEffect(() => {
     if (src !== imageSrc) {

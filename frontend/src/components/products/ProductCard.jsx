@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
 import { useCart } from '../../context/CartContext';
 import { useWishlist } from '../../context/WishlistContext';
 import EnhancedImage from '../common/EnhancedImage';
 import { formatCurrency } from '../../utils/currency';
+import { toast } from 'react-hot-toast';
+import { motion } from 'framer-motion';
 
 const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
   const { addToCart, isInCart, getItemQuantity } = useCart();
@@ -31,17 +32,36 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
   const handleAddToCart = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    console.log('Add to Cart clicked for:', product.name);
-    addToCart(product, 1);
+    
+    try {
+      // Validate product has required fields
+      if (!product.name || !product.price) {
+        toast.error('Product information is incomplete');
+        return;
+      }
+      // Check if product is in stock
+      if (product.stock === 0) {
+        toast.error('This product is out of stock');
+        return;
+      }
+      addToCart(product, 1);
+    } catch (error) {
+      toast.error('Failed to add item to cart. Please try again.');
+    }
   };
 
   const handleWishlistToggle = (e) => {
     e.preventDefault();
     e.stopPropagation();
-    if (isInUserWishlist) {
-      removeFromWishlist(productId);
-    } else {
-      addToWishlist(product);
+    
+    try {
+      if (isInUserWishlist) {
+        removeFromWishlist(productId);
+      } else {
+        addToWishlist(product);
+      }
+    } catch (error) {
+      toast.error('Failed to update wishlist. Please try again.');
     }
   };
 
@@ -58,7 +78,7 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
       }
     },
     hover: {
-      y: -10,
+      y: -8,
       scale: 1.02,
       transition: {
         duration: 0.3,
@@ -69,10 +89,9 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
 
   const imageVariants = {
     hover: {
-      scale: 1.1,
-      rotate: 2,
+      scale: 1.05,
       transition: {
-        duration: 0.6,
+        duration: 0.4,
         ease: "easeOut"
       }
     }
@@ -160,25 +179,25 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
         initial="hidden"
         animate="visible"
         whileHover="hover"
-        className="glass-card p-6"
+        className="product-list-item"
       >
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-6 w-full">
           {/* Enhanced Image */}
-          <Link to={`/products/${productId}`} className="relative w-32 h-32 flex-shrink-0">
+          <Link to={`/products/${productId}`} className="relative w-40 h-40 flex-shrink-0">
             <EnhancedImage
               src={productImage}
               alt={product.name}
-              className="w-full h-full rounded-lg"
+              className="w-full h-full rounded-xl object-cover"
               aspectRatio="1/1"
               variants={imageVariants}
               whileHover="hover"
-              priority={index < 4} // Load first 4 images immediately
+              priority={index < 4}
             />
             
             {/* Category Badge */}
             {product.category && (
               <motion.div 
-                className="absolute top-2 left-2 badge-primary text-xs"
+                className="absolute top-3 left-3 badge-primary"
                 variants={badgeVariants}
                 initial="hidden"
                 animate="visible"
@@ -186,85 +205,100 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
                 {product.category}
               </motion.div>
             )}
+
+            {/* Stock Status Overlay */}
+            {product.stock === 0 && (
+              <div className="absolute inset-0 bg-black/60 rounded-xl flex items-center justify-center">
+                <span className="text-white font-semibold text-sm">Out of Stock</span>
+              </div>
+            )}
           </Link>
 
           {/* Content */}
-          <div className="flex-1 min-w-0">
-            <Link to={`/products/${productId}`}>
-              <h3 className="text-xl font-semibold text-white hover:text-primary transition-colors mb-2">
-                {product.name}
-              </h3>
-              <p className="text-gray-400 mb-3 line-clamp-2">
-                {product.description}
-              </p>
-            </Link>
-            
-            {/* Rating and Reviews */}
-            <div className="flex items-center space-x-2 mb-3">
-              <div className="flex items-center space-x-1">
-                {renderStars(productRating)}
+          <div className="flex-1 min-w-0 flex flex-col justify-between h-full">
+            <div>
+              <Link to={`/products/${productId}`}>
+                <h3 className="text-xl font-bold text-white hover:text-primary transition-colors mb-2 line-clamp-1">
+                  {product.name}
+                </h3>
+                <p className="text-gray-400 mb-3 line-clamp-2 text-sm">
+                  {product.description}
+                </p>
+              </Link>
+              
+              {/* Rating and Reviews */}
+              <div className="flex items-center space-x-2 mb-3">
+                <div className="flex items-center space-x-1">
+                  {renderStars(productRating)}
+                </div>
+                <span className="text-sm text-gray-400">
+                  ({productReviews} reviews)
+                </span>
               </div>
-              <span className="text-sm text-gray-400">
-                ({productReviews} reviews)
-              </span>
             </div>
 
-            {/* Price */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="text-2xl font-bold text-primary">
+            {/* Price and Actions */}
+            <div className="flex items-center justify-between">
+              <div className="product-card-price text-2xl">
                 {formatCurrency(product.price)}
               </div>
-              {product.stock > 0 ? (
-                <span className="text-sm text-green-400">
-                  {product.stock} in stock
-                </span>
-              ) : (
-                <span className="text-sm text-red-400">Out of stock</span>
-              )}
-            </div>
-
-            {/* Actions */}
-            <div className="flex items-center space-x-3">
-              <motion.button
-                variants={buttonVariants}
-                whileHover="hover"
-                whileTap="tap"
-                onClick={handleAddToCart}
-                disabled={product.stock === 0}
-                className={`flex-1 btn-primary ${product.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
-              >
-                {isInUserCart ? (
-                  <span className="flex items-center justify-center">
-                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                    </svg>
-                    In Cart ({cartQuantity})
-                  </span>
-                ) : (
-                  <span className="flex items-center justify-center">
-                    <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m6 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01" />
-                    </svg>
-                    Add to Cart
+              
+              <div className="flex items-center space-x-3" onClick={(e) => e.stopPropagation()}>
+                {product.stock > 0 && (
+                  <span className="text-sm text-green-400 font-medium">
+                    {product.stock} in stock
                   </span>
                 )}
-              </motion.button>
+                
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={handleAddToCart}
+                  disabled={product.stock === 0}
+                  className={`px-6 py-2 rounded-lg font-medium transition-colors cursor-pointer ${
+                    product.stock === 0 
+                      ? 'btn-cart-disabled' 
+                      : isInUserCart
+                        ? 'btn-cart-added'
+                        : 'btn-cart-default'
+                  }`}
+                  type="button"
+                  style={{ position: 'relative', zIndex: 20 }}
+                >
+                  {isInUserCart ? (
+                    <span className="flex items-center">
+                      <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                      In Cart ({cartQuantity})
+                    </span>
+                  ) : (
+                    <span className="flex items-center">
+                      <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m6 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01" />
+                      </svg>
+                      Add to Cart
+                    </span>
+                  )}
+                </motion.button>
 
-              <motion.button
-                variants={buttonVariants}
-                whileHover="hover"
-                whileTap="tap"
-                onClick={handleWishlistToggle}
-                className={`p-3 rounded-lg transition-colors ${
-                  isInUserWishlist 
-                    ? 'bg-red-500 hover:bg-red-600 text-white' 
-                    : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-                }`}
-              >
-                <svg className="w-5 h-5" fill={isInUserWishlist ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-              </motion.button>
+                <motion.button
+                  variants={buttonVariants}
+                  whileHover="hover"
+                  whileTap="tap"
+                  onClick={handleWishlistToggle}
+                  className={`p-3 rounded-lg transition-colors ${
+                    isInUserWishlist 
+                      ? 'bg-red-500 hover:bg-red-600 text-white' 
+                      : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
+                  }`}
+                >
+                  <svg className="w-5 h-5" fill={isInUserWishlist ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </motion.button>
+              </div>
             </div>
           </div>
         </div>
@@ -272,23 +306,23 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
     );
   }
 
-  // Grid view
+  // Grid view - Enhanced with consistent sizing
   return (
     <motion.div
       variants={cardVariants}
       initial="hidden"
       animate="visible"
       whileHover="hover"
-      className="glass-card overflow-hidden"
+      className="product-card"
     >
       {/* Enhanced Image Container */}
-      <Link to={`/products/${productId}`} className="relative block">
+      <Link to={`/products/${productId}`} className="product-card-image">
         <EnhancedImage
           src={productImage}
           alt={product.name}
-          className="w-full h-48"
+          className="w-full h-full object-cover"
           aspectRatio="16/9"
-          priority={index < 8} // Load first 8 images immediately
+          priority={index < 8}
           variants={imageVariants}
           whileHover="hover"
         />
@@ -296,7 +330,7 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
         {/* Category Badge */}
         {product.category && (
           <motion.div 
-            className="absolute top-3 left-3 badge-primary text-xs"
+            className="absolute top-3 left-3 badge-primary"
             variants={badgeVariants}
             initial="hidden"
             animate="visible"
@@ -308,7 +342,7 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
         {/* Featured Badge */}
         {product.featured && (
           <motion.div 
-            className="absolute top-3 right-3 badge-secondary text-xs"
+            className="absolute top-3 right-3 badge-secondary"
             variants={badgeVariants}
             initial="hidden"
             animate="visible"
@@ -319,19 +353,38 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
 
         {/* Stock Status */}
         {product.stock === 0 && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
             <span className="text-white font-semibold text-lg">Out of Stock</span>
           </div>
         )}
+
+        {/* Quick Actions Overlay */}
+        <div className="image-overlay flex items-center justify-center opacity-0 hover:opacity-100">
+          <motion.button
+            variants={buttonVariants}
+            whileHover="hover"
+            whileTap="tap"
+            onClick={handleWishlistToggle}
+            className={`quick-action-button ${
+              isInUserWishlist 
+                ? 'bg-red-500 hover:bg-red-600 text-white' 
+                : 'bg-white/90 hover:bg-white text-gray-800'
+            }`}
+          >
+            <svg className="w-5 h-5" fill={isInUserWishlist ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+          </motion.button>
+        </div>
       </Link>
 
       {/* Content */}
-      <div className="p-4">
-        <Link to={`/products/${productId}`}>
-          <h3 className="text-lg font-semibold text-white hover:text-primary transition-colors mb-2 line-clamp-2">
+      <div className="product-card-content">
+        <Link to={`/products/${productId}`} className="flex-1">
+          <h3 className="product-card-title">
             {product.name}
           </h3>
-          <p className="text-gray-400 text-sm mb-3 line-clamp-2">
+          <p className="product-card-description">
             {product.description}
           </p>
         </Link>
@@ -346,57 +399,49 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
 
         {/* Price and Stock */}
         <div className="flex items-center justify-between mb-4">
-          <div className="text-xl font-bold text-primary">
+          <div className="product-card-price">
             {formatCurrency(product.price)}
           </div>
           {product.stock > 0 && (
-            <span className="text-sm text-green-400">
+            <span className="text-sm text-green-400 font-medium">
               {product.stock} left
             </span>
           )}
         </div>
 
         {/* Actions */}
-        <div className="flex items-center space-x-2">
+        <div className="product-card-actions" onClick={(e) => e.stopPropagation()}>
           <motion.button
             variants={buttonVariants}
             whileHover="hover"
             whileTap="tap"
             onClick={handleAddToCart}
             disabled={product.stock === 0}
-            className={`flex-1 btn-primary text-sm ${product.stock === 0 ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`product-card-button cursor-pointer ${
+              product.stock === 0 
+                ? 'btn-cart-disabled' 
+                : isInUserCart
+                  ? 'btn-cart-added'
+                  : 'btn-cart-default'
+            }`}
+            type="button"
+            style={{ position: 'relative', zIndex: 20 }}
           >
             {isInUserCart ? (
               <span className="flex items-center justify-center">
-                <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
                 </svg>
-                In Cart
+                In Cart ({cartQuantity})
               </span>
             ) : (
               <span className="flex items-center justify-center">
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m6 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01" />
                 </svg>
                 Add to Cart
               </span>
             )}
-          </motion.button>
-
-          <motion.button
-            variants={buttonVariants}
-            whileHover="hover"
-            whileTap="tap"
-            onClick={handleWishlistToggle}
-            className={`p-2 rounded-lg transition-colors ${
-              isInUserWishlist 
-                ? 'bg-red-500 hover:bg-red-600 text-white' 
-                : 'bg-gray-700 hover:bg-gray-600 text-gray-300'
-            }`}
-          >
-            <svg className="w-4 h-4" fill={isInUserWishlist ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-            </svg>
           </motion.button>
         </div>
       </div>

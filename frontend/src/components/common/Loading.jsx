@@ -1,6 +1,6 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import PropTypes from 'prop-types';
+import { motion } from 'framer-motion';
 
 const Loading = ({ 
   type = 'spinner', 
@@ -14,13 +14,6 @@ const Loading = ({
     medium: 'w-8 h-8',
     large: 'w-12 h-12',
     xlarge: 'w-16 h-16'
-  };
-
-  const colorClasses = {
-    primary: 'border-primary',
-    secondary: 'border-secondary',
-    white: 'border-white',
-    gray: 'border-gray-400'
   };
 
   const Spinner = () => (

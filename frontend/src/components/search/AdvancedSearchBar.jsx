@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import useDebounce from '../../hooks/useDebounce';
 import { formatCurrency } from '../../utils/currency';
 
@@ -15,7 +15,6 @@ const AdvancedSearchBar = ({
   const [query, setQuery] = useState('');
   const [isFocused, setIsFocused] = useState(false);
   const [selectedIndex, setSelectedIndex] = useState(-1);
-  const [showVoiceSearch, setShowVoiceSearch] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [recentSearches, setRecentSearches] = useState([]);
   const [popularSearches, setPopularSearches] = useState([]);
@@ -176,7 +175,6 @@ const AdvancedSearchBar = ({
     }
     
     setIsListening(true);
-    setShowVoiceSearch(true);
     
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
     const recognition = new SpeechRecognition();
@@ -190,13 +188,11 @@ const AdvancedSearchBar = ({
       setQuery(transcript);
       if (onSearch) onSearch(transcript);
       setIsListening(false);
-      setShowVoiceSearch(false);
     };
     
     recognition.onerror = (event) => {
       console.error('Speech recognition error:', event.error);
       setIsListening(false);
-      setShowVoiceSearch(false);
       
       // Show user-friendly error message
       if (event.error === 'not-allowed') {
@@ -210,15 +206,12 @@ const AdvancedSearchBar = ({
     
     recognition.onend = () => {
       setIsListening(false);
-      setShowVoiceSearch(false);
     };
     
     try {
       recognition.start();
     } catch (error) {
       console.error('Failed to start speech recognition:', error);
-      setIsListening(false);
-      setShowVoiceSearch(false);
       alert('Failed to start voice search. Please try again.');
     }
   }, [isListening, onSearch]);

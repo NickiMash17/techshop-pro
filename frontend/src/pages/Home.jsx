@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
 import ProductCard from '../components/products/ProductCard';
 import CountdownTimer from '../components/common/CountdownTimer';
 import HeroSection from '../components/common/HeroSection';
@@ -144,11 +143,6 @@ const Home = () => {
     }, 1000);
   };
 
-  const fadeInUp = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
-
   return (
     <div className="space-y-0">
       {/* Hero Section */}
@@ -187,13 +181,7 @@ const Home = () => {
       {/* Special Offers Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
+          <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Limited Time{" "}
               <span className="bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
@@ -201,45 +189,37 @@ const Home = () => {
               </span>
             </h2>
             <p className="text-xl text-gray-400">Don't miss out on these exclusive deals</p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {specialOffers.map((offer, index) => (
-              <motion.div
+            {specialOffers.map((offer) => (
+              <div
                 key={offer.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
+                className="group relative overflow-hidden rounded-2xl bg-gradient-to-br backdrop-blur-xl hover:scale-[1.02] transition-all duration-500 block"
               >
-                <Link
-                  to="/products"
-                  className="group relative overflow-hidden rounded-2xl bg-gradient-to-br backdrop-blur-xl hover:scale-[1.02] transition-all duration-500 block"
-                >
-                  <div className={`absolute inset-0 bg-gradient-to-br ${offer.bgColor} opacity-60`} />
-                  <div className="relative z-10 p-8 md:p-10 flex justify-between items-center">
-                    <div className="space-y-4">
-                      <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
-                        {offer.title}
-                      </span>
-                      <h3 className="text-3xl md:text-4xl font-bold text-white">{offer.discount}</h3>
-                      <p className="text-lg text-gray-300">{offer.description}</p>
-                      <div className="flex items-center gap-2 text-sm text-gray-400">
-                        <span>Ends in:</span>
-                        <CountdownTimer endTime={offer.endTime} />
-                      </div>
-                      <button className="mt-4 px-6 py-3 bg-white/10 rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
-                        Shop Now
-                      </button>
+                <div className={`absolute inset-0 bg-gradient-to-br ${offer.bgColor} opacity-60`} />
+                <div className="relative z-10 p-8 md:p-10 flex justify-between items-center">
+                  <div className="space-y-4">
+                    <span className="text-sm font-medium text-primary bg-primary/10 px-3 py-1 rounded-full">
+                      {offer.title}
+                    </span>
+                    <h3 className="text-3xl md:text-4xl font-bold text-white">{offer.discount}</h3>
+                    <p className="text-lg text-gray-300">{offer.description}</p>
+                    <div className="flex items-center gap-2 text-sm text-gray-400">
+                      <span>Ends in:</span>
+                      <CountdownTimer endTime={offer.endTime} />
                     </div>
-                    <img
-                      src={offer.image}
-                      alt={offer.title}
-                      className="w-32 h-32 md:w-40 md:h-40 object-cover rounded-2xl transform group-hover:scale-110 transition-transform duration-500"
-                    />
+                    <button className="mt-4 px-6 py-3 bg-white/10 rounded-xl text-sm font-medium hover:bg-white/20 transition-colors">
+                      Shop Now
+                    </button>
                   </div>
-                </Link>
-              </motion.div>
+                  <img
+                    src={offer.image}
+                    alt={offer.title}
+                    className="w-32 h-32 md:w-40 md:h-40 object-cover rounded-2xl transform group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -248,13 +228,7 @@ const Home = () => {
       {/* Categories Section */}
       <section className="py-16 bg-gradient-to-br from-surface/20 to-surface/10">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-12"
-          >
+          <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
               Browse{" "}
               <span className="bg-gradient-to-r from-primary to-secondary text-transparent bg-clip-text">
@@ -262,31 +236,22 @@ const Home = () => {
               </span>
             </h2>
             <p className="text-xl text-gray-400">Explore our wide range of tech products</p>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
-            {categories.map((category, index) => (
-              <motion.div
+            {categories.map((category) => (
+              <div
                 key={category.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ y: -10, scale: 1.05 }}
+                className="group glass-card p-8 text-center hover:bg-surface/70 transition-all duration-500 block"
               >
-                <Link
-                  to={`/products?category=${category.name.toLowerCase()}`}
-                  className="group glass-card p-8 text-center hover:bg-surface/70 transition-all duration-500 block"
-                >
-                  <div className={`w-16 h-16 bg-gradient-to-br ${category.gradient} rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto group-hover:scale-110 transition-transform duration-300`}>
-                    {category.icon}
-                  </div>
-                  <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-primary transition-colors">
-                    {category.name}
-                  </h3>
-                  <p className="text-gray-400">{category.count} Products</p>
-                </Link>
-              </motion.div>
+                <div className={`w-16 h-16 bg-gradient-to-br ${category.gradient} rounded-2xl flex items-center justify-center text-3xl mb-4 mx-auto group-hover:scale-110 transition-transform duration-300`}>
+                  {category.icon}
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2 group-hover:text-primary transition-colors">
+                  {category.name}
+                </h3>
+                <p className="text-gray-400">{category.count} Products</p>
+              </div>
             ))}
           </div>
         </div>
@@ -295,13 +260,7 @@ const Home = () => {
       {/* Trending Deals Section */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="flex items-center justify-between mb-12"
-          >
+          <div className="flex items-center justify-between mb-12">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
                 Trending{" "}
@@ -317,51 +276,45 @@ const Home = () => {
             >
               View All →
             </Link>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            {trendingDeals.map((deal, index) => (
-              <motion.div
+            {trendingDeals.map((deal) => (
+              <div
                 key={deal.id}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.2 }}
-                whileHover={{ y: -10 }}
+                className="group glass-card overflow-hidden"
               >
-                <div className="group glass-card overflow-hidden">
-                  <div className="aspect-video relative overflow-hidden">
-                    <img
-                      src={deal.image}
-                      alt={deal.name}
-                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute top-4 right-4">
-                      <CountdownTimer endTime={deal.endTime} />
-                    </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+                <div className="aspect-video relative overflow-hidden">
+                  <img
+                    src={deal.image}
+                    alt={deal.name}
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
+                  />
+                  <div className="absolute top-4 right-4">
+                    <CountdownTimer endTime={deal.endTime} />
                   </div>
-                  <div className="p-8">
-                    <h3 className="text-2xl font-semibold text-white mb-4">{deal.name}</h3>
-                    <div className="flex items-baseline space-x-4 mb-6">
-                      <span className="text-2xl font-bold text-primary">
-                        {formatCurrency(deal.price)}
-                      </span>
-                      {deal.originalPrice && (
-                        <span className="text-lg text-gray-500 line-through">
-                          {formatCurrency(deal.originalPrice)}
-                        </span>
-                      )}
-                      <span className="text-sm text-green-500 bg-green-500/10 px-3 py-1 rounded-full">
-                        {Math.round((1 - deal.price / deal.originalPrice) * 100)}% OFF
-                      </span>
-                    </div>
-                    <button className="w-full py-4 bg-gradient-to-r from-primary to-secondary rounded-xl font-semibold hover:scale-105 transition-all duration-300">
-                      Add to Cart
-                    </button>
-                  </div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
                 </div>
-              </motion.div>
+                <div className="p-8">
+                  <h3 className="text-2xl font-semibold text-white mb-4">{deal.name}</h3>
+                  <div className="flex items-baseline space-x-4 mb-6">
+                    <span className="text-2xl font-bold text-primary">
+                      {formatCurrency(deal.price)}
+                    </span>
+                    {deal.originalPrice && (
+                      <span className="text-lg text-gray-500 line-through">
+                        {formatCurrency(deal.originalPrice)}
+                      </span>
+                    )}
+                    <span className="text-sm text-green-500 bg-green-500/10 px-3 py-1 rounded-full">
+                      {Math.round((1 - deal.price / deal.originalPrice) * 100)}% OFF
+                    </span>
+                  </div>
+                  <button className="w-full py-4 bg-gradient-to-r from-primary to-secondary rounded-xl font-semibold hover:scale-105 transition-all duration-300">
+                    Add to Cart
+                  </button>
+                </div>
+              </div>
             ))}
           </div>
         </div>
@@ -373,13 +326,7 @@ const Home = () => {
       {/* Featured Products */}
       <section className="py-16">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="flex items-center justify-between mb-12"
-          >
+          <div className="flex items-center justify-between mb-12">
             <div>
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-2">
                 Featured{" "}
@@ -395,17 +342,13 @@ const Home = () => {
             >
               View All →
             </Link>
-          </motion.div>
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {loading ? (
-              Array(4).fill(null).map((_, index) => (
-                <motion.div 
-                  key={index} 
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+              Array(4).fill(null).map((_, idx) => (
+                <div 
+                  key={idx} 
                   className="glass-card h-[400px] animate-pulse"
                 >
                   <div className="h-48 bg-slate-700/50 rounded-t-xl" />
@@ -414,19 +357,15 @@ const Home = () => {
                     <div className="h-4 bg-slate-700/50 rounded w-1/2" />
                     <div className="h-8 bg-slate-700/50 rounded w-1/3" />
                   </div>
-                </motion.div>
+                </div>
               ))
             ) : (
-              Array.isArray(featuredProducts) && featuredProducts.map((product, index) => (
-                <motion.div
-                  key={product.id || product._id || index}
-                  initial={{ opacity: 0, y: 50 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
+              Array.isArray(featuredProducts) && featuredProducts.map((product) => (
+                <div
+                  key={product.id || product._id}
                 >
-                  <ProductCard product={product} index={index} />
-                </motion.div>
+                  <ProductCard product={product} />
+                </div>
               ))
             )}
           </div>
@@ -439,13 +378,7 @@ const Home = () => {
       {/* Newsletter Section */}
       <section className="py-16 bg-gradient-to-br from-primary/10 to-secondary/10">
         <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="relative overflow-hidden rounded-3xl glass-card p-8 md:p-12 max-w-4xl mx-auto"
-          >
+          <div className="relative overflow-hidden rounded-3xl glass-card p-8 md:p-12 max-w-4xl mx-auto">
             <div className="relative z-10 text-center">
               <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
                 Stay Updated with Latest{" "}
@@ -493,20 +426,18 @@ const Home = () => {
                 </button>
               </form>
               {subscribeStatus === 'success' && (
-                <motion.p
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
+                <p
                   className="mt-4 text-green-400 text-sm"
                 >
                   Thank you for subscribing! Check your email for confirmation.
-                </motion.p>
+                </p>
               )}
             </div>
             
             {/* Decorative elements */}
             <div className="absolute top-0 right-0 w-1/3 h-1/3 bg-primary/20 rounded-full blur-3xl" />
             <div className="absolute bottom-0 left-0 w-1/3 h-1/3 bg-secondary/20 rounded-full blur-3xl" />
-          </motion.div>
+          </div>
         </div>
       </section>
     </div>

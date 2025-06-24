@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { createPortal } from 'react-dom';
 import { ButtonIcon } from './Button';
 
@@ -138,59 +138,37 @@ const Toast = ({ toast, onRemove }) => {
   const variant = variants[type] || variants.info;
 
   return (
-    <motion.div
+    <div
       className={`min-w-80 max-w-md glass-card border ${variant.className} shadow-xl`}
-      initial={{ opacity: 0, x: 300, scale: 0.8 }}
-      animate={{ opacity: 1, x: 0, scale: 1 }}
-      exit={{ opacity: 0, x: 300, scale: 0.8 }}
-      transition={{ 
-        type: "spring", 
-        damping: 25, 
-        stiffness: 300,
-        duration: 0.3 
-      }}
-      layout
     >
       <div className="flex items-start p-4">
         {/* Icon */}
-        <motion.div
+        <div
           className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${variant.iconClassName} bg-white/20`}
-          initial={{ scale: 0, rotate: -180 }}
-          animate={{ scale: 1, rotate: 0 }}
-          transition={{ delay: 0.1, type: "spring", damping: 15, stiffness: 200 }}
         >
           {variant.icon}
-        </motion.div>
+        </div>
 
         {/* Content */}
         <div className="ml-3 flex-1 min-w-0">
           {title && (
-            <motion.h4
+            <h4
               className="text-sm font-semibold text-white mb-1"
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
             >
               {title}
-            </motion.h4>
+            </h4>
           )}
           
-          <motion.p
+          <p
             className="text-sm text-white/90"
-            initial={{ opacity: 0, y: -5 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3 }}
           >
             {message}
-          </motion.p>
+          </p>
 
           {/* Action Button */}
           {action && (
-            <motion.div
+            <div
               className="mt-3"
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4 }}
             >
               <button
                 onClick={() => {
@@ -201,34 +179,26 @@ const Toast = ({ toast, onRemove }) => {
               >
                 {action.label}
               </button>
-            </motion.div>
+            </div>
           )}
         </div>
 
         {/* Close Button */}
-        <motion.button
+        <button
           onClick={() => onRemove(id)}
           className="flex-shrink-0 ml-3 p-1 rounded-full hover:bg-white/10 transition-colors"
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ delay: 0.2 }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
         >
           <ButtonIcon.Close />
-        </motion.button>
+        </button>
       </div>
 
       {/* Progress Bar */}
       {duration !== Infinity && (
-        <motion.div
+        <div
           className="h-1 bg-white/20"
-          initial={{ scaleX: 1 }}
-          animate={{ scaleX: 0 }}
-          transition={{ duration: duration / 1000, ease: "linear" }}
         />
       )}
-    </motion.div>
+    </div>
   );
 };
 

@@ -1,12 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
 
 const OrderSuccess = () => {
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
+    <div 
       className="max-w-2xl mx-auto text-center py-16"
     >
       <div className="w-16 h-16 bg-green-500 rounded-full mx-auto mb-6 flex items-center justify-center">
@@ -32,7 +29,7 @@ const OrderSuccess = () => {
           View Orders
         </Link>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

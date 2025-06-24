@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { formatCurrency } from '../../utils/currency';
 import { productsAPI } from '../../utils/api';
 import { toast } from 'react-hot-toast';

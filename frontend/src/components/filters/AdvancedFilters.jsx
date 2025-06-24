@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React from 'react';
+import { useState, useMemo, useCallback } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { formatCurrency } from '../../utils/currency';
 
 const AdvancedFilters = ({
@@ -139,11 +140,7 @@ const AdvancedFilters = ({
       {/* Filter Panel */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{ opacity: 1, height: 'auto' }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3 }}
+          <div
             className="bg-surface/30 backdrop-blur-sm border border-white/10 rounded-xl p-6 space-y-6"
           >
             {/* Price Range */}
@@ -284,7 +281,7 @@ const AdvancedFilters = ({
                 <option value="name-desc">Name: Z to A</option>
               </select>
             </div>
-          </motion.div>
+          </div>
         )}
       </AnimatePresence>
     </div>

@@ -1,16 +1,18 @@
-const Order = require('../models/Order');
-const Product = require('../models/Product');
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-const User = require('../models/User');
-const nodemailer = require('nodemailer');
+const Order = require("../models/Order");
+const Product = require("../models/Product");
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
+const User = require("../models/User");
+const nodemailer = require("nodemailer");
 
 // Create new order
 exports.createOrder = async (req, res) => {
   try {
     const { items, shippingAddress, paymentMethod } = req.body;
-    
+
     if (!items || items.length === 0) {
-      return res.status(400).json({ message: 'Order must contain at least one item' });
+      return res
+        .status(400)
+        .json({ message: "Order must contain at least one item" });
     }
 
     // Calculate total and validate stock
@@ -21,12 +23,14 @@ exports.createOrder = async (req, res) => {
       const productId = item.productId || item.product;
       const product = await Product.findById(productId);
       if (!product) {
-        return res.status(404).json({ message: `Product ${productId} not found` });
+        return res
+          .status(404)
+          .json({ message: `Product ${productId} not found` });
       }
-      
+
       if (product.stock < item.quantity) {
-        return res.status(400).json({ 
-          message: `Insufficient stock for ${product.name}. Available: ${product.stock}` 
+        return res.status(400).json({
+          message: `Insufficient stock for ${product.name}. Available: ${product.stock}`,
         });
       }
 
@@ -34,12 +38,12 @@ exports.createOrder = async (req, res) => {
       orderItems.push({
         product: productId,
         quantity: item.quantity,
-        price: product.price
+        price: product.price,
       });
 
       // Update stock
       await Product.findByIdAndUpdate(productId, {
-        $inc: { stock: -item.quantity }
+        $inc: { stock: -item.quantity },
       });
     }
 
@@ -50,10 +54,10 @@ exports.createOrder = async (req, res) => {
     // Create Stripe payment intent
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(totalAmountZAR * 100), // Convert ZAR to cents
-      currency: 'zar', // Changed from 'usd' to 'zar' for South African Rand
+      currency: "zar", // Changed from 'usd' to 'zar' for South African Rand
       metadata: {
-        userId: req.user.id
-      }
+        userId: req.user.id,
+      },
     });
 
     const order = new Order({
@@ -62,7 +66,7 @@ exports.createOrder = async (req, res) => {
       totalAmount: totalAmountZAR, // Store total in ZAR
       paymentMethod,
       shippingAddress,
-      stripePaymentIntentId: paymentIntent.id
+      stripePaymentIntentId: paymentIntent.id,
     });
 
     await order.save();
@@ -75,21 +79,26 @@ exports.createOrder = async (req, res) => {
       secure: false,
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
+        pass: process.env.EMAIL_PASS,
+      },
     });
-    let itemsList = orderItems.map(item => `- ${item.quantity} x Product ID: ${item.product} ($${item.price})`).join('\n');
+    let itemsList = orderItems
+      .map(
+        (item) =>
+          `- ${item.quantity} x Product ID: ${item.product} ($${item.price})`,
+      )
+      .join("\n");
     const mailOptions = {
       to: user.email,
       from: process.env.EMAIL_USER,
-      subject: 'Order Confirmation',
-      text: `Thank you for your order!\n\nOrder ID: ${order._id}\nTotal: $${order.totalAmount}\nItems:\n${itemsList}\n\nWe will notify you when your order ships.`
+      subject: "Order Confirmation",
+      text: `Thank you for your order!\n\nOrder ID: ${order._id}\nTotal: $${order.totalAmount}\nItems:\n${itemsList}\n\nWe will notify you when your order ships.`,
     };
     await transporter.sendMail(mailOptions);
 
     res.status(201).json({
       order,
-      clientSecret: paymentIntent.client_secret
+      clientSecret: paymentIntent.client_secret,
     });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -100,9 +109,9 @@ exports.createOrder = async (req, res) => {
 exports.getUserOrders = async (req, res) => {
   try {
     const orders = await Order.find({ user: req.user.id })
-      .populate('items.product')
+      .populate("items.product")
       .sort({ createdAt: -1 });
-    
+
     res.json({ orders });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -113,16 +122,19 @@ exports.getUserOrders = async (req, res) => {
 exports.getOrderById = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id)
-      .populate('items.product')
-      .populate('user', 'name email');
-    
+      .populate("items.product")
+      .populate("user", "name email");
+
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      return res.status(404).json({ message: "Order not found" });
     }
 
     // Check if user owns the order or is admin
-    if (order.user._id.toString() !== req.user.id && req.user.role !== 'admin') {
-      return res.status(403).json({ message: 'Not authorized' });
+    if (
+      order.user._id.toString() !== req.user.id &&
+      req.user.role !== "admin"
+    ) {
+      return res.status(403).json({ message: "Not authorized" });
     }
 
     res.json(order);
@@ -138,10 +150,10 @@ exports.updateOrderStatus = async (req, res) => {
     const order = await Order.findByIdAndUpdate(
       req.params.id,
       { status },
-      { new: true }
-    ).populate('items.product user');
+      { new: true },
+    ).populate("items.product user");
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      return res.status(404).json({ message: "Order not found" });
     }
     // Send status update email
     const user = order.user;
@@ -151,14 +163,14 @@ exports.updateOrderStatus = async (req, res) => {
       secure: false,
       auth: {
         user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      }
+        pass: process.env.EMAIL_PASS,
+      },
     });
     const mailOptions = {
       to: user.email,
       from: process.env.EMAIL_USER,
       subject: `Order Status Update: ${status}`,
-      text: `Hello ${user.name},\n\nYour order (ID: ${order._id}) status has been updated to: ${status}.\n\nThank you for shopping with us!`
+      text: `Hello ${user.name},\n\nYour order (ID: ${order._id}) status has been updated to: ${status}.\n\nThank you for shopping with us!`,
     };
     await transporter.sendMail(mailOptions);
     res.json(order);
@@ -171,17 +183,17 @@ exports.updateOrderStatus = async (req, res) => {
 exports.getAllOrders = async (req, res) => {
   try {
     const { status, page = 1, limit = 10 } = req.query;
-    
+
     let query = {};
     if (status) {
       query.status = status;
     }
 
     const skip = (page - 1) * limit;
-    
+
     const orders = await Order.find(query)
-      .populate('user', 'name email')
-      .populate('items.product')
+      .populate("user", "name email")
+      .populate("items.product")
       .sort({ createdAt: -1 })
       .limit(parseInt(limit))
       .skip(skip);
@@ -193,8 +205,8 @@ exports.getAllOrders = async (req, res) => {
       pagination: {
         currentPage: parseInt(page),
         totalPages: Math.ceil(total / limit),
-        totalOrders: total
-      }
+        totalOrders: total,
+      },
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -205,25 +217,27 @@ exports.getAllOrders = async (req, res) => {
 exports.confirmPayment = async (req, res) => {
   try {
     const { paymentIntentId } = req.body;
-    
-    const order = await Order.findOne({ stripePaymentIntentId: paymentIntentId });
+
+    const order = await Order.findOne({
+      stripePaymentIntentId: paymentIntentId,
+    });
     if (!order) {
-      return res.status(404).json({ message: 'Order not found' });
+      return res.status(404).json({ message: "Order not found" });
     }
 
     // Verify payment with Stripe
     const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
-    
-    if (paymentIntent.status === 'succeeded') {
-      order.paymentStatus = 'completed';
-      order.status = 'processing';
+
+    if (paymentIntent.status === "succeeded") {
+      order.paymentStatus = "completed";
+      order.status = "processing";
       await order.save();
-      
-      res.json({ message: 'Payment confirmed', order });
+
+      res.json({ message: "Payment confirmed", order });
     } else {
-      res.status(400).json({ message: 'Payment not completed' });
+      res.status(400).json({ message: "Payment not completed" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
-}; 
+};

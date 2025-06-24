@@ -179,7 +179,7 @@ const UsersTab = () => {
       
       logActivity('Exported users data');
       toast.success('Users data exported successfully');
-    } catch (error) {
+    } catch {
       toast.error('Failed to export users data');
     }
   };

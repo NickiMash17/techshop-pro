@@ -1,32 +1,32 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { protect } = require('../middleware/auth');
-const { admin } = require('../middleware/admin');
+const { protect } = require("../middleware/auth");
+const { admin } = require("../middleware/admin");
 const {
   createOrder,
   getUserOrders,
   getOrderById,
   updateOrderStatus,
   getAllOrders,
-  confirmPayment
-} = require('../controllers/orderController');
-const Order = require('../models/Order');
+  confirmPayment,
+} = require("../controllers/orderController");
+const Order = require("../models/Order");
 
 // All order routes require authentication
 router.use(protect);
 
 // User routes
-router.post('/', createOrder);
-router.get('/my-orders', getUserOrders);
-router.get('/:id', getOrderById);
-router.post('/confirm-payment', confirmPayment);
+router.post("/", createOrder);
+router.get("/my-orders", getUserOrders);
+router.get("/:id", getOrderById);
+router.post("/confirm-payment", confirmPayment);
 
 // Admin routes
-router.get('/', admin, getAllOrders);
-router.put('/:id/status', admin, updateOrderStatus);
+router.get("/", admin, getAllOrders);
+router.put("/:id/status", admin, updateOrderStatus);
 
 // DEBUG: List all orders (remove after debugging!)
-router.get('/debug/all', async (req, res) => {
+router.get("/debug/all", async (req, res) => {
   try {
     const orders = await Order.find();
     res.json(orders);

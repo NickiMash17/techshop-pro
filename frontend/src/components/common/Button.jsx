@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 
 const Button = ({
   children,
@@ -73,26 +72,21 @@ const Button = ({
   `;
 
   const LoadingSpinner = () => (
-    <motion.div
+    <div
       className="w-4 h-4 border-2 border-current border-t-transparent rounded-full"
-      animate={{ rotate: 360 }}
-      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
     />
   );
 
   const IconWrapper = ({ children, position }) => (
-    <motion.div
+    <div
       className={`flex items-center ${position === 'right' ? 'ml-2' : 'mr-2'}`}
-      initial={{ scale: 0.8, opacity: 0 }}
-      animate={{ scale: 1, opacity: 1 }}
-      transition={{ duration: 0.2 }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 
   return (
-    <motion.button
+    <button
       type={type}
       className={buttonClasses}
       onClick={onClick}
@@ -116,13 +110,13 @@ const Button = ({
               {icon}
             </IconWrapper>
           )}
-          <motion.span
+          <span
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.1 }}
           >
             {children}
-          </motion.span>
+          </span>
           {icon && iconPosition === 'right' && (
             <IconWrapper position="right">
               {icon}
@@ -130,7 +124,7 @@ const Button = ({
           )}
         </>
       )}
-    </motion.button>
+    </button>
   );
 };
 

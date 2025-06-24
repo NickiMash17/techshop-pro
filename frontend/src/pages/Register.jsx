@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 
 const Register = () => {
   const [formData, setFormData] = useState({
@@ -13,6 +14,10 @@ const Register = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { register } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the intended destination from location state
+  const from = location.state?.from || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -34,9 +39,19 @@ const Register = () => {
       };
       
       await register(userData);
-      navigate('/');
+      
+      // Show success message
+      if (from === '/checkout') {
+        toast.success('Account created successfully! Redirecting to checkout...');
+      } else {
+        toast.success('Account created successfully!');
+      }
+      
+      // Navigate to the intended destination
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message || 'Failed to create account');
+      toast.error(err.message || 'Failed to create account');
     } finally {
       setIsLoading(false);
     }
@@ -48,10 +63,21 @@ const Register = () => {
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-white">Create an account</h2>
           <p className="mt-2 text-sm text-gray-400">
-            Already have an account?{' '}
-            <Link to="/login" className="text-primary hover:text-primary/90">
-              Sign in
-            </Link>
+            {from === '/checkout' ? (
+              <>
+                Create an account to complete your purchase.{' '}
+                <Link to="/login" className="text-primary hover:text-primary/90">
+                  Already have an account? Sign in
+                </Link>
+              </>
+            ) : (
+              <>
+                Already have an account?{' '}
+                <Link to="/login" className="text-primary hover:text-primary/90">
+                  Sign in
+                </Link>
+              </>
+            )}
           </p>
         </div>
 
@@ -146,7 +172,7 @@ const Register = () => {
                 Creating Account...
               </>
             ) : (
-              'Create Account'
+              from === '/checkout' ? 'Create Account & Continue to Checkout' : 'Create Account'
             )}
           </button>
         </form>

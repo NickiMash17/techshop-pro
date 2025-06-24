@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useMemo } from 'react';
-import { motion } from 'framer-motion';
 
 const PerformanceMonitor = ({ 
   totalItems, 
@@ -86,10 +85,7 @@ const PerformanceMonitor = ({
   if (!isVisible) return null;
   
   return (
-    <motion.div
-      initial={{ opacity: 0, x: 100 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: 100 }}
+    <div
       className={`fixed bottom-4 left-4 z-50 bg-surface/90 backdrop-blur-xl border border-white/10 rounded-xl p-4 shadow-xl ${className}`}
     >
       <div className="space-y-3">
@@ -110,14 +106,12 @@ const PerformanceMonitor = ({
             </span>
           </div>
           <div className="w-full bg-gray-700/50 rounded-full h-2">
-            <motion.div
+            <div
               className={`h-2 rounded-full ${
                 performanceScore >= 80 ? 'bg-green-500' :
                 performanceScore >= 60 ? 'bg-yellow-500' : 'bg-red-500'
               }`}
-              initial={{ width: 0 }}
-              animate={{ width: `${performanceScore}%` }}
-              transition={{ duration: 0.5 }}
+              style={{ width: `${performanceScore}%` }}
             />
           </div>
         </div>
@@ -166,7 +160,7 @@ const PerformanceMonitor = ({
           </span>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 };
 

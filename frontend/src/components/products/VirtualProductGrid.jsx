@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import ProductCard from './ProductCard';
 
 const VirtualProductGrid = ({ 
@@ -11,11 +11,9 @@ const VirtualProductGrid = ({
   onProductClick = null 
 }) => {
   const [scrollTop, setScrollTop] = useState(0);
-  const [containerRef, setContainerRef] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   
   // Calculate dimensions
-  const itemWidth = useMemo(() => 100 / itemsPerRow, [itemsPerRow]);
   const itemsPerPage = useMemo(() => Math.ceil(containerHeight / itemHeight) * itemsPerRow, [containerHeight, itemHeight, itemsPerRow]);
   
   // Calculate visible range
@@ -62,20 +60,6 @@ const VirtualProductGrid = ({
       }
     };
   }, []);
-  
-  // Responsive items per row
-  const getResponsiveItemsPerRow = () => {
-    if (typeof window === 'undefined') return itemsPerRow;
-    
-    const width = window.innerWidth;
-    if (width < 640) return 1; // Mobile
-    if (width < 768) return 2; // Tablet
-    if (width < 1024) return 3; // Small desktop
-    return itemsPerRow; // Large desktop
-  };
-  
-  const responsiveItemsPerRow = getResponsiveItemsPerRow();
-  const responsiveItemWidth = 100 / responsiveItemsPerRow;
   
   // Loading skeleton component
   const LoadingSkeleton = () => (
@@ -127,7 +111,6 @@ const VirtualProductGrid = ({
     <div className={`relative ${className}`}>
       {/* Virtual Scroll Container */}
       <div
-        ref={setContainerRef}
         className="overflow-auto"
         style={{ height: containerHeight }}
         onScroll={handleScroll}
@@ -202,15 +185,6 @@ const VirtualProductGrid = ({
           {Math.ceil((scrollTop / (totalHeight - containerHeight)) * 100)}%
         </div>
       </div>
-      
-      {/* Performance stats (dev only) */}
-      {process.env.NODE_ENV === 'development' && (
-        <div className="absolute top-4 left-4 bg-surface/80 backdrop-blur-sm rounded-lg p-3 text-xs text-gray-400">
-          <div>Rendering: {visibleProducts.length}/{products.length}</div>
-          <div>Start: {startIndex}, End: {endIndex}</div>
-          <div>Scroll: {Math.round(scrollTop)}px</div>
-        </div>
-      )}
     </div>
   );
 };

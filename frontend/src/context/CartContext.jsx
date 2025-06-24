@@ -4,23 +4,21 @@ import toast from 'react-hot-toast';
 const CartContext = createContext();
 
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
-  const [totalItems, setTotalItems] = useState(0);
-  const [totalPrice, setTotalPrice] = useState(0);
-
-  // Load cart from localStorage on mount
-  useEffect(() => {
+  const [cartItems, setCartItems] = useState(() => {
     const savedCart = localStorage.getItem('cart');
     if (savedCart) {
       try {
         const parsedCart = JSON.parse(savedCart);
-        setCartItems(parsedCart);
-      } catch (error) {
-        console.error('Error parsing saved cart:', error);
+        return Array.isArray(parsedCart) ? parsedCart : [];
+      } catch {
         localStorage.removeItem('cart');
+        return [];
       }
     }
-  }, []);
+    return [];
+  });
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
 
   // Save cart to localStorage and update totals whenever cartItems changes
   useEffect(() => {

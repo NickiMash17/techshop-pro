@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { createContext, useContext } from 'react';
+import { motion } from 'framer-motion';
 
 const NotificationContext = createContext();
 

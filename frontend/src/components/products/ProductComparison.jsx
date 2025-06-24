@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { AnimatePresence } from 'framer-motion';
 import { useCart } from '../../context/CartContext';
 import toast from 'react-hot-toast';
 import LazyImage from '../common/LazyImage';
@@ -32,24 +32,6 @@ const ProductComparison = ({ isOpen, onClose, products = [] }) => {
     setSelectedProducts(prev => prev.filter(p => p.id !== productId));
   };
 
-  const addProduct = (product) => {
-    if (selectedProducts.length >= 3) {
-      toast.error('Maximum 3 products can be compared at once', {
-        duration: 3000,
-        position: 'top-right',
-        style: {
-          background: '#1f2937',
-          color: '#fff',
-          border: '1px solid #374151',
-        },
-      });
-      return;
-    }
-    if (!selectedProducts.find(p => p.id === product.id)) {
-      setSelectedProducts(prev => [...prev, product]);
-    }
-  };
-
   const getComparisonData = () => {
     if (selectedProducts.length === 0) return [];
 
@@ -70,7 +52,7 @@ const ProductComparison = ({ isOpen, onClose, products = [] }) => {
   const renderValue = (value, type) => {
     switch (type) {
       case 'price':
-        return `$${value?.toFixed(2) || 'N/A'}`;
+        return formatCurrency(value || 0);
       case 'rating':
         if (!value) return 'N/A';
         return (
@@ -108,18 +90,11 @@ const ProductComparison = ({ isOpen, onClose, products = [] }) => {
   return (
     <AnimatePresence>
       {isOpen && (
-        <motion.div
+        <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
         >
-          <motion.div
+          <div
             className="bg-surface/95 backdrop-blur-xl border border-white/10 rounded-2xl shadow-2xl max-w-6xl w-full max-h-[90vh] overflow-hidden"
-            initial={{ scale: 0.9, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.9, opacity: 0 }}
-            transition={{ type: "spring", damping: 25, stiffness: 300 }}
           >
             {/* Header */}
             <div className="flex items-center justify-between p-6 border-b border-white/10">
@@ -163,13 +138,10 @@ const ProductComparison = ({ isOpen, onClose, products = [] }) => {
                 <div className="p-6">
                   {/* Product Headers */}
                   <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    {selectedProducts.map((product, index) => (
-                      <motion.div
+                    {selectedProducts.map((product) => (
+                      <div
                         key={product.id}
                         className="relative bg-surface/50 rounded-xl p-4 border border-white/10"
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.1 }}
                       >
                         {/* Remove Button */}
                         <button
@@ -232,7 +204,7 @@ const ProductComparison = ({ isOpen, onClose, products = [] }) => {
                         >
                           Add to Cart
                         </button>
-                      </motion.div>
+                      </div>
                     ))}
                   </div>
 
@@ -243,7 +215,7 @@ const ProductComparison = ({ isOpen, onClose, products = [] }) => {
                         <thead className="bg-surface/50">
                           <tr>
                             <th className="px-6 py-4 text-left text-sm font-medium text-gray-300">Feature</th>
-                            {selectedProducts.map((product, index) => (
+                            {selectedProducts.map((product) => (
                               <th key={product.id} className="px-6 py-4 text-left text-sm font-medium text-gray-300">
                                 {product.name}
                               </th>
@@ -251,17 +223,17 @@ const ProductComparison = ({ isOpen, onClose, products = [] }) => {
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-white/10">
-                          {getComparisonData().map((spec, index) => (
+                          {getComparisonData().map((spec) => (
                             <tr key={spec.key} className="hover:bg-white/5">
                               <td className="px-6 py-4 text-sm font-medium text-gray-300">
                                 {spec.label}
                               </td>
-                              {spec.values.map((value, valueIndex) => {
+                              {spec.values.map((value) => {
                                 const bestValue = getBestValue(spec.values, spec.type);
                                 const isBest = value === bestValue;
                                 
                                 return (
-                                  <td key={valueIndex} className="px-6 py-4">
+                                  <td key={value} className="px-6 py-4">
                                     <div className={`flex items-center space-x-2 ${isBest ? 'text-green-400' : 'text-white'}`}>
                                       <span className="text-sm">
                                         {renderValue(value, spec.type)}
@@ -284,8 +256,8 @@ const ProductComparison = ({ isOpen, onClose, products = [] }) => {
                 </div>
               )}
             </div>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
       )}
     </AnimatePresence>
   );

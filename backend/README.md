@@ -21,6 +21,7 @@ A robust, scalable, and production-ready backend API for the TechShop Pro e-comm
 ## 🌟 Features
 
 ### Core Functionality
+
 - 🔐 **JWT Authentication** - Secure user management with role-based access control
 - 💳 **Payment Processing** - Integrated Stripe payment gateway
 - 📦 **Order Management** - Complete order lifecycle management
@@ -28,6 +29,7 @@ A robust, scalable, and production-ready backend API for the TechShop Pro e-comm
 - 👤 **User Profiles** - Comprehensive user account management
 
 ### Technical Features
+
 - ⚡ **RESTful API** - Clean, intuitive API design following REST principles
 - 🗄️ **MongoDB Integration** - Robust data persistence with Mongoose ODM
 - 🛡️ **Security Hardened** - Rate limiting, CORS, input validation, and secure headers
@@ -36,6 +38,7 @@ A robust, scalable, and production-ready backend API for the TechShop Pro e-comm
 - 🌱 **Data Seeding** - Pre-populated sample data for development and testing
 
 ### Performance & Scalability
+
 - 🚀 **Optimized Queries** - Efficient database operations with proper indexing
 - 📈 **Monitoring Ready** - Built-in health checks and performance metrics
 - 🔒 **Production Ready** - Environment-based configuration and error handling
@@ -44,13 +47,14 @@ A robust, scalable, and production-ready backend API for the TechShop Pro e-comm
 
 Before you begin, ensure you have the following installed:
 
-| Requirement | Version | Installation Guide |
-|-------------|---------|-------------------|
-| **Node.js** | v16.0+ | [Download Node.js](https://nodejs.org/) |
-| **MongoDB** | v6.0+ | [Install MongoDB](https://docs.mongodb.com/manual/installation/) |
-| **npm/yarn** | Latest | Comes with Node.js |
+| Requirement  | Version | Installation Guide                                               |
+| ------------ | ------- | ---------------------------------------------------------------- |
+| **Node.js**  | v16.0+  | [Download Node.js](https://nodejs.org/)                          |
+| **MongoDB**  | v6.0+   | [Install MongoDB](https://docs.mongodb.com/manual/installation/) |
+| **npm/yarn** | Latest  | Comes with Node.js                                               |
 
 ### Optional Tools
+
 - **MongoDB Compass** - GUI for MongoDB management
 - **Postman** - API testing and documentation
 - **VS Code** - Recommended code editor
@@ -58,6 +62,7 @@ Before you begin, ensure you have the following installed:
 ## 🚀 Quick Start
 
 ### 1. Clone and Setup
+
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/techshop-pro-backend.git
@@ -71,12 +76,14 @@ npm install
 ```
 
 ### 2. Environment Configuration
+
 ```bash
 # Copy environment template
 cp .env.example .env
 ```
 
 Edit the `.env` file with your configuration:
+
 ```env
 # Server Configuration
 PORT=5000
@@ -107,6 +114,7 @@ LOG_LEVEL=info
 ```
 
 ### 3. Database Setup
+
 ```bash
 # Start MongoDB (if running locally)
 mongod
@@ -116,6 +124,7 @@ npm run seed
 ```
 
 ### 4. Start the Server
+
 ```bash
 # Development mode (with hot reload)
 npm run dev
@@ -129,29 +138,33 @@ The server will be available at `http://localhost:5000`
 ## 📚 API Documentation
 
 ### Base URL
+
 ```
 http://localhost:5000/api
 ```
 
 ### Authentication Headers
+
 For protected routes, include the JWT token in the Authorization header:
+
 ```
 Authorization: Bearer <your-jwt-token>
 ```
 
 ### 🔐 Authentication Endpoints
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| POST | `/auth/register` | Register new user | ❌ |
-| POST | `/auth/login` | User login | ❌ |
-| POST | `/auth/logout` | User logout | ✅ |
-| GET | `/auth/profile` | Get user profile | ✅ |
-| PUT | `/auth/profile` | Update user profile | ✅ |
-| POST | `/auth/forgot-password` | Request password reset | ❌ |
-| POST | `/auth/reset-password` | Reset password | ❌ |
+| Method | Endpoint                | Description            | Auth Required |
+| ------ | ----------------------- | ---------------------- | ------------- |
+| POST   | `/auth/register`        | Register new user      | ❌            |
+| POST   | `/auth/login`           | User login             | ❌            |
+| POST   | `/auth/logout`          | User logout            | ✅            |
+| GET    | `/auth/profile`         | Get user profile       | ✅            |
+| PUT    | `/auth/profile`         | Update user profile    | ✅            |
+| POST   | `/auth/forgot-password` | Request password reset | ❌            |
+| POST   | `/auth/reset-password`  | Reset password         | ❌            |
 
 #### Example: User Registration
+
 ```bash
 curl -X POST http://localhost:5000/api/auth/register \
   -H "Content-Type: application/json" \
@@ -165,62 +178,64 @@ curl -X POST http://localhost:5000/api/auth/register \
 
 ### 🛍️ Product Endpoints
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/products` | Get all products with pagination | ❌ |
-| GET | `/products/:id` | Get single product | ❌ |
-| POST | `/products` | Create new product | ✅ (Admin) |
-| PUT | `/products/:id` | Update product | ✅ (Admin) |
-| DELETE | `/products/:id` | Delete product | ✅ (Admin) |
-| GET | `/products/category/:category` | Get products by category | ❌ |
-| GET | `/products/search` | Search products | ❌ |
-| GET | `/products/featured` | Get featured products | ❌ |
+| Method | Endpoint                       | Description                      | Auth Required |
+| ------ | ------------------------------ | -------------------------------- | ------------- |
+| GET    | `/products`                    | Get all products with pagination | ❌            |
+| GET    | `/products/:id`                | Get single product               | ❌            |
+| POST   | `/products`                    | Create new product               | ✅ (Admin)    |
+| PUT    | `/products/:id`                | Update product                   | ✅ (Admin)    |
+| DELETE | `/products/:id`                | Delete product                   | ✅ (Admin)    |
+| GET    | `/products/category/:category` | Get products by category         | ❌            |
+| GET    | `/products/search`             | Search products                  | ❌            |
+| GET    | `/products/featured`           | Get featured products            | ❌            |
 
 #### Query Parameters for Product Listing
+
 ```
 GET /api/products?page=1&limit=10&sort=createdAt&category=electronics&minPrice=100&maxPrice=1000&search=laptop
 ```
 
 ### 📦 Order Endpoints
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/orders` | Get user orders | ✅ |
-| GET | `/orders/:id` | Get single order | ✅ |
-| POST | `/orders` | Create new order | ✅ |
-| PUT | `/orders/:id/status` | Update order status | ✅ (Admin) |
-| DELETE | `/orders/:id` | Cancel order | ✅ |
-| POST | `/orders/:id/payment` | Process payment | ✅ |
+| Method | Endpoint              | Description         | Auth Required |
+| ------ | --------------------- | ------------------- | ------------- |
+| GET    | `/orders`             | Get user orders     | ✅            |
+| GET    | `/orders/:id`         | Get single order    | ✅            |
+| POST   | `/orders`             | Create new order    | ✅            |
+| PUT    | `/orders/:id/status`  | Update order status | ✅ (Admin)    |
+| DELETE | `/orders/:id`         | Cancel order        | ✅            |
+| POST   | `/orders/:id/payment` | Process payment     | ✅            |
 
 ### 👤 User Management Endpoints
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/users` | Get all users | ✅ (Admin) |
-| GET | `/users/:id` | Get user by ID | ✅ (Admin) |
-| PUT | `/users/:id` | Update user | ✅ |
-| DELETE | `/users/:id` | Delete user | ✅ (Admin) |
-| GET | `/users/:id/orders` | Get user orders | ✅ |
+| Method | Endpoint            | Description     | Auth Required |
+| ------ | ------------------- | --------------- | ------------- |
+| GET    | `/users`            | Get all users   | ✅ (Admin)    |
+| GET    | `/users/:id`        | Get user by ID  | ✅ (Admin)    |
+| PUT    | `/users/:id`        | Update user     | ✅            |
+| DELETE | `/users/:id`        | Delete user     | ✅ (Admin)    |
+| GET    | `/users/:id/orders` | Get user orders | ✅            |
 
 ### 📊 Admin Endpoints
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/admin/dashboard` | Dashboard statistics | ✅ (Admin) |
-| GET | `/admin/orders` | All orders with filters | ✅ (Admin) |
-| GET | `/admin/users` | All users with pagination | ✅ (Admin) |
-| GET | `/admin/analytics` | Sales and user analytics | ✅ (Admin) |
+| Method | Endpoint           | Description               | Auth Required |
+| ------ | ------------------ | ------------------------- | ------------- |
+| GET    | `/admin/dashboard` | Dashboard statistics      | ✅ (Admin)    |
+| GET    | `/admin/orders`    | All orders with filters   | ✅ (Admin)    |
+| GET    | `/admin/users`     | All users with pagination | ✅ (Admin)    |
+| GET    | `/admin/analytics` | Sales and user analytics  | ✅ (Admin)    |
 
 ### 🏥 Health & Utility Endpoints
 
-| Method | Endpoint | Description | Auth Required |
-|--------|----------|-------------|---------------|
-| GET | `/health` | Health check | ❌ |
-| GET | `/version` | API version info | ❌ |
+| Method | Endpoint   | Description      | Auth Required |
+| ------ | ---------- | ---------------- | ------------- |
+| GET    | `/health`  | Health check     | ❌            |
+| GET    | `/version` | API version info | ❌            |
 
 ## 🗄️ Database Schema
 
 ### User Model
+
 ```javascript
 {
   name: {
@@ -265,6 +280,7 @@ GET /api/products?page=1&limit=10&sort=createdAt&category=electronics&minPrice=1
 ```
 
 ### Product Model
+
 ```javascript
 {
   name: {
@@ -316,6 +332,7 @@ GET /api/products?page=1&limit=10&sort=createdAt&category=electronics&minPrice=1
 ```
 
 ### Order Model
+
 ```javascript
 {
   user: {
@@ -381,25 +398,27 @@ GET /api/products?page=1&limit=10&sort=createdAt&category=electronics&minPrice=1
 
 ### Environment Variables Reference
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `PORT` | Server port | 5000 | ❌ |
-| `NODE_ENV` | Environment mode | development | ❌ |
-| `MONGODB_URI` | MongoDB connection string | - | ✅ |
-| `JWT_SECRET` | JWT signing secret (min 32 chars) | - | ✅ |
-| `JWT_EXPIRE` | JWT expiration time | 7d | ❌ |
-| `STRIPE_SECRET_KEY` | Stripe API secret key | - | ✅ |
-| `FRONTEND_URL` | Frontend application URL | http://localhost:5173 | ❌ |
-| `LOG_LEVEL` | Logging level | info | ❌ |
+| Variable            | Description                       | Default               | Required |
+| ------------------- | --------------------------------- | --------------------- | -------- |
+| `PORT`              | Server port                       | 5000                  | ❌       |
+| `NODE_ENV`          | Environment mode                  | development           | ❌       |
+| `MONGODB_URI`       | MongoDB connection string         | -                     | ✅       |
+| `JWT_SECRET`        | JWT signing secret (min 32 chars) | -                     | ✅       |
+| `JWT_EXPIRE`        | JWT expiration time               | 7d                    | ❌       |
+| `STRIPE_SECRET_KEY` | Stripe API secret key             | -                     | ✅       |
+| `FRONTEND_URL`      | Frontend application URL          | http://localhost:5173 | ❌       |
+| `LOG_LEVEL`         | Logging level                     | info                  | ❌       |
 
 ### Security Configuration
 
 #### Rate Limiting
+
 - **General API**: 100 requests per 15 minutes
 - **Auth endpoints**: 5 requests per 15 minutes
 - **Password reset**: 3 requests per hour
 
 #### CORS Settings
+
 ```javascript
 {
   origin: process.env.FRONTEND_URL,
@@ -413,11 +432,13 @@ GET /api/products?page=1&limit=10&sort=createdAt&category=electronics&minPrice=1
 ### Manual Testing with cURL
 
 #### Health Check
+
 ```bash
 curl http://localhost:5000/api/health
 ```
 
 #### User Registration
+
 ```bash
 curl -X POST http://localhost:5000/api/auth/register \
   -H "Content-Type: application/json" \
@@ -429,6 +450,7 @@ curl -X POST http://localhost:5000/api/auth/register \
 ```
 
 #### Login and Get Token
+
 ```bash
 curl -X POST http://localhost:5000/api/auth/login \
   -H "Content-Type: application/json" \
@@ -439,11 +461,13 @@ curl -X POST http://localhost:5000/api/auth/login \
 ```
 
 #### Get Products
+
 ```bash
 curl http://localhost:5000/api/products
 ```
 
 #### Create Order (Protected)
+
 ```bash
 curl -X POST http://localhost:5000/api/orders \
   -H "Content-Type: application/json" \
@@ -467,6 +491,7 @@ curl -X POST http://localhost:5000/api/orders \
 ```
 
 ### Using Postman
+
 1. Import the Postman collection (if available)
 2. Set up environment variables for base URL and tokens
 3. Run the test suite
@@ -474,6 +499,7 @@ curl -X POST http://localhost:5000/api/orders \
 ## 🚀 Deployment
 
 ### Production Checklist
+
 - [ ] Set `NODE_ENV=production`
 - [ ] Use strong JWT secrets (32+ characters)
 - [ ] Configure production MongoDB instance
@@ -483,6 +509,7 @@ curl -X POST http://localhost:5000/api/orders \
 - [ ] Configure automated backups
 
 ### Docker Deployment
+
 ```dockerfile
 FROM node:16-alpine
 WORKDIR /app
@@ -496,6 +523,7 @@ CMD ["npm", "start"]
 ### Cloud Platform Deployment
 
 #### Heroku
+
 ```bash
 # Install Heroku CLI
 heroku create techshop-pro-api
@@ -506,11 +534,13 @@ git push heroku main
 ```
 
 #### Railway
+
 1. Connect your GitHub repository
 2. Set environment variables in Railway dashboard
 3. Deploy automatically on push
 
 #### DigitalOcean App Platform
+
 1. Create new app from GitHub repository
 2. Configure environment variables
 3. Set build and run commands
@@ -567,21 +597,22 @@ backend/
 
 ## 🛠️ Available Scripts
 
-| Script | Command | Description |
-|--------|---------|-------------|
-| **Development** | `npm run dev` | Start server with hot reload |
-| **Production** | `npm start` | Start production server |
-| **Seed Database** | `npm run seed` | Populate database with sample data |
-| **Reset Database** | `npm run reset` | Clear and reseed database |
-| **Test** | `npm test` | Run test suite |
-| **Lint** | `npm run lint` | Check code style |
-| **Format** | `npm run format` | Format code with Prettier |
+| Script             | Command          | Description                        |
+| ------------------ | ---------------- | ---------------------------------- |
+| **Development**    | `npm run dev`    | Start server with hot reload       |
+| **Production**     | `npm start`      | Start production server            |
+| **Seed Database**  | `npm run seed`   | Populate database with sample data |
+| **Reset Database** | `npm run reset`  | Clear and reseed database          |
+| **Test**           | `npm test`       | Run test suite                     |
+| **Lint**           | `npm run lint`   | Check code style                   |
+| **Format**         | `npm run format` | Format code with Prettier          |
 
 ## 🔍 Troubleshooting
 
 ### Common Issues
 
 #### MongoDB Connection Issues
+
 ```bash
 # Check if MongoDB is running
 ps aux | grep mongod
@@ -594,46 +625,56 @@ mongodb://username:password@host:port/database
 ```
 
 #### JWT Token Issues
+
 - Ensure JWT_SECRET is at least 32 characters
 - Check token expiration settings
 - Verify Authorization header format: `Bearer <token>`
 
 #### Stripe Payment Issues
+
 - Verify Stripe keys are correct (test vs live)
 - Check webhook endpoints
 - Validate payment amount format
 
 #### CORS Issues
+
 - Verify FRONTEND_URL in environment variables
 - Check allowed origins in CORS configuration
 - Ensure credentials are properly handled
 
 ### Debug Mode
+
 ```bash
 DEBUG=* npm run dev
 ```
 
 ### Log Files
+
 - **Development**: Console output
 - **Production**: `logs/error.log` and `logs/combined.log`
 
 ## 📊 Monitoring & Analytics
 
 ### Health Monitoring
+
 The API includes built-in health checks:
+
 - Database connectivity
 - External service status
 - Memory usage
 - Response time metrics
 
 ### Logging
+
 Structured logging with different levels:
+
 - **ERROR**: Application errors
 - **WARN**: Warning messages
 - **INFO**: General information
 - **DEBUG**: Detailed debugging info
 
 ### Metrics Collection
+
 - Request/response times
 - Error rates
 - Database query performance
@@ -644,6 +685,7 @@ Structured logging with different levels:
 We welcome contributions! Please follow these steps:
 
 ### Development Workflow
+
 1. **Fork** the repository
 2. **Clone** your fork locally
 3. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
@@ -654,6 +696,7 @@ We welcome contributions! Please follow these steps:
 8. **Submit** a pull request
 
 ### Code Standards
+
 - Follow ESLint configuration
 - Write meaningful commit messages
 - Add tests for new features
@@ -661,6 +704,7 @@ We welcome contributions! Please follow these steps:
 - Ensure all tests pass
 
 ### Pull Request Guidelines
+
 - Provide clear description
 - Reference related issues
 - Include screenshots if applicable
@@ -682,12 +726,14 @@ of this software and associated documentation files (the "Software")...
 ## 🆘 Support & Community
 
 ### Getting Help
+
 - 📚 **Documentation**: Check this README and inline code comments
 - 🐛 **Bug Reports**: [Open an issue](https://github.com/yourusername/techshop-pro-backend/issues)
 - 💡 **Feature Requests**: [Start a discussion](https://github.com/yourusername/techshop-pro-backend/discussions)
 - 📧 **Email Support**: support@techshoppro.com
 
 ### Community
+
 - 💬 **Discord**: [Join our server](https://discord.gg/techshoppro)
 - 🐦 **Twitter**: [@TechShopPro](https://twitter.com/techshoppro)
 - 📱 **LinkedIn**: [TechShop Pro](https://linkedin.com/company/techshoppro)
@@ -695,17 +741,20 @@ of this software and associated documentation files (the "Software")...
 ## 🔄 Changelog
 
 ### v1.2.0 (Latest)
+
 - ✨ Added payment processing with Stripe
 - 🔒 Enhanced security with rate limiting
 - 📊 Improved logging and monitoring
 - 🐛 Fixed order status update issues
 
 ### v1.1.0
+
 - 📦 Added order management system
 - 👤 Implemented user profiles
 - 🔍 Added product search functionality
 
 ### v1.0.0
+
 - 🎉 Initial release
 - 🔐 JWT authentication
 - 🛍️ Basic product management
@@ -714,6 +763,7 @@ of this software and associated documentation files (the "Software")...
 ## 🚗 Roadmap
 
 ### Upcoming Features
+
 - [ ] **Real-time notifications** with WebSocket
 - [ ] **Advanced analytics** dashboard
 - [ ] **Multi-language support** (i18n)
@@ -726,6 +776,7 @@ of this software and associated documentation files (the "Software")...
 - [ ] **Microservices** architecture
 
 ### Long-term Goals
+
 - [ ] **Machine learning** recommendations
 - [ ] **Mobile app** API extensions
 - [ ] **Third-party integrations** (Amazon, eBay)

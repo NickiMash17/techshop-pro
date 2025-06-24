@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import toast from 'react-hot-toast';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,10 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get the intended destination from location state
+  const from = location.state?.from || '/';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -19,9 +24,19 @@ const Login = () => {
     
     try {
       await login(formData.email, formData.password);
-      navigate('/');
+      
+      // Show success message
+      if (from === '/checkout') {
+        toast.success('Login successful! Redirecting to checkout...');
+      } else {
+        toast.success('Login successful!');
+      }
+      
+      // Navigate to the intended destination
+      navigate(from, { replace: true });
     } catch (err) {
       setError(err.message || 'Failed to login');
+      toast.error(err.message || 'Failed to login');
     } finally {
       setIsLoading(false);
     }
@@ -33,10 +48,21 @@ const Login = () => {
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-white">Welcome back</h2>
           <p className="mt-2 text-sm text-gray-400">
-            Don't have an account yet?{' '}
-            <Link to="/register" className="text-primary hover:text-primary/90">
-              Sign up
-            </Link>
+            {from === '/checkout' ? (
+              <>
+                Please log in to complete your purchase.{' '}
+                <Link to="/register" className="text-primary hover:text-primary/90">
+                  Don't have an account? Sign up
+                </Link>
+              </>
+            ) : (
+              <>
+                Don't have an account yet?{' '}
+                <Link to="/register" className="text-primary hover:text-primary/90">
+                  Sign up
+                </Link>
+              </>
+            )}
           </p>
         </div>
 
@@ -102,7 +128,7 @@ const Login = () => {
                 Signing in...
               </>
             ) : (
-              'Sign in'
+              from === '/checkout' ? 'Sign in & Continue to Checkout' : 'Sign in'
             )}
           </button>
         </form>
