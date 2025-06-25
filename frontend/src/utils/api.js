@@ -1,3 +1,7 @@
+// Copyright (c) 2024 Nickimash17. All rights reserved.
+// Trademark: "TechShop Pro" is a trademark of Nickimash17.
+// This code was written by Nickimash17. Unauthorized copying or distribution is prohibited.
+
 import axios from 'axios';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001/api';

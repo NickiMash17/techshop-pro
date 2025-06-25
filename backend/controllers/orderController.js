@@ -1,3 +1,7 @@
+// Copyright (c) 2024 Nickimash17. All rights reserved.
+// Trademark: "TechShop Pro" is a trademark of Nickimash17.
+// This code was written by Nickimash17. Unauthorized copying or distribution is prohibited.
+
 const Order = require("../models/Order");
 const Product = require("../models/Product");
 const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
