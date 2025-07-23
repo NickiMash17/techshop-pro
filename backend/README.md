@@ -297,35 +297,29 @@ GET /api/products?page=1&limit=10&sort=createdAt&category=electronics&minPrice=1
     required: true,
     min: 0
   },
-  originalPrice: Number,
-  images: [String],
   category: {
     type: String,
     required: true,
     enum: ['Laptops', 'Smartphones', 'Accessories', 'Tablets']
   },
-  brand: String,
   stock: {
     type: Number,
     required: true,
     min: 0
   },
-  rating: {
-    type: Number,
-    default: 0,
-    min: 0,
-    max: 5
+  imageUrl: String,
+  specs: {
+    type: Map,
+    of: String
   },
-  numReviews: {
-    type: Number,
-    default: 0
-  },
-  isFeatured: {
+  featured: {
     type: Boolean,
     default: false
   },
-  specifications: Map,
-  tags: [String],
+  averageRating: {
+    type: Number,
+    default: 0
+  },
   createdAt: Date,
   updatedAt: Date
 }

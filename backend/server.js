@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Nickimash17. All rights reserved.
+// Copyright (c) 2024 Nickimash17. All rights reserved.
 // Trademark: "TechShop Pro" is a trademark of Nickimash17.
 // This code was written by Nickimash17. Unauthorized copying or distribution is prohibited.
 
@@ -71,7 +71,11 @@ const limiter = rateLimit({
 });
 
 // Middleware
-app.use(cors());
+app.use(cors({
+  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  credentials: true,
+  optionsSuccessStatus: 200,
+}));
 app.use(express.json());
 
 // Apply rate limiter to all routes
@@ -86,30 +90,21 @@ app.use("/api/auth", rateLimits.auth);
 app.use("/api/products", rateLimits.products);
 app.use("/api", rateLimits.api);
 
-// Add metrics middleware
+// Add combined metrics and logging middleware
 app.use((req, res, next) => {
   const start = process.hrtime();
 
   res.on("finish", () => {
     const duration = process.hrtime(start);
-    const durationInSeconds = duration[0] + duration[1] / 1e9;
 
+    // Prometheus metrics
+    const durationInSeconds = duration[0] + duration[1] / 1e9;
     httpRequestDurationMicroseconds
       .labels(req.method, req.route?.path || req.path, res.statusCode)
       .observe(durationInSeconds);
-  });
 
-  next();
-});
-
-// Add request logging middleware
-app.use((req, res, next) => {
-  const start = process.hrtime();
-
-  res.on("finish", () => {
-    const duration = process.hrtime(start);
+    // Winston logging
     const durationInMs = duration[0] * 1000 + duration[1] / 1e6;
-
     logger.info({
       method: req.method,
       url: req.url,
@@ -173,7 +168,7 @@ app.get("/api/health", (req, res) => {
   });
 });
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 5000;
 
 const startServer = async (port = PORT, retryCount = 0) => {
   try {
@@ -225,17 +220,8 @@ const startServer = async (port = PORT, retryCount = 0) => {
       process.on("SIGINT", () => shutdown("SIGINT"));
 
       server.on("error", (error) => {
-        if (error.code === "EADDRINUSE" && retryCount < 5) {
-          console.error(`⚠️  Port ${port} is already in use`);
-          const newPort = Math.min(port + 1, 3010); // Limit to reasonable range
-          console.log(`🔄 Trying port ${newPort}...`);
-
-          // Try the next port with retry count
-          startServer(newPort, retryCount + 1);
-        } else if (retryCount >= 5) {
-          console.error(
-            "❌ Maximum port retry attempts reached. Please check available ports.",
-          );
+        if (error.code === "EADDRINUSE") {
+          console.error(`❌ Error: Port ${port} is already in use. Please free up the port or specify a different one in your .env file.`);
           process.exit(1);
         } else {
           console.error("Server error:", error);

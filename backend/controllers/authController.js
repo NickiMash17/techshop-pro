@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Nickimash17. All rights reserved.
+// Copyright (c) 2024 Nickimash17. All rights reserved.
 // Trademark: "TechShop Pro" is a trademark of Nickimash17.
 // This code was written by Nickimash17. Unauthorized copying or distribution is prohibited.
 
@@ -9,7 +9,7 @@ const nodemailer = require("nodemailer");
 
 const generateToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
-    expiresIn: "30d",
+    expiresIn: process.env.JWT_EXPIRE || "7d",
   });
 };
 
