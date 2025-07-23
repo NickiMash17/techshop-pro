@@ -12,6 +12,7 @@ const PRODUCT_CATEGORIES = {
   PHOTOGRAPHY: "Photography",
   AUDIO: "Audio",
   FITNESS: "Fitness",
+  OFFICE: "Office",
 };
 
 module.exports = {
