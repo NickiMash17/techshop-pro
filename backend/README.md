@@ -65,7 +65,7 @@ Before you begin, ensure you have the following installed:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/techshop-pro-backend.git
+git clone https://github.com/NickiMash17/techshop-pro-backend.git
 cd techshop-pro-backend
 
 # Navigate to backend directory
@@ -302,7 +302,7 @@ GET /api/products?page=1&limit=10&sort=createdAt&category=electronics&minPrice=1
   category: {
     type: String,
     required: true,
-    enum: ['electronics', 'clothing', 'books', 'home', 'sports']
+    enum: ['Laptops', 'Smartphones', 'Accessories', 'Tablets']
   },
   brand: String,
   stock: {

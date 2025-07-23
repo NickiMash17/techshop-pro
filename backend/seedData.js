@@ -3,9 +3,9 @@
 // This code was written by Nickimash17. Unauthorized copying or distribution is prohibited.
 
 const mongoose = require("mongoose");
-const bcrypt = require("bcryptjs");
 const User = require("./models/User");
 const Product = require("./models/Product");
+const { PRODUCT_CATEGORIES } = require("./utils/constants");
 require("dotenv").config();
 
 const sampleProducts = [
@@ -16,9 +16,8 @@ const sampleProducts = [
     price: 2499.99,
     originalPrice: 2799.99,
     stock: 15,
-    category: "Laptops",
-    imageUrl:
-      "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500",
+    category: PRODUCT_CATEGORIES.LAPTOPS,
+    imageUrl: "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500",
     specs: {
       Processor: "M2 Pro/M2 Max",
       Memory: "16GB/32GB/64GB",
@@ -34,9 +33,8 @@ const sampleProducts = [
     price: 1199.99,
     originalPrice: 1299.99,
     stock: 25,
-    category: "Smartphones",
-    imageUrl:
-      "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500",
+    category: PRODUCT_CATEGORIES.SMARTPHONES,
+    imageUrl: "https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=500",
     specs: {
       Processor: "A17 Pro",
       Storage: "256GB/512GB/1TB",
@@ -52,9 +50,8 @@ const sampleProducts = [
     price: 399.99,
     originalPrice: 449.99,
     stock: 30,
-    category: "Accessories",
-    imageUrl:
-      "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
+    category: PRODUCT_CATEGORIES.ACCESSORIES,
+    imageUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500",
     specs: {
       "Noise Canceling": "Industry-leading",
       "Battery Life": "30 hours",
@@ -70,9 +67,8 @@ const sampleProducts = [
     price: 1299.99,
     originalPrice: 1399.99,
     stock: 20,
-    category: "Smartphones",
-    imageUrl:
-      "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500",
+    category: PRODUCT_CATEGORIES.SMARTPHONES,
+    imageUrl: "https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=500",
     specs: {
       Processor: "Snapdragon 8 Gen 3",
       Storage: "256GB/512GB/1TB",
@@ -88,9 +84,8 @@ const sampleProducts = [
     price: 1499.99,
     originalPrice: 1699.99,
     stock: 12,
-    category: "Laptops",
-    imageUrl:
-      "https://images.unsplash.com/photo-1605134513573-384dcf99a44c?w=500",
+    category: PRODUCT_CATEGORIES.LAPTOPS,
+    imageUrl: "https://images.unsplash.com/photo-1605134513573-384dcf99a44c?w=500",
     specs: {
       Processor: "Intel Core i7-1360P",
       Memory: "16GB LPDDR5",
@@ -106,9 +101,8 @@ const sampleProducts = [
     price: 399.99,
     originalPrice: 449.99,
     stock: 35,
-    category: "Accessories",
-    imageUrl:
-      "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",
+    category: PRODUCT_CATEGORIES.ACCESSORIES,
+    imageUrl: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500",
     specs: {
       Processor: "S9 SiP",
       Display: "Always-On Retina",
@@ -124,9 +118,8 @@ const sampleProducts = [
     price: 99.99,
     originalPrice: 119.99,
     stock: 40,
-    category: "Accessories",
-    imageUrl:
-      "https://images.unsplash.com/photo-1527814050087-3793815479db?w=500",
+    category: PRODUCT_CATEGORIES.ACCESSORIES,
+    imageUrl: "https://images.unsplash.com/photo-1527814050087-3793815479db?w=500",
     specs: {
       Sensor: "8000 DPI",
       Battery: "70 days",
@@ -142,7 +135,7 @@ const sampleProducts = [
     price: 1099.99,
     originalPrice: 1199.99,
     stock: 18,
-    category: "Tablets",
+    category: PRODUCT_CATEGORIES.TABLETS,
     imageUrl: "https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?w=500",
     specs: {
       Processor: "M2",
@@ -159,9 +152,8 @@ const sampleProducts = [
     price: 329.99,
     originalPrice: 379.99,
     stock: 22,
-    category: "Accessories",
-    imageUrl:
-      "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=500",
+    category: PRODUCT_CATEGORIES.ACCESSORIES,
+    imageUrl: "https://images.unsplash.com/photo-1583394838336-acd977736f90?w=500",
     specs: {
       "Noise Canceling": "Acoustic Noise Canceling",
       Battery: "24 hours",
@@ -177,9 +169,8 @@ const sampleProducts = [
     price: 999.99,
     originalPrice: 1099.99,
     stock: 15,
-    category: "Laptops",
-    imageUrl:
-      "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500",
+    category: PRODUCT_CATEGORIES.LAPTOPS,
+    imageUrl: "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500",
     specs: {
       Processor: "Intel Core i5-1235U",
       Memory: "8GB LPDDR5x",
@@ -192,37 +183,32 @@ const sampleProducts = [
 
 const seedData = async () => {
   try {
-    // Connect to MongoDB
     await mongoose.connect(process.env.MONGODB_URI);
     console.log("Connected to MongoDB");
 
-    // Clear existing data
     await User.deleteMany({});
     await Product.deleteMany({});
     console.log("Cleared existing data");
 
-    // Create admin user
-    const hashedPassword = await bcrypt.hash("admin123", 12);
-    const adminUser = await User.create({
-      name: "Admin User",
-      email: "admin@techshop.com",
-      password: hashedPassword,
-      role: "admin",
-    });
+    const [adminUser, regularUser, createdProducts] = await Promise.all([
+      User.create({
+        name: "Admin User",
+        email: "admin@techshop.com",
+        password: "admin123", // Let model handle hashing
+        role: "admin",
+      }),
+      User.create({
+        name: "John Doe",
+        email: "john@example.com",
+        password: "password123", // Let model handle hashing
+        role: "user",
+      }),
+      Product.insertMany(sampleProducts),
+    ]);
+
     console.log("Created admin user:", adminUser.email);
-
-    // Create regular user
-    const regularUser = await User.create({
-      name: "John Doe",
-      email: "john@example.com",
-      password: await bcrypt.hash("password123", 12),
-      role: "user",
-    });
     console.log("Created regular user:", regularUser.email);
-
-    // Create products
-    const products = await Product.create(sampleProducts);
-    console.log(`Created ${products.length} products`);
+    console.log(`Created ${createdProducts.length} products`);
 
     console.log("Database seeded successfully!");
     console.log("\nTest Accounts:");
