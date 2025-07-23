@@ -24,7 +24,7 @@ export const formatCurrencyNumber = (amount, fromUSD = true) => {
 // Get currency symbol
 export const CURRENCY_SYMBOL = 'R';
 
-// Convert USD to ZAR (current rate as of 2024 - you can update this)
+// Convert USD to ZAR (current rate as of 2025 - you can update this)
 export const USD_TO_ZAR_RATE = 19.2;
 
 // Convert USD prices to ZAR
