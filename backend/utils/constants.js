@@ -7,6 +7,7 @@ const PRODUCT_CATEGORIES = {
   SMARTPHONES: "Smartphones",
   ACCESSORIES: "Accessories",
   TABLETS: "Tablets",
+  GAMING: "Gaming",
 };
 
 module.exports = {
