@@ -11,6 +11,7 @@ const PRODUCT_CATEGORIES = {
   SMART_HOME: "Smart Home",
   PHOTOGRAPHY: "Photography",
   AUDIO: "Audio",
+  FITNESS: "Fitness",
 };
 
 module.exports = {
