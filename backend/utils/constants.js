@@ -10,6 +10,7 @@ const PRODUCT_CATEGORIES = {
   GAMING: "Gaming",
   SMART_HOME: "Smart Home",
   PHOTOGRAPHY: "Photography",
+  AUDIO: "Audio",
 };
 
 module.exports = {
