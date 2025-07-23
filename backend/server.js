@@ -40,6 +40,7 @@ const rateLimitHits = new promClient.Counter({
 dotenv.config();
 const app = express();
 
+app.set('trust proxy', 1);
 // Serve uploaded avatars statically
 app.use("/uploads", express.static(require("path").join(__dirname, "uploads")));
 

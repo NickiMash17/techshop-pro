@@ -108,3 +108,18 @@ exports.getReviews = asyncHandler(async (req, res) => {
   }
   res.json(product.reviews);
 });
+
+// Get products by category (stub)
+exports.getProductsByCategory = asyncHandler(async (req, res) => {
+  res.status(501).json({ message: 'Not implemented: getProductsByCategory' });
+});
+
+// Get featured products (stub)
+exports.getFeaturedProducts = asyncHandler(async (req, res) => {
+  res.status(501).json({ message: 'Not implemented: getFeaturedProducts' });
+});
+
+// Advanced search (stub)
+exports.advancedSearch = asyncHandler(async (req, res) => {
+  res.status(501).json({ message: 'Not implemented: advancedSearch' });
+});
