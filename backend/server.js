@@ -73,7 +73,7 @@ const limiter = rateLimit({
 
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+  origin: 'https://techshop-pro.vercel.app',
   credentials: true,
   optionsSuccessStatus: 200,
 }));
@@ -197,45 +197,4 @@ const startServer = async (port = PORT, retryCount = 0) => {
 
       // Graceful shutdown handling
       const shutdown = (signal) => {
-        console.log(`\n${signal} received. Starting graceful shutdown...`);
-        server.close(() => {
-          console.log("🛑 HTTP server closed");
-          mongoose.connection
-            .close()
-            .then(() => {
-              console.log("📋 MongoDB connection closed");
-              process.exit(0);
-            })
-            .catch((err) => {
-              console.log(
-                "📋 MongoDB connection closed with error:",
-                err.message,
-              );
-              process.exit(0);
-            });
-        });
-      };
-
-      // Handle various shutdown signals
-      process.on("SIGTERM", () => shutdown("SIGTERM"));
-      process.on("SIGINT", () => shutdown("SIGINT"));
-
-      server.on("error", (error) => {
-        if (error.code === "EADDRINUSE") {
-          console.error(`❌ Error: Port ${port} is already in use. Please free up the port or specify a different one in your .env file.`);
-          process.exit(1);
-        } else {
-          console.error("Server error:", error);
-          process.exit(1);
-        }
-      });
-    }
-  } catch (error) {
-    console.error("Failed to start server:", error);
-    process.exit(1);
-  }
-};
-
-startServer();
-
-module.exports = app;
+        console.log(`
