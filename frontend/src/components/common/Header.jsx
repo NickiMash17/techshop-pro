@@ -32,6 +32,12 @@ const Header = () => {
             <div className="hidden md:flex items-center space-x-6 lg:space-x-8">
               <Link to="/" className="nav-link">Home</Link>
               <Link to="/products" className="nav-link">Products</Link>
+              <Link
+                to="/about"
+                className="hover:text-primary transition-colors font-medium"
+              >
+                About
+              </Link>
               {user?.isAdmin && (
                 <Link to="/admin" className="nav-link">Admin</Link>
               )}
