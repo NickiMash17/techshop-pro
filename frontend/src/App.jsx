@@ -184,9 +184,7 @@ function App() {
                 </Routes>
               </main>
             </Suspense>
-            <footer className="text-center py-6 text-gray-400 text-sm bg-surface/80">
-              Built by Nicolette Mashaba | Portfolio Project
-            </footer>
+            <Footer />
             <BackToTopButton />
             <ScrollToTop />
           </div>
