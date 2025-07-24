@@ -325,6 +325,7 @@ const ProductCard = ({ product, index = 0, viewMode = 'grid' }) => {
           priority={index < 8}
           variants={imageVariants}
           whileHover="hover"
+          fallbackSrc="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800"
         />
         
         {/* Category Badge */}
