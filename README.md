@@ -14,9 +14,32 @@
 [![MongoDB](https://img.shields.io/badge/MongoDB-6+-47A248?logo=mongodb)](https://mongodb.com/)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](http://makeapullrequest.com)
 
-[🎥 Live Demo](#) • [📚 Documentation](#documentation) • [🐛 Report Bug](#) • [💡 Request Feature](#)
+[🎥 Live Demo](https://techshop-pro.vercel.app) • [📚 Documentation](#documentation) • [🐛 Report Bug](#) • [💡 Request Feature](#)
 
-</div>
+---
+
+## 🚀 Live Demo
+
+👉 [**TechShop Pro Live Site**](https://techshop-pro.vercel.app)
+
+---
+
+## 🧑‍💻 Demo Accounts
+
+- **Admin:**  
+  Email: `admin@techshop.com`  
+  Password: `admin123`
+- **User:**  
+  Email: `john@example.com`  
+  Password: `password123`
+
+---
+
+## 📬 How to Contact Me
+
+- **Email:** [nicolette.mashaba@email.com](mailto:nicolette.mashaba@email.com)
+- **LinkedIn:** [Your LinkedIn Profile](#)
+- **About Page:** [About TechShop Pro](https://techshop-pro.vercel.app/about)
 
 ---
 
