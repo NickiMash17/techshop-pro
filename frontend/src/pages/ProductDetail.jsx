@@ -12,6 +12,7 @@ import { formatCurrency } from '../utils/currency';
 import EnhancedImage from '../components/common/EnhancedImage';
 import ProductCard from '../components/products/ProductCard';
 import { productsAPI } from '../utils/api';
+import { Helmet } from 'react-helmet-async';
 
 const ProductDetail = () => {
   const { id } = useParams();
@@ -195,259 +196,273 @@ const ProductDetail = () => {
   }
 
   return (
-    <div className="container-responsive section-padding">
-      <div className="space-y-8">
-        {/* Enhanced Breadcrumb */}
-        <AnimatePresence>
-          <nav 
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="flex items-center space-x-2 text-sm text-gray-400"
-          >
-            <Link to="/" className="hover:text-primary transition-colors">Home</Link>
-            <span>/</span>
-            <Link to="/products" className="hover:text-primary transition-colors">Products</Link>
-            {product.category && (
-              <>
-                <span>/</span>
-                <Link to={`/products?category=${product.category}`} className="hover:text-primary transition-colors">
-                  {product.category}
-                </Link>
-              </>
-            )}
-            <span>/</span>
-            <span className="text-white font-medium">{product.name}</span>
-          </nav>
-        </AnimatePresence>
-
-        {/* Product Details */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-          {/* Product Image */}
+    <>
+      <Helmet>
+        <title>{product?.name ? `${product.name} | TechShop Pro` : 'Product | TechShop Pro'}</title>
+        <meta name="description" content={product?.description || 'View product details at TechShop Pro.'} />
+        <meta property="og:title" content={product?.name ? `${product.name} | TechShop Pro` : 'Product | TechShop Pro'} />
+        <meta property="og:description" content={product?.description || 'View product details at TechShop Pro.'} />
+        <meta property="og:image" content={product?.imageUrl || product?.image || 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800'} />
+        <meta property="og:type" content="product" />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={product?.name ? `${product.name} | TechShop Pro` : 'Product | TechShop Pro'} />
+        <meta name="twitter:description" content={product?.description || 'View product details at TechShop Pro.'} />
+        <meta name="twitter:image" content={product?.imageUrl || product?.image || 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800'} />
+      </Helmet>
+      <div className="container-responsive section-padding">
+        <div className="space-y-8">
+          {/* Enhanced Breadcrumb */}
           <AnimatePresence>
-            <div 
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="space-y-4"
+            <nav 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="flex items-center space-x-2 text-sm text-gray-400"
             >
-              <div className="aspect-square glass-card overflow-hidden relative group">
-                <EnhancedImage
-                  src={product.productImage}
-                  alt={product.name}
-                  className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                />
-                
-                {/* Wishlist Button */}
-                <button
-                  onClick={handleWishlistToggle}
-                  className="absolute top-4 right-4 p-3 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors"
-                >
-                  <svg className="w-5 h-5" fill={isInUserWishlist ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                </button>
-
-                {/* Stock Status Badge */}
-                {product.stock === 0 && (
-                  <div className="absolute top-4 left-4 badge-error">
-                    Out of Stock
-                  </div>
-                )}
-              </div>
-            </div>
+              <Link to="/" className="hover:text-primary transition-colors">Home</Link>
+              <span>/</span>
+              <Link to="/products" className="hover:text-primary transition-colors">Products</Link>
+              {product.category && (
+                <>
+                  <span>/</span>
+                  <Link to={`/products?category=${product.category}`} className="hover:text-primary transition-colors">
+                    {product.category}
+                  </Link>
+                </>
+              )}
+              <span>/</span>
+              <span className="text-white font-medium">{product.name}</span>
+            </nav>
           </AnimatePresence>
 
-          {/* Product Info */}
-          <AnimatePresence>
-            <div 
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              className="space-y-8"
-            >
-              {/* Title and Category */}
-              <div className="space-y-4">
-                {product.category && (
-                  <span className="badge-primary">
-                    {product.category}
-                  </span>
-                )}
-                <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
-                  {product.name}
-                </h1>
-                <p className="text-xl text-gray-400 leading-relaxed">
-                  {product.description}
-                </p>
-              </div>
+          {/* Product Details */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+            {/* Product Image */}
+            <AnimatePresence>
+              <div 
+                initial={{ opacity: 0, x: -50 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="space-y-4"
+              >
+                <div className="aspect-square glass-card overflow-hidden relative group">
+                  <EnhancedImage
+                    src={product.productImage}
+                    alt={product.name}
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                  />
+                  
+                  {/* Wishlist Button */}
+                  <button
+                    onClick={handleWishlistToggle}
+                    className="absolute top-4 right-4 p-3 rounded-full bg-white/20 backdrop-blur-sm hover:bg-white/30 transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill={isInUserWishlist ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                    </svg>
+                  </button>
 
-              {/* Rating */}
-              <div className="flex items-center gap-4">
-                <div className="flex items-center space-x-1">
-                  {renderStars(product.productRating)}
-                </div>
-                <span className="text-gray-400">
-                  {product.productRating.toFixed(1)} ({product.productReviews} reviews)
-                </span>
-              </div>
-
-              {/* Price */}
-              <div className="space-y-2">
-                <div className="flex items-baseline gap-4">
-                  <span className="text-4xl font-bold text-primary">
-                    {formatCurrency(product.price)}
-                  </span>
-                  {product.originalPrice && product.originalPrice > product.price && (
-                    <>
-                      <span className="text-2xl text-gray-500 line-through">
-                        {formatCurrency(product.originalPrice)}
-                      </span>
-                      <span className="badge-success">
-                        {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
-                      </span>
-                    </>
+                  {/* Stock Status Badge */}
+                  {product.stock === 0 && (
+                    <div className="absolute top-4 left-4 badge-error">
+                      Out of Stock
+                    </div>
                   )}
                 </div>
               </div>
+            </AnimatePresence>
 
-              {/* Stock Status */}
-              <div className="flex items-center gap-3">
-                <div className={`w-3 h-3 rounded-full ${product.stock > 0 ? 'bg-green-500' : 'bg-red-500'}`}></div>
-                <span className="text-gray-400">
-                  {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
-                </span>
-                {product.stock > 0 && product.stock <= 5 && (
-                  <span className="badge-warning">Low Stock</span>
-                )}
-              </div>
+            {/* Product Info */}
+            <AnimatePresence>
+              <div 
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                className="space-y-8"
+              >
+                {/* Title and Category */}
+                <div className="space-y-4">
+                  {product.category && (
+                    <span className="badge-primary">
+                      {product.category}
+                    </span>
+                  )}
+                  <h1 className="text-4xl lg:text-5xl font-bold text-white leading-tight">
+                    {product.name}
+                  </h1>
+                  <p className="text-xl text-gray-400 leading-relaxed">
+                    {product.description}
+                  </p>
+                </div>
 
-              {/* Add to Cart */}
-              <div className="space-y-4">
+                {/* Rating */}
                 <div className="flex items-center gap-4">
-                  <div className="flex items-center glass-card border border-white/10 rounded-xl overflow-hidden">
-                    <button
-                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                      className="px-4 py-3 hover:bg-surface/50 transition-colors text-white"
-                      disabled={quantity <= 1}
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-                      </svg>
-                    </button>
-                    <span className="px-6 py-3 border-x border-white/10 text-white font-semibold min-w-[60px] text-center">
-                      {quantity}
-                    </span>
-                    <button
-                      onClick={() => setQuantity(quantity + 1)}
-                      className="px-4 py-3 hover:bg-surface/50 transition-colors text-white"
-                      disabled={product.stock > 0 && quantity >= product.stock}
-                    >
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                      </svg>
-                    </button>
+                  <div className="flex items-center space-x-1">
+                    {renderStars(product.productRating)}
                   </div>
-                  
-                  <button
-                    onClick={handleAddToCart}
-                    disabled={product.stock === 0 || isAdding}
-                    className={`flex-1 py-4 px-8 rounded-xl font-semibold transition-all duration-300 ${
-                      product.stock === 0 
-                        ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
-                        : isInUserCart
-                          ? 'bg-green-600 hover:bg-green-700 text-white'
-                          : 'bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/25 text-white'
-                    }`}
-                  >
-                    {isAdding ? (
-                      <span className="flex items-center justify-center gap-2">
-                        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-                        </svg>
-                        Adding...
-                      </span>
-                    ) : isInUserCart ? (
-                      <span className="flex items-center justify-center gap-2">
-                        <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                        </svg>
-                        In Cart ({cartQuantity})
-                      </span>
-                    ) : (
-                      <span className="flex items-center justify-center gap-2">
-                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m6 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01" />
-                        </svg>
-                        {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-                      </span>
+                  <span className="text-gray-400">
+                    {product.productRating.toFixed(1)} ({product.productReviews} reviews)
+                  </span>
+                </div>
+
+                {/* Price */}
+                <div className="space-y-2">
+                  <div className="flex items-baseline gap-4">
+                    <span className="text-4xl font-bold text-primary">
+                      {formatCurrency(product.price)}
+                    </span>
+                    {product.originalPrice && product.originalPrice > product.price && (
+                      <>
+                        <span className="text-2xl text-gray-500 line-through">
+                          {formatCurrency(product.originalPrice)}
+                        </span>
+                        <span className="badge-success">
+                          {Math.round((1 - product.price / product.originalPrice) * 100)}% OFF
+                        </span>
+                      </>
                     )}
-                  </button>
-                </div>
-              </div>
-
-              {/* Product Details */}
-              <div className="glass-card p-6 space-y-4">
-                <h3 className="text-xl font-semibold text-white">Product Details</h3>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Category:</span>
-                    <span className="text-white font-medium">{product.category || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">SKU:</span>
-                    <span className="text-white font-medium">#{product.id || product._id}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Brand:</span>
-                    <span className="text-white font-medium">{product.brand || 'N/A'}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-gray-400">Availability:</span>
-                    <span className={`font-medium ${product.stock > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                      {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
-                    </span>
                   </div>
                 </div>
-              </div>
-            </div>
-          </AnimatePresence>
-        </div>
 
-        {/* Related Products */}
-        {relatedProducts.length > 0 && (
-          <AnimatePresence>
-            <section 
-              initial={{ opacity: 0, y: 50 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="space-y-8"
-            >
-              <div className="flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-white">
-                  Related <span className="text-gradient">Products</span>
-                </h2>
-                <Link 
-                  to={`/products?category=${product.category}`}
-                  className="text-primary hover:text-primary/80 transition-colors font-medium"
-                >
-                  View All →
-                </Link>
+                {/* Stock Status */}
+                <div className="flex items-center gap-3">
+                  <div className={`w-3 h-3 rounded-full ${product.stock > 0 ? 'bg-green-500' : 'bg-red-500'}`}></div>
+                  <span className="text-gray-400">
+                    {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
+                  </span>
+                  {product.stock > 0 && product.stock <= 5 && (
+                    <span className="badge-warning">Low Stock</span>
+                  )}
+                </div>
+
+                {/* Add to Cart */}
+                <div className="space-y-4">
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center glass-card border border-white/10 rounded-xl overflow-hidden">
+                      <button
+                        onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                        className="px-4 py-3 hover:bg-surface/50 transition-colors text-white"
+                        disabled={quantity <= 1}
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+                        </svg>
+                      </button>
+                      <span className="px-6 py-3 border-x border-white/10 text-white font-semibold min-w-[60px] text-center">
+                        {quantity}
+                      </span>
+                      <button
+                        onClick={() => setQuantity(quantity + 1)}
+                        className="px-4 py-3 hover:bg-surface/50 transition-colors text-white"
+                        disabled={product.stock > 0 && quantity >= product.stock}
+                      >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                        </svg>
+                      </button>
+                    </div>
+                    
+                    <button
+                      onClick={handleAddToCart}
+                      disabled={product.stock === 0 || isAdding}
+                      className={`flex-1 py-4 px-8 rounded-xl font-semibold transition-all duration-300 ${
+                        product.stock === 0 
+                          ? 'bg-gray-600 text-gray-400 cursor-not-allowed' 
+                          : isInUserCart
+                            ? 'bg-green-600 hover:bg-green-700 text-white'
+                            : 'bg-gradient-to-r from-primary to-secondary hover:shadow-lg hover:shadow-primary/25 text-white'
+                      }`}
+                    >
+                      {isAdding ? (
+                        <span className="flex items-center justify-center gap-2">
+                          <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                          </svg>
+                          Adding...
+                        </span>
+                      ) : isInUserCart ? (
+                        <span className="flex items-center justify-center gap-2">
+                          <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                          </svg>
+                          In Cart ({cartQuantity})
+                        </span>
+                      ) : (
+                        <span className="flex items-center justify-center gap-2">
+                          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 3h2l.4 2M7 13h10l4-8H5.4m0 0L7 13m0 0l-2.5 5M7 13l2.5 5m6-5v6a2 2 0 01-2 2H9a2 2 0 01-2-2v-6m6 0V9a2 2 0 00-2-2H9a2 2 0 00-2 2v4.01" />
+                          </svg>
+                          {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+                        </span>
+                      )}
+                    </button>
+                  </div>
+                </div>
+
+                {/* Product Details */}
+                <div className="glass-card p-6 space-y-4">
+                  <h3 className="text-xl font-semibold text-white">Product Details</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Category:</span>
+                      <span className="text-white font-medium">{product.category || 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">SKU:</span>
+                      <span className="text-white font-medium">#{product.id || product._id}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Brand:</span>
+                      <span className="text-white font-medium">{product.brand || 'N/A'}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-gray-400">Availability:</span>
+                      <span className={`font-medium ${product.stock > 0 ? 'text-green-400' : 'text-red-400'}`}>
+                        {product.stock > 0 ? 'In Stock' : 'Out of Stock'}
+                      </span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                {relatedProducts.map((relatedProduct, index) => (
-                  <div
-                    key={relatedProduct.id || relatedProduct._id || index}
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1 }}
+            </AnimatePresence>
+          </div>
+
+          {/* Related Products */}
+          {relatedProducts.length > 0 && (
+            <AnimatePresence>
+              <section 
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="space-y-8"
+              >
+                <div className="flex items-center justify-between">
+                  <h2 className="text-2xl font-bold text-white">
+                    Related <span className="text-gradient">Products</span>
+                  </h2>
+                  <Link 
+                    to={`/products?category=${product.category}`}
+                    className="text-primary hover:text-primary/80 transition-colors font-medium"
                   >
-                    <ProductCard product={relatedProduct} index={index} />
-                  </div>
-                ))}
-              </div>
-            </section>
-          </AnimatePresence>
-        )}
+                    View All →
+                  </Link>
+                </div>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {relatedProducts.map((relatedProduct, index) => (
+                    <div
+                      key={relatedProduct.id || relatedProduct._id || index}
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                    >
+                      <ProductCard product={relatedProduct} index={index} />
+                    </div>
+                  ))}
+                </div>
+              </section>
+            </AnimatePresence>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
