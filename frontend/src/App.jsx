@@ -29,6 +29,8 @@ import OrderDetail from './pages/OrderDetail';
 import { initializePerformance } from './utils/performance';
 import './styles/globals.css';
 import { Toaster } from 'react-hot-toast';
+import BackToTopButton from './components/common/BackToTopButton';
+import About from './pages/About';
 
 // Global error handler
 const handleGlobalError = (error, errorInfo) => {
@@ -137,6 +139,7 @@ function App() {
                   <Route path="/products/:id" element={<ProductDetail />} />
                   <Route path="/cart" element={<Cart />} />
                   <Route path="/wishlist" element={<Wishlist />} />
+                  <Route path="/about" element={<About />} />
                   <Route
                     path="/admin"
                     element={
@@ -181,7 +184,10 @@ function App() {
                 </Routes>
               </main>
             </Suspense>
-            <Footer />
+            <footer className="text-center py-6 text-gray-400 text-sm bg-surface/80">
+              Built by Nicolette Mashaba | Portfolio Project
+            </footer>
+            <BackToTopButton />
             <ScrollToTop />
           </div>
         </NotificationProvider>
