@@ -13,7 +13,7 @@ const About = () => (
         TechShop Pro is a modern, full-stack e-commerce platform for discovering and shopping the latest tech gadgets, built as a portfolio project by Nicolette Mashaba.
       </p>
       <p className="mb-4 text-gray-400">
-        <strong>Contact:</strong> <a href="mailto:nicolette.mashaba@email.com" className="text-primary underline">nicolette.mashaba@email.com</a>
+        <strong>Contact:</strong> <a href="mailto:nicolette.mashaba@techbridlefoundation.org" className="text-primary underline">nicolette.mashaba@techbridlefoundation.org</a>
       </p>
       <p className="text-gray-400">Thank you for visiting! Feel free to reach out for collaboration or opportunities.</p>
     </div>
